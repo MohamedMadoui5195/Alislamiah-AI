@@ -56,6 +56,16 @@ button{
     color:#333;
 }
 
+.links{
+    text-align:center;
+    margin:15px 0;
+}
+
+.links a{
+    color:#4db8ff;
+    text-decoration:none;
+}
+
 </style>
 </head>
 
@@ -73,21 +83,28 @@ button{
 Sign In
 </button>
 
+<div class="links">
+<a href="#" id="forgotPassword">Forgot Password?</a>
+<br><br>
+Don't have an account?
+<a href="#" id="createAccount">Create Account</a>
+</div>
+
 <button class="google" id="googleBtn">
 Continue with Google
 </button>
 
 </div>
 
-
 <script type="module">
 
-import { initializeApp } 
+import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { 
-getAuth,
+import {getAuth,
 signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+sendPasswordResetEmail,
 GoogleAuthProvider,
 signInWithPopup
 }
@@ -104,13 +121,11 @@ const firebaseConfig = {
   measurementId: "G-MV3BQG10T2"
 };
 
-
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
 
-// تسجيل الدخول بالإيميل
+// Sign In
 
 document.getElementById("loginBtn").onclick = ()=>{
 
@@ -131,7 +146,52 @@ alert(error.message);
 };
 
 
-// تسجيل الدخول بجوجل
+// Create Account
+
+document.getElementById("createAccount").onclick = ()=>{
+
+let email=document.getElementById("email").value;
+let password=document.getElementById("password").value;
+
+createUserWithEmailAndPassword(auth,email,password)
+
+.then(()=>{
+alert("تم إنشاء الحساب بنجاح");
+window.location.href="index.html";
+})
+
+.catch((error)=>{
+alert(error.message);
+});
+
+};
+
+
+// Forgot Password
+
+document.getElementById("forgotPassword").onclick = ()=>{
+
+let email=document.getElementById("email").value;
+
+if(email===""){
+alert("Enter your email first");
+return;
+}
+
+sendPasswordResetEmail(auth,email)
+
+.then(()=>{
+alert("Password reset email sent");
+})
+
+.catch((error)=>{
+alert(error.message);
+});
+
+};
+
+
+// Google Sign In
 
 const provider = new GoogleAuthProvider();
 
@@ -145,11 +205,11 @@ window.location.href="index.html";
 })
 
 .catch((error)=>{
+alert(error.code);
 alert(error.message);
 });
 
 };
-
 
 </script>
 
