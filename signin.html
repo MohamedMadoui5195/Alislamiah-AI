@@ -191,7 +191,7 @@ alert(error.message);
 };
 
 
-// Google Sign In
+// تسجيل الدخول بجوجل
 
 const provider = new GoogleAuthProvider();
 
@@ -199,19 +199,21 @@ document.getElementById("googleBtn").onclick = ()=>{
 
 signInWithPopup(auth,provider)
 
-.then(()=>{
+.then((result)=>{
+
 alert("تم الدخول بواسطة Google");
 window.location.href="index.html";
+
 })
 
 .catch((error)=>{
-alert(error.code);
-alert(error.message);
+
+console.log(error);
+
+alert("Error Code: " + error.code);
+
+alert("Error Message: " + error.message);
+
 });
 
 };
-
-</script>
-
-</body>
-</html>
