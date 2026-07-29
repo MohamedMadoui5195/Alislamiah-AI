@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alislamiah AI - Search</title>
+<title>Alislamiah AI - Results</title>
 
 <style>
 body{
 margin:0;
 padding:20px;
 font-family:Arial,sans-serif;
-background:#ffffff;
+background:#fff;
+}
+
+#results{
+max-width:900px;
+margin:auto;
+}
+
+.result{
+padding:15px;
+border-bottom:1px solid #ddd;
+}
+
+.result h3{
+margin:0;
+}
+
+.result a{
+color:green;
+text-decoration:none;
 }
 </style>
-
-<script async src="https://cse.google.com/cse.js?cx=672dc0ff4cae4413c"></script>
 
 </head>
 
 <body>
 
-<div class="gcse-search"></div>
+<div id="results"></div>
+
+<script type="module" src="results.js"></script>
 
 </body>
 </html>
