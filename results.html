@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>نتائج البحث - Alislamiah AI</title>
+<title>نتائج البحث | Alislamiah AI</title>
 
 <style>
 
@@ -20,83 +20,87 @@ font-family:Tahoma,Arial,sans-serif;
 body{
 background:#ffffff;
 color:#202124;
-padding-top:75px;
+padding-top:65px;
 }
 
-.topButtons{
+.topBar{
 position:fixed;
 top:0;
 left:0;
 right:0;
-height:60px;
+height:65px;
+background:#ffffff;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 15px;
-background:#1565C0;
-box-shadow:0 2px 10px rgba(0,0,0,.15);
+padding:10px 16px;
+border-bottom:1px solid #e5e5e5;
 z-index:9999;
 }
 
-.leftButtons{
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#1565C0;
+}
+
+.buttons{
 display:flex;
 gap:10px;
 }
 
-.navBtn{
-display:flex;
-align-items:center;
-gap:6px;
-background:#ffffff;
-color:#1565C0;
+.btn{
+background:#1565C0;
+color:#fff;
 border:none;
-border-radius:25px;
+border-radius:30px;
 padding:8px 16px;
 font-size:14px;
-font-weight:bold;
 cursor:pointer;
-transition:.3s;
-}.navBtn:hover{
-background:#E3F2FD;
+transition:.25s;
 }
 
-#results{
+.btn:hover{
+background:#0D47A1;
+}
+
+.container{
 max-width:900px;
-margin:20px auto;
-padding:0 18px;
-}
-
-.result{
+margin:auto;
+padding:20px;
+}.result{
+background:#fff;
+border:1px solid #e5e5e5;
+border-radius:14px;
 padding:18px;
 margin-bottom:18px;
-border:1px solid #E0E0E0;
-border-radius:14px;
-background:#fff;
-transition:.3s;
+transition:.25s;
 }
 
 .result:hover{
-box-shadow:0 4px 15px rgba(0,0,0,.12);
+box-shadow:0 4px 14px rgba(0,0,0,.10);
 }
 
-.resultHeader{
+.resultTop{
 display:flex;
 align-items:center;
-gap:10px;
-margin-bottom:8px;
+gap:12px;
+margin-bottom:10px;
 }
 
-.resultHeader img{
-width:24px;
-height:24px;
-border-radius:50%;
+.resultIcon{
+width:42px;
+height:42px;
+border-radius:10px;
+object-fit:cover;
+background:#f1f3f4;
 }
 
 .resultTitle{
 font-size:22px;
+font-weight:bold;
 color:#1a0dab;
 text-decoration:none;
-font-weight:bold;
 }
 
 .resultTitle:hover{
@@ -105,17 +109,18 @@ text-decoration:underline;
 
 .resultUrl{
 display:block;
-margin:6px 0;
-color:#188038;
+margin-top:5px;
 font-size:14px;
+color:#188038;
 text-decoration:none;
-word-break:break-all;
+word-break:break-word;
 }
 
 .resultDesc{
-color:#4d5156;
+margin-top:10px;
 font-size:15px;
-line-height:1.7;
+line-height:1.8;
+color:#4d5156;
 }
 
 </style>
@@ -124,15 +129,19 @@ line-height:1.7;
 
 <body>
 
-<div class="topButtons">
+<div class="topBar">
 
-<div class="leftButtons">
+<div class="logo">
+Alislamiah AI
+</div>
 
-<button class="navBtn" onclick="history.back()">
+<div class="buttons">
+
+<button class="btn" onclick="history.back()">
 ⬅ رجوع
 </button>
 
-<button class="navBtn" onclick="window.location.href='index.html'">
+<button class="btn" onclick="window.location.href='index.html'">
 🏠 الرئيسية
 </button>
 
@@ -140,10 +149,13 @@ line-height:1.7;
 
 </div>
 
+<div class="container">
+
 <div id="results"></div>
+
+</div>
 
 <script type="module" src="results.js"></script>
 
 </body>
-
 </html>
