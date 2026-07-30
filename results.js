@@ -7,41 +7,101 @@ import {
 
 const results = document.getElementById("results");
 
+const params = new URLSearchParams(window.location.search);
+const search = (params.get("q") || "").trim().toLowerCase();
+
 async function loadSites() {
 
-  results.innerHTML = "<p>جاري تحميل النتائج...</p>";
+results.innerHTML="<p>جاري البحث...</p>";
 
-  try {
+try{
 
-    const querySnapshot = await getDocs(collection(db, "sites"));
+const querySnapshot=await getDocs(collection(db,"sites"));
 
-    results.innerHTML = "";
+results.innerHTML="";
 
-    if (querySnapshot.empty) {
-      results.innerHTML = "<p>لا توجد مواقع حاليا.</p>";
-      return;
-    }
+let found=false;
 
-    querySnapshot.forEach((doc) => {
+querySnapshot.forEach((doc)=>{
 
-      const site = doc.data();
+const site=doc.data();
 
-      results.innerHTML += `
-        <div class="result">
-          <h3>${site.title}</h3>
-          <p>${site.description}</p>
-          <a href="${site.url}" target="_blank">${site.url}</a>
-        </div>
-      `;
+if(site.approved!==true) return;
 
-    });
+const text=(
+(site.title||"")+" "+
+(site.description||"")+" "+
+(site.category||"")
+).toLowerCase();if(search!=="" && !text.includes(search)) return;
 
-  } catch (error) {
+found=true;
 
-    console.error(error);
-    results.innerHTML = "<p>حدث خطأ أثناء تحميل النتائج.</p>";
+const domain=new URL(site.url).hostname;
 
-  }
+results.innerHTML+=`
+<div class="result">
+
+<div class="resultHeader">
+
+<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64">
+
+<div>
+
+<a class="resultTitle"
+href="${site.url}"
+target="_blank">
+
+${site.title}
+
+</a>
+
+<a class="resultUrl"
+href="${site.url}"
+target="_blank">
+
+${site.url}
+
+</a>
+
+</div>
+
+</div>
+
+<p class="resultDesc">
+
+${site.description}
+
+</p>
+
+</div>
+`;
+
+});
+
+if(!found){
+
+results.innerHTML=`
+<p style="text-align:center;
+font-size:20px;
+margin-top:40px;">
+لا توجد نتائج مطابقة.
+</p>
+`;
+
+}
+
+}catch(error){
+
+console.error(error);
+
+results.innerHTML=`
+<p style="text-align:center;
+color:red;">
+حدث خطأ أثناء البحث.
+</p>
+`;
+
+}
 
 }
 
