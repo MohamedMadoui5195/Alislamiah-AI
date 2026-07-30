@@ -7,107 +7,39 @@ getDocs
 
 const results = document.getElementById("results");
 
-const params = new URLSearchParams(window.location.search);
-const query = (params.get("q") || "").trim().toLowerCase();
+async function loadSites() {
 
-async function loadSites(){
+results.innerHTML = "<p>جاري تحميل النتائج...</p>";
 
-results.innerHTML="<p>جاري البحث...</p>";
+try {
 
-try{
+const querySnapshot = await getDocs(collection(db, "sites"));  
 
-const snapshot=await getDocs(collection(db,"sites"));
+results.innerHTML = "";  
 
-results.innerHTML="";
+if (querySnapshot.empty) {  
+  results.innerHTML = "<p>لا توجد مواقع حاليا.</p>";  
+  return;  
+}  
 
-let count=0;
+querySnapshot.forEach((doc) => {  
 
-snapshot.forEach((doc)=>{
+  const site = doc.data();  
 
-const site=doc.data();
-
-if(site.approved!==true) return;
-
-const title=(site.title||"").toLowerCase();
-const description=(site.description||"").toLowerCase();
-const category=(site.category||"").toLowerCase();
-const text = `${title} ${description} ${category}`;
-
-if(query && !text.includes(query)) return;
-
-count++;
-
-let icon = "";
-
-try{
-const domain = new URL(site.url).origin;
-icon = `${domain}/favicon.ico`;
-}catch(e){
-icon = "favicon.png";
-}
-
-results.innerHTML += `
-<div class="result">
-
-<div class="resultTop">
-
-<img class="resultIcon"
-src="${icon}"
-onerror="this.src='favicon.png'">
-
-<div>
-
-<a class="resultTitle"
-href="${site.url}"
-target="_blank">
-
-${site.title}
-
-</a>
-
-<a class="resultUrl"
-href="${site.url}"
-target="_blank">
-
-${site.url}
-
-</a>
-
-</div>
-
-</div>
-
-<p class="resultDesc">
-
-${site.description}
-
-</p>
-
-</div>
-`;
+  results.innerHTML += `  
+    <div class="result">  
+      <h3>${site.title}</h3>  
+      <p>${site.description}</p>  
+      <a href="${site.url}" target="_blank">${site.url}</a>  
+    </div>  
+  `;  
 
 });
 
-if(count===0){
+} catch (error) {
 
-results.innerHTML=`
-<div style="text-align:center;padding:40px">
-<h2>لا توجد نتائج</h2>
-<p>جرّب كلمات بحث أخرى.</p>
-</div>
-`;
-
-}
-
-}catch(error){
-
-console.error(error);
-
-results.innerHTML=`
-<div style="text-align:center;padding:40px;color:red;">
-حدث خطأ أثناء تحميل النتائج.
-</div>
-`;
+console.error(error);  
+results.innerHTML = "<p>حدث خطأ أثناء تحميل النتائج.</p>";
 
 }
 
