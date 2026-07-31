@@ -16,125 +16,105 @@ body {
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
-    padding: 0 15px;
 }
 
 .view.active-view {
-    display: flex;
-    flex-direction: column;
+    display: block;
 }
 
-/* --- الرئيسية الأصلية --- */
+/* --- الرئيسية المطابقة 100% --- */
 .header-top {
-    width: 100%;
-    padding: 15px 0 10px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 15px 20px;
+    text-align: right;
 }
 
-.logo-title {
+.top-logo {
     color: #1a73e8;
     font-size: 1.8rem;
     font-weight: bold;
-    text-align: right;
+    margin: 0;
 }
 
-.home-body {
+.home-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding-top: 20px;
+    padding: 10px 20px;
 }
 
-.code-text {
-    color: #4a4a4a;
+.code-tag {
+    color: #333333;
     font-size: 0.95rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    align-self: flex-end;
+    margin-right: 10%;
 }
 
-.image-box {
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    border: 1px solid #eee;
-}
-
-.palm-img {
-    width: 100%;
-    height: 100%;
-}
-
-.main-brand {
-    color: #1565c0;
-    font-size: 3.2rem;
-    line-height: 1.1;
-    font-weight: bold;
-    margin-bottom: 30px;
-}
-
-.search-label {
-    color: #70757a;
-    font-size: 1.1rem;
+.logo-img-wrapper {
+    align-self: flex-end;
+    margin-right: 10%;
     margin-bottom: 20px;
 }
 
-.input-wrapper {
-    width: 100%;
+.brand-title {
+    color: #1565c0;
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 10px 0 20px 0;
+    text-align: center;
+}
+
+.brand-title span {
+    display: block;
+    font-size: 3.2rem;
+}
+
+.sub-title {
+    color: #70757a;
+    font-size: 1.1rem;
     margin-bottom: 25px;
 }
 
-.input-wrapper input {
+.search-form {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-input {
     width: 100%;
     padding: 16px 25px;
     border-radius: 30px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     font-size: 1rem;
     outline: none;
     text-align: right;
+    margin-bottom: 25px;
 }
 
-.send-home-btn {
-    background-color: #1565c0;
+.main-btn {
+    background-color: #1976d2;
     color: white;
     border: none;
-    padding: 14px 50px;
+    padding: 14px 55px;
     border-radius: 30px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 3px 8px rgba(21, 101, 192, 0.3);
-    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
 }
 
-.open-chat-link {
-    background: none;
-    border: none;
-    color: #1a73e8;
-    font-size: 0.95rem;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-top: 10px;
-}
-
-/* --- واجهة التشات الجديدة فقط --- */
-.chat-wrapper {
-    width: 100%;
-    height: 95vh;
-    display: flex;
-    flex-direction: column;
-}
-
+/* --- واجهة التخيير والتشات --- */
 .top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    padding: 15px 0;
+    padding: 15px;
     border-bottom: 1px solid #eee;
-    margin-bottom: 10px;
 }
 
 .back-link {
@@ -151,28 +131,48 @@ body {
     font-weight: bold;
 }
 
+.decision-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    margin: 40px 0;
+    line-height: 1.5;
+}
+
+.grad-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 25px;
+    border: none;
+    color: white;
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff7e30, #e100ff, #0055ff);
+}
+
+.chat-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .messages-area {
     flex: 1;
     overflow-y: auto;
-    padding: 10px 0;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.msg-item {
-    display: flex;
-    flex-direction: column;
-}
-
+.msg-item { display: flex; flex-direction: column; }
 .msg-item.user { align-items: flex-end; }
 .msg-item.ai { align-items: flex-start; }
-
-.msg-label {
-    font-size: 0.8rem;
-    color: #70757a;
-    margin-bottom: 4px;
-}
 
 .bubble.user {
     background: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff);
@@ -180,16 +180,14 @@ body {
     padding: 12px 18px;
     border-radius: 18px;
     max-width: 85%;
-    font-size: 0.95rem;
 }
 
 .bubble.ai {
-    background: #ffffff;
+    background: #fff;
     color: #202124;
     padding: 12px 18px;
     border-radius: 18px;
     max-width: 85%;
-    font-size: 0.95rem;
     border: 2px solid;
     border-image: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff) 1;
 }
@@ -197,8 +195,8 @@ body {
 .bottom-input-bar {
     display: flex;
     gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid #f0f0f0;
+    padding: 12px;
+    border-top: 1px solid #eee;
 }
 
 .bottom-input-bar input {
@@ -213,7 +211,7 @@ body {
     background: linear-gradient(135deg, #ff7e30, #e100ff);
     color: white;
     border: none;
-    padding: 10px 25px;
+    padding: 10px 22px;
     border-radius: 25px;
     font-weight: bold;
     cursor: pointer;
