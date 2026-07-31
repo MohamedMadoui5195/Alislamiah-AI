@@ -8,61 +8,50 @@
 </head>
 <body>
 
-    <!-- 1. الرئيسية المطابقة للأصل تماماً -->
-    <div id="searchView" class="view active-view">
-        <div class="header-top">
-            <h2 class="top-logo">Alislamiah-AI</h2>
+    <header class="header-top">
+        <div class="logo-title">Alislamiah-AI</div>
+    </header>
+
+    <div class="home-body">
+        <p class="code-text">&lt;DOCTYPE html!&gt;</p>
+
+        <div class="image-box">
+            <img src="icon.png" width="70" alt="Logo">
         </div>
 
-        <div class="home-content">
-            <span class="code-tag">&lt;DOCTYPE html!&gt;</span>
-            
-            <div class="logo-img-wrapper">
-                <img src="icon.png" width="70" alt="Logo" class="main-img">
-            </div>
+        <h1 class="main-brand">Alislamiah<br>AI</h1>
 
-            <h1 class="brand-title">
-                Alislamiah<br>
-                <span>AI</span>
-            </h1>
+        <p class="search-label">ابحث أو اطرح سؤالك</p>
 
-            <p class="sub-title">ابحث أو اطرح سؤالك</p>
-
-            <form action="https://www.google.com/search" method="GET" class="search-form" id="searchForm">
-                <input type="text" name="q" id="searchInput" class="main-input" placeholder="ابحث أو اطرح سؤالك..." required>
-                <button type="submit" class="main-btn">إرسال</button>
-            </form>
-        </div>
+        <form action="https://www.google.com/search" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="ابحث أو اطرح سؤالك..." required>
+            <br>
+            <button type="submit" class="send-home-btn">إرسال</button>
+        </form>
     </div>
 
-    <!-- 2. واجهة التخيير -->
-    <div id="decisionView" class="view">
-        <div class="decision-container">
-            <div class="top-nav">
-                <button class="back-link" onclick="showView('searchView')">&lt; Back</button>
-                <span class="logo-title-small">Alislamiah-AI</span>
-            </div>
-            <h3 class="question-text">أتود الاستمرار في المحادثة السابقة أم بدء تشات جديد؟</h3>
-            <button class="grad-btn" onclick="continueChat()">متابعة المحادثة السابقة</button>
-            <button class="grad-btn" onclick="startNewChat()">بدء محادثة جديدة</button>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    <!-- 3. واجهة التشات -->
-    <div id="chatView" class="view">
-        <div class="chat-wrapper">
-            <div class="top-nav">
-                <button class="back-link" onclick="showView('searchView')">&lt; Back</button>
-                <span class="logo-title-small">Alislamiah-AI</span>
-            </div>
-            <div id="chatMessages" class="messages-area"></div>
-            <div class="bottom-input-bar">
-                <input type="text" id="chatInput" placeholder="اكتب سؤالك..." onkeypress="handleChatEnter(event)">
-                <button class="chat-send-btn" onclick="sendChatMessage()">إرسال</button>
-            </div>
-        </div>
-    </div>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBFPwbDSeMzI5e0L8DeXNZovcr47JtlZnU",
+          authDomain: "alislamiah-ai.firebaseapp.com",
+          projectId: "alislamiah-ai",
+          storageBucket: "alislamiah-ai.appspot.com",
+          messagingSenderId: "956902867596",
+          appId: "1:956902867596:web:0e99d136f74565535f1a9",
+          measurementId: "G-MV3BQG10T2"
+        };
 
-    <script src="app.js"></script>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+          if(!user){
+            window.location.href = "signin.html";
+          }
+        });
+    </script>
 </body>
 </html>
