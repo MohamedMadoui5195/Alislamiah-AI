@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث</title>
-    <link rel="stylesheet" href="style.css?v=100">
+    <link rel="stylesheet" href="style.css?v=103">
 </head>
 <body>
 
-    <!-- شريط الأزرار العلوي ثابت ولا يمسه الجافاسكربت إطلاقاً -->
-    <header class="top-nav">
+    <header class="top-nav" id="app-header">
         <button type="button" onclick="history.back()" class="nav-btn btn-back">← رجوع</button>
         <a href="index.html" class="nav-btn btn-home">🏠 الرئيسية</a>
     </header>
 
-    <!-- حاوية عرض النتائج فقط -->
     <main class="main-content">
         <div id="results-container">
             <p class="status-msg">جاري تحميل النتائج...</p>
         </div>
     </main>
 
-    <script type="module" src="results.js?v=100"></script>
+    <script type="module" src="results.js?v=103"></script>
 </body>
 </html>
