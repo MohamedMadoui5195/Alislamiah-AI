@@ -1,7 +1,6 @@
 import { db } from './firebase.js';
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-
 // دالة لتنظيف النصوص ومقارنتها (تتجاهل الرموز والوصلات والمسافات)
 function normalizeText(text) {
     if (!text) return "";
@@ -26,7 +25,7 @@ async function fetchAndFilterResults() {
     }
 
     try {
-        const querySnapshot = await getDocs(collection(db, "sites")); // اسم الـ Collection عندك
+        const querySnapshot = await getDocs(collection(db, "sites")); // اسم الـ Collection
         container.innerHTML = "";
 
         const cleanQuery = normalizeText(searchQuery);
@@ -39,7 +38,7 @@ async function fetchAndFilterResults() {
             const title = data.title || data.Title || data.name || "بدون عنوان";
             const description = data.description || data.Description || data.desc || "لا يوجد وصف متوفر.";
             const url = data.url || data.Url || data.link || "#";
-            const keywords = data.keywords || ""; // حقل الاختيارات والكلمات الدلالية إن وجد
+            const keywords = data.keywords || ""; // حقل الكلمات الدلالية
 
             // دمج كل النصوص الخاصة بالموقع في نص واحد للبحث الفائق
             const searchableBlob = normalizeText(`${title} ${description} ${url} ${keywords}`);
