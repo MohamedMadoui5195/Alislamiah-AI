@@ -13,8 +13,24 @@ function normalizeText(text) {
         .trim();
 }
 
-// دالة العرض المنبثقة تحت شريط الأزرار الرئيسي
+// دالة الفتح الذكية (تحافظ على التطبيق وتدعم يوتيوب والمواقع دون أي تعارض)
 window.openSiteInApp = function(url) {
+    if (!url) return;
+
+    let formattedUrl = url.trim();
+    if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+        formattedUrl = 'https://' + formattedUrl;
+    }
+
+    // فحص روابط يوتيوب لفتحها خارجياً ومنع تجميد الشاشة
+    const isYouTube = formattedUrl.includes('youtube.com') || formattedUrl.includes('youtu.be');
+
+    if (isYouTube) {
+        window.open(formattedUrl, '_blank', 'noopener,noreferrer');
+        return;
+    }
+
+    // للمواقع العادية تفتح في الإطار الداخلي الممتاز
     const existingModal = document.getElementById('active-site-modal');
     if (existingModal) existingModal.remove();
 
@@ -27,9 +43,11 @@ window.openSiteInApp = function(url) {
             <button class="btn-close-modal" onclick="document.getElementById('active-site-modal').remove()">
                 ✖ إغلاق المعاينة
             </button>
-            <span style="font-size:11px; color:#5f6368; dir:ltr;">${url}</span>
+            <span style="font-size:11px; color:#5f6368; dir:ltr; text-align:left; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:60%;">
+                ${formattedUrl}
+            </span>
         </div>
-        <iframe src="${url}" class="site-modal-frame"></iframe>
+        <iframe src="${formattedUrl}" class="site-modal-frame"></iframe>
     `;
     
     document.body.appendChild(modal);
