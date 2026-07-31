@@ -1,51 +1,30 @@
-let pendingQuery = "";
-
-// 1. التنقل السلس بين الواجهات
 function showView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
     const target = document.getElementById(viewId);
     if (target) target.classList.add('active-view');
 }
 
-// 2. عند ضغط "إرسال" في الصفحة الرئيسية
-function handleSearch() {
+// بحث جوجل الطبيعي المباشر تماماً مثل القديم
+function triggerSearch() {
     const input = document.getElementById("searchInput");
     const query = input.value.trim();
     if (!query) return;
 
-    // حفظ السؤال لنقله لاحقاً للتشات
-    pendingQuery = query;
-
-    // توجيه المستخدم فوراً لواجهة التخيير (Decision UI)
-    showView('decisionView');
-}
-
-// 3. خيار "متابعة المحادثة السابقة"
-function continueChat() {
-    showView('chatView');
-    loadChatHistory(); // استرجاع المحادثات القديمة
-    
-    if (pendingQuery) {
-        appendMessage(pendingQuery, 'user');
-        simulateAiResponse(pendingQuery);
-        pendingQuery = ""; // تفريغ بعد الإرسال
+    // فحص إن كان رابط موقع مباشر
+    if ((query.includes(".") && !query.includes(" ")) || query.startsWith("http")) {
+        window.location.href = query.startsWith("http") ? query : "https://" + query;
+    } else {
+        // توجيه لبحث جوجل مباشرة بدون أي واجهات إضافية
+        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
     }
 }
 
-// 4. خيار "بدء محادثة جديدة"
-function startNewChat() {
-    localStorage.removeItem("chatHistory"); // مسح السجل القديم
-    document.getElementById("chatMessages").innerHTML = ""; // تنظيف الشاشة
+// فتح واجهة التشات الجديدة فقط عند الضغط على زر التشات
+function openChatInterface() {
     showView('chatView');
-    
-    if (pendingQuery) {
-        appendMessage(pendingQuery, 'user');
-        simulateAiResponse(pendingQuery);
-        pendingQuery = ""; // تفريغ بعد الإرسال
-    }
+    loadChatHistory();
 }
 
-// 5. إرسال رسالة من داخل الشات
 function sendChatMessage() {
     const input = document.getElementById("chatInput");
     const msg = input.value.trim();
@@ -56,26 +35,24 @@ function sendChatMessage() {
     simulateAiResponse(msg);
 }
 
-// 6. عرض الرسائل وحفظها في localStorage
 function appendMessage(text, sender) {
     const container = document.getElementById("chatMessages");
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("msg-wrapper", sender);
+    const item = document.createElement("div");
+    item.classList.add("msg-item", sender);
 
     const label = document.createElement("span");
-    label.classList.add("sender-label");
+    label.classList.add("msg-label");
     label.innerText = sender === 'user' ? 'المستخدم' : 'مساعد الإسلامية 🕌';
 
     const bubble = document.createElement("div");
-    bubble.classList.add("msg-bubble", sender);
+    bubble.classList.add("bubble", sender);
     bubble.innerText = text;
 
-    wrapper.appendChild(label);
-    wrapper.appendChild(bubble);
-    container.appendChild(wrapper);
+    item.appendChild(label);
+    item.appendChild(bubble);
+    container.appendChild(item);
     container.scrollTop = container.scrollHeight;
 
-    // حفظ حالة المحادثة
     localStorage.setItem("chatHistory", container.innerHTML);
 }
 
@@ -84,12 +61,12 @@ function loadChatHistory() {
     if (saved) document.getElementById("chatMessages").innerHTML = saved;
 }
 
-// رد تجريبي سريع
 function simulateAiResponse(text) {
     setTimeout(() => {
-        appendMessage(`أهلاً بك! تم استلام سؤالك بخصوص: ${text}`, 'ai');
+        appendMessage(`أهلاً بك! تم استلام رسالتك في التشات: ${text}`, 'ai');
     }, 600);
 }
 
-function handleEnter(e) { if (e.key === 'Enter') handleSearch(); }
-function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+function handleChatEnter(e) { 
+    if (e.key === 'Enter') sendChatMessage(); 
+}
