@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<img src="icon.png" width="70">
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
