@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- تم إضافة v=2 لإجبار المتصفح على تحديث التنسيقات فوراً -->
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
-    <!-- شريط الأزرار العائم الذي يبقى ثابتاً في الأعلى -->
+    <!-- شريط الأزرار المثبت في الأعلى -->
     <header class="top-nav">
-        <button onclick="history.back()" class="nav-btn btn-back">← رجوع</button>
-        <a href="index.html" class="nav-btn btn-home">🏠 الرئيسية</a>
+        <button onclick="history.back()" class="nav-btn">← رجوع</button>
+        <a href="index.html" class="nav-btn">🏠 الرئيسية</a>
     </header>
 
-    <!-- حاوية نتائج البحث -->
+    <!-- حاوية عرض نتائج البحث -->
     <main class="container">
         <div id="results-container">
             <p class="status-msg">جاري تحميل النتائج...</p>
         </div>
     </main>
 
+    <!-- استدعاء منطق البحث والمستندات -->
     <script type="module" src="results.js"></script>
+
 </body>
 </html>
