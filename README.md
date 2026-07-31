@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<img src="icon.png" width="70">
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -14,10 +17,6 @@
 
     <div class="home-body">
         <p class="code-text">&lt;DOCTYPE html!&gt;</p>
-
-        <div class="image-box">
-            <img src="icon.png" width="70" alt="Logo">
-        </div>
 
         <h1 class="main-brand">Alislamiah<br>AI</h1>
 
@@ -48,7 +47,7 @@
         const auth = getAuth(app);
 
         onAuthStateChanged(auth, (user) => {
-          if(!user){
+          if (!user) {
             window.location.href = "signin.html";
           }
         });
