@@ -1,166 +1,60 @@
 <!DOCTYPE html>
-
-<img src="icon.png" width="70">
-
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alislamiah AI</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Tahoma,Arial,sans-serif;
-}
-
-body{
-background:#ffffff;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.container{
-width:90%;
-max-width:700px;
-text-align:center;
-}
-
-.logo{
-font-size:52px;
-font-weight:bold;
-color:#1565C0;
-margin-bottom:10px;
-}
-
-.subtitle{
-font-size:18px;
-color:#666;
-margin-bottom:40px;
-}
-
-.searchBox{
-width:100%;
-height:60px;
-border:none;
-border-radius:35px;
-padding:0 25px;
-font-size:20px;
-outline:none;
-box-shadow:0 2px 10px rgba(0,0,0,.15);
-transition:.3s;
-}
-
-.searchBox:focus{
-box-shadow:0 4px 18px rgba(0,0,0,.25);
-}
-
-.searchButton{
-margin-top:25px;
-padding:14px 45px;
-font-size:20px;
-background:#1565C0;
-color:white;
-border:none;
-border-radius:30px;
-cursor:pointer;
-}
-
-.searchButton:hover{
-background:#0D47A1;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإسلامية - Alislamiah</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
+    <!-- 1. واجهة البحث الرئيسية (Search View) -->
+    <div id="searchView" class="view active-view">
+        <div class="search-card">
+            <h1 class="logo-title">الإسلامية</h1>
+            <p class="subtitle">محرك البحث والذكاء الاصطناعي الفائق</p>
+            <div class="input-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن موقع أو اسأل الذكاء الاصطناعي..." onkeypress="handleEnterKey(event)">
+                <button onclick="handleSearch()">بحث</button>
+            </div>
+        </div>
+    </div>
 
-<div class="logo">
-Alislamiah AI
-</div>
+    <!-- 2. واجهة التخيير (Decision View) -->
+    <div id="decisionView" class="view">
+        <div class="decision-card">
+            <h2>لديك محادثة سابقة قائمة!</h2>
+            <p>هل ترغب في مواصلة حوارك السابق أم بدء محادثة جديدة؟</p>
+            <div class="decision-buttons">
+                <button class="btn-primary" onclick="continueChat()">متابعة المحادثة السابقة</button>
+                <button class="btn-secondary" onclick="startNewChat()">بدء محادثة جديدة</button>
+            </div>
+            <button class="btn-link" onclick="showView('searchView')">الرجوع للرئيسية</button>
+        </div>
+    </div>
 
-<div class="subtitle">
-ابحث أو اطرح سؤالك
-</div>
+    <!-- 3. واجهة المحادثة والذكاء الاصطناعي (Chat View) -->
+    <div id="chatView" class="view">
+        <div class="chat-container">
+            <!-- شريط علوي -->
+            <div class="chat-header">
+                <h3>مساعد الإسلامية Smart AI</h3>
+                <button onclick="showView('searchView')" class="btn-back">الرئيسية ↩</button>
+            </div>
 
-<input
-id="search"
-class="searchBox"
-type="text"
-placeholder="ابحث أو اطرح سؤالك..."
-onkeydown="if(event.key==='Enter')goSearch();">
+            <!-- منطقة عرض الرسائل -->
+            <div id="chatMessages" class="chat-messages">
+                <!-- الرسائل ستظهر هنا ديناميكياً -->
+            </div>
 
-<br>
+            <!-- مربع إرسال الرسالة -->
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="handleChatEnter(event)">
+                <button onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
 
-<button class="searchButton" onclick="goSearch()">
-إرسال
-</button>
-
-</div>
-
-<script>
-
-function goSearch(){
-
-let q=document.getElementById("search").value.trim();
-
-if(q==="") return;
-
-window.location.href="results.html?q="+encodeURIComponent(q);
-
-}
-
-</script>
-
-
-<script type="module">
-
-import { initializeApp } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import { 
-getAuth,
-onAuthStateChanged
-} 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBFPwbDSeMzI5eOL8DeXNZovcr47JtlZnU",
-  authDomain: "alislamiah-ai.firebaseapp.com",
-  projectId: "alislamiah-ai",
-  storageBucket: "alislamiah-ai.firebasestorage.app",
-  messagingSenderId: "956902867596",
-  appId: "1:956902867596:web:0e99d136f745655535f1a9",
-  measurementId: "G-MV3BQG10T2"
-};
-
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-
-onAuthStateChanged(auth, (user)=>{
-
-if(!user){
-
-window.location.href="signin.html";
-
-}
-
-});
-
-</script>
-
-
+    <script src="app.js"></script>
 </body>
 </html>
