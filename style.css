@@ -9,23 +9,23 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #ffffff;
     color: #202124;
-    padding-top: 70px; /* مسافة لحساب الهيدر الثابت */
+    padding-top: 0; /* ألغينا الحشو العلوي كلياً لمنع أي تداخل */
 }
 
-/* شريط الأزرار الثابت بأعلى الصفحة */
+/* شريط الأزرار الثابت بأعلى الصفحة بطريقة Sticky */
 .top-nav {
-    position: fixed;
+    position: sticky; /* يدفع المحتوى لأسفل طبيعياً ثم يلتصق بالأعلى */
     top: 0;
     left: 0;
-    right: 0;
-    height: 60px;
-    background: #ffffff;
+    width: 100%;
+    min-height: 60px;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 0 16px;
+    padding: 10px 16px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    z-index: 9999;
+    z-index: 1000;
 }
 
 .nav-btn {
@@ -121,3 +121,5 @@ body {
     color: #5f6368;
     font-size: 15px;
 }
+
+    
