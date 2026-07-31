@@ -1,42 +1,41 @@
 import { db } from "./firebase.js";
-
 import {
-collection,
-getDocs
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const results = document.getElementById("results");
 
 async function loadSites() {
+  results.innerHTML = "<p>جاري تحميل النتائج...</p>";
 
-results.innerHTML = "<p>جاري تحميل النتائج...</p>";
+  try {
+    const querySnapshot = await getDocs(collection(db, "sites"));
 
-try {
+    results.innerHTML = "";
 
-const querySnapshot = await getDocs(collection(db, "sites"));
+    if (querySnapshot.empty) {
+      results.innerHTML = "<p>لا توجد مواقع حاليا.</p>";
+      return;
+    }
 
-results.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const site = doc.data();
 
-if (querySnapshot.empty) {
-results.innerHTML = "<p>لا توجد مواقع حاليا.</p>";
-return;
-}
+      // تم إصلاح التغليف هنا بعلامات (`) Backticks
+      results.innerHTML += `
+        <div class="result">
+          <h3>${site.title}</h3>
+          <p>${site.description}</p>
+          <a href="${site.url}" target="_blank">${site.url}</a>
+        </div>
+      `;
+    });
 
-querySnapshot.forEach((doc) => {
-
-const site = doc.data();
-
-results.innerHTML +=     <div class="result">     <h3>${site.title}</h3>     <p>${site.description}</p>     <a href="${site.url}" target="_blank">${site.url}</a>     </div>    ;
-
-});
-
-} catch (error) {
-
-console.error(error);
-results.innerHTML = "<p>حدث خطأ أثناء تحميل النتائج.</p>";
-
-}
-
+  } catch (error) {
+    console.error("حدث خطأ:", error);
+    results.innerHTML = "<p>حدث خطأ أثناء تحميل النتائج.</p>";
+  }
 }
 
 loadSites();
