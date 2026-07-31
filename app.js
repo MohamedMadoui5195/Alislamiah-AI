@@ -1,111 +1,95 @@
-// المتغير المرجعي للسؤال الحالي
 let pendingQuery = "";
 
-// 1. دالة التنقل الفوري بين الشاشات
+// 1. التنقل السلس بين الواجهات
 function showView(viewId) {
-    document.querySelectorAll('.view').forEach(view => {
-        view.classList.remove('active-view');
-    });
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
     const target = document.getElementById(viewId);
-    if (target) {
-        target.classList.add('active-view');
-    }
+    if (target) target.classList.add('active-view');
 }
 
-// 2. منطق التوجيه المزدوج (Dual-Intent Routing)
+// 2. عند ضغط "إرسال" في الصفحة الرئيسية
 function handleSearch() {
     const input = document.getElementById("searchInput");
     const query = input.value.trim();
-
     if (!query) return;
 
-    // فحص هل المدخل رابط أم سؤال محادثة
-    const isUrl = (query.includes(".") && !query.includes(" ")) || query.startsWith("http");
+    // حفظ السؤال لنقله لاحقاً للتشات
+    pendingQuery = query;
 
-    if (isUrl) {
-        // إذا كان رابطاً -> يفتح في لسان جديد أو موجه خارجي
-        let targetUrl = query.startsWith("http") ? query : "https://" + query;
-        window.open(targetUrl, '_blank');
-    } else {
-        // إذا كان سؤالاً لـ AI
-        pendingQuery = query;
-        const hasHistory = localStorage.getItem("chatHistory") !== null;
-
-        if (hasHistory) {
-            // توجيه لشاشة التخيير فوراً
-            showView('decisionView');
-        } else {
-            // توجيه لشاشة التشات مباشرة
-            startNewChat();
-        }
-    }
+    // توجيه المستخدم فوراً لواجهة التخيير (Decision UI)
+    showView('decisionView');
 }
 
-// 3. خيارات شاشة التخيير
+// 3. خيار "متابعة المحادثة السابقة"
 function continueChat() {
     showView('chatView');
-    loadChatHistory();
+    loadChatHistory(); // استرجاع المحادثات القديمة
+    
     if (pendingQuery) {
         appendMessage(pendingQuery, 'user');
         simulateAiResponse(pendingQuery);
-        pendingQuery = "";
+        pendingQuery = ""; // تفريغ بعد الإرسال
     }
 }
 
+// 4. خيار "بدء محادثة جديدة"
 function startNewChat() {
-    localStorage.removeItem("chatHistory");
-    document.getElementById("chatMessages").innerHTML = "";
+    localStorage.removeItem("chatHistory"); // مسح السجل القديم
+    document.getElementById("chatMessages").innerHTML = ""; // تنظيف الشاشة
     showView('chatView');
     
     if (pendingQuery) {
         appendMessage(pendingQuery, 'user');
         simulateAiResponse(pendingQuery);
-        pendingQuery = "";
+        pendingQuery = ""; // تفريغ بعد الإرسال
     }
 }
 
-// 4. إدارة نظام الرسائل والتخزين المحلي
+// 5. إرسال رسالة من داخل الشات
 function sendChatMessage() {
     const input = document.getElementById("chatInput");
-    const message = input.value.trim();
-    if (!message) return;
-
-    appendMessage(message, 'user');
+    const msg = input.value.trim();
+    if (!msg) return;
+    
+    appendMessage(msg, 'user');
     input.value = "";
-    simulateAiResponse(message);
+    simulateAiResponse(msg);
 }
 
+// 6. عرض الرسائل وحفظها في localStorage
 function appendMessage(text, sender) {
-    const messagesContainer = document.getElementById("chatMessages");
-    const msgDiv = document.createElement("div");
-    msgDiv.classList.add("message", sender);
-    msgDiv.innerText = text;
-    messagesContainer.appendChild(msgDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    const container = document.getElementById("chatMessages");
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("msg-wrapper", sender);
 
-    // حفظ في localStorage
-    saveChatHistory();
-}
+    const label = document.createElement("span");
+    label.classList.add("sender-label");
+    label.innerText = sender === 'user' ? 'المستخدم' : 'مساعد الإسلامية 🕌';
 
-function saveChatHistory() {
-    const messagesContainer = document.getElementById("chatMessages");
-    localStorage.setItem("chatHistory", messagesContainer.innerHTML);
+    const bubble = document.createElement("div");
+    bubble.classList.add("msg-bubble", sender);
+    bubble.innerText = text;
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(bubble);
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+
+    // حفظ حالة المحادثة
+    localStorage.setItem("chatHistory", container.innerHTML);
 }
 
 function loadChatHistory() {
     const saved = localStorage.getItem("chatHistory");
-    if (saved) {
-        document.getElementById("chatMessages").innerHTML = saved;
-    }
+    if (saved) document.getElementById("chatMessages").innerHTML = saved;
 }
 
-// الرد الافتراضي التجريبي
-function simulateAiResponse(userText) {
+// رد تجريبي سريع
+function simulateAiResponse(text) {
     setTimeout(() => {
-        appendMessage(`أهلاً بك في الإسلامية! لقد استلمت سؤالك: "${userText}". كيف يمكنني مساعدتك أكثر؟`, 'ai');
+        appendMessage(`أهلاً بك! تم استلام سؤالك بخصوص: ${text}`, 'ai');
     }, 600);
 }
 
-// أحداث الضغط على Enter
-function handleEnterKey(e) { if (e.key === 'Enter') handleSearch(); }
+function handleEnter(e) { if (e.key === 'Enter') handleSearch(); }
 function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
