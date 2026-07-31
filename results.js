@@ -1,7 +1,7 @@
 import { db } from './firebase.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// دالة لتنظيف النصوص ومقارنتها (تتجاهل الرموز والوصلات والمسافات)
+// دالة لتنظيف النصوص ومقارنتها (تتجاهل الرموز والوصلات والمسافات والهمزات)
 function normalizeText(text) {
     if (!text) return "";
     return text.toString()
@@ -19,13 +19,15 @@ const searchQuery = urlParams.get('q') || "";
 async function fetchAndFilterResults() {
     const container = document.getElementById('results-container');
 
+    if (!container) return;
+
     if (!searchQuery.trim()) {
         container.innerHTML = "<p class='status-msg'>يرجى كتابة كلمة للبحث.</p>";
         return;
     }
 
     try {
-        const querySnapshot = await getDocs(collection(db, "sites")); // اسم الـ Collection
+        const querySnapshot = await getDocs(collection(db, "sites"));
         container.innerHTML = "";
 
         const cleanQuery = normalizeText(searchQuery);
@@ -34,18 +36,27 @@ async function fetchAndFilterResults() {
         querySnapshot.forEach((doc) => {
             const data = doc.data();
 
-            // استخراج البيانات مع بدائل لمنع undefined
+            // إهمال العناصر غير المفعّلة إن وجدت
+            if (data.approved === false) return;
+
+            // استخراج البيانات مع بدائل لضمان عدم حدوث خطأ
             const title = data.title || data.Title || data.name || "بدون عنوان";
             const description = data.description || data.Description || data.desc || "لا يوجد وصف متوفر.";
             const url = data.url || data.Url || data.link || "#";
-            const keywords = data.keywords || ""; // حقل الكلمات الدلالية
+            
+            // معالجة الكلمات المفتاحية سواء كانت نصاً أم مصفوفة
+            const keywords = Array.isArray(data.keywords) 
+                ? data.keywords.join(" ") 
+                : (data.keywords || "");
 
-            // دمج كل النصوص الخاصة بالموقع في نص واحد للبحث الفائق
+            // دمج البيانات في نص واحد للبحث الفائق
             const searchableBlob = normalizeText(`${title} ${description} ${url} ${keywords}`);
 
-            // تقسيم كلمة البحث إلى كلمات منفصلة لزيادة دقة التطابق
-            const queryWords = cleanQuery.split(" ");
-            const isMatch = queryWords.some(word => word.length > 1 && searchableBlob.includes(word));
+            // تقسيم عبارة البحث إلى كلمات منفصلة
+            const queryWords = cleanQuery.split(" ").filter(word => word.length > 0);
+            
+            // مطابقة الكلمات
+            const isMatch = queryWords.some(word => searchableBlob.includes(word));
 
             if (isMatch) {
                 matchCount++;
@@ -65,7 +76,7 @@ async function fetchAndFilterResults() {
                     </div>
                     <div class="card-url">${url}</div>
                     <h3 class="card-title">
-                        <a href="${url}" target="_blank">${title}</a>
+                        <a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>
                     </h3>
                     <p class="card-description">${description}</p>
                 `;
@@ -78,8 +89,8 @@ async function fetchAndFilterResults() {
         }
 
     } catch (error) {
-        console.error("خطأ:", error);
-        container.innerHTML = `<p style="color:red;">حدث خطأ في تحميل البيانات: ${error.message}</p>`;
+        console.error("خطأ أثناء جلب البيانات:", error);
+        container.innerHTML = `<p style="color:red; text-align:center;">حدث خطأ في تحميل البيانات: ${error.message}</p>`;
     }
 }
 
