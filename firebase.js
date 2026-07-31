@@ -1,8 +1,7 @@
-// 1. استيراد المكتبات عبر روابط CDN المباشرة والمناسبة لـ GitHub Pages
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 2. إعدادات فايربيز الخاصة بمشروعك (alislamiah-ai)
+// إعدادات مشروع Firebase الخاص بك
 const firebaseConfig = {
   apiKey: "AIzaSyBFPwbDSeMzI5eOL8DeXNZovcr47JtlZnU",
   authDomain: "alislamiah-ai.firebaseapp.com",
@@ -13,8 +12,8 @@ const firebaseConfig = {
   measurementId: "G-MV3BQG10T2"
 };
 
-// 3. تهيئة الفايربيز
+// تهيئة تطبيق Firebase
 const app = initializeApp(firebaseConfig);
 
-// 4. تصدير قاعدة البيانات Firestore لكي يستطيع ملف results.js قراءتها
+// تهيئة قاعدة البيانات Firestore وتصديرها للاستخدام في ملفات أخرى
 export const db = getFirestore(app);
