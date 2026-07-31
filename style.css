@@ -1,137 +1,194 @@
-/* إعدادات عامة وتصميم متدرج مستوحى من إنستغرام */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+    background-color: #ffffff;
+    color: #1a1a1a;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
 }
 
-/* التحكم بظهور الشاشات */
 .view {
     display: none;
     width: 100%;
-    max-width: 600px;
+    max-width: 480px;
+    margin: 0 auto;
     padding: 20px;
-    animation: fadeIn 0.3s ease-in-out;
 }
 
 .view.active-view {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* بطاقات الواجهات */
-.search-card, .decision-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.logo-title { font-size: 2.5rem; margin-bottom: 10px; }
-.subtitle { font-size: 0.9rem; opacity: 0.8; margin-bottom: 25px; }
-
-/* المدخلات والأزرار */
-.input-box, .chat-input-area {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
 }
 
-input[type="text"] {
-    flex: 1;
-    padding: 12px 20px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
+/* --- الصفحة الرئيسية (الصورة 3) --- */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 80vh;
+    text-align: center;
+}
+
+.main-title {
+    color: #1a73e8;
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.search-subtext {
+    color: #70757a;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.main-input {
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: 1px solid #dfe1e5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     font-size: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
+    outline: none;
+    margin-bottom: 20px;
+    text-align: right;
 }
 
-button {
-    padding: 12px 25px;
-    border-radius: 25px;
+.main-btn {
+    background-color: #1a73e8;
+    color: white;
     border: none;
-    background: #fff;
-    color: #7c3aed;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s opacity;
 }
 
-button:hover { opacity: 0.9; }
-
-/* أزرار واجهة التخيير */
-.decision-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 20px 0;
+/* --- واجهة التخيير (الصورة 2) --- */
+.decision-container {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
 }
 
-.btn-primary { background: #fff; color: #4f46e5; }
-.btn-secondary { background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid #fff; }
-.btn-link { background: transparent; color: #fff; text-decoration: underline; }
-
-/* واجهة التشات */
-.chat-container {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 20px;
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-header {
+.header-nav {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     align-items: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 40px;
+}
+
+.btn-back {
+    color: #1a73e8;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.decision-title {
+    font-size: 1.3rem;
+    color: #202124;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.gradient-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 25px;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff7e30, #e100ff, #0055ff);
+}
+
+/* --- واجهة التشات Chat UI (الصورة 1) --- */
+.chat-container {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 15px 0;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
-.message {
-    padding: 10px 15px;
-    border-radius: 15px;
-    max-width: 80%;
-    word-wrap: break-word;
+.msg-wrapper {
+    display: flex;
+    flex-direction: column;
 }
 
-.message.user {
+.msg-wrapper.user { align-items: flex-end; }
+.msg-wrapper.ai { align-items: flex-start; }
+
+.sender-label {
+    font-size: 0.8rem;
+    color: #70757a;
+    margin-bottom: 4px;
+}
+
+/* فقاعة المستخدم المتدرجة */
+.msg-bubble.user {
+    background: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 18px;
+    max-width: 85%;
+    font-size: 0.95rem;
+}
+
+/* فقاعة المساعد المؤطرة بالتدرج */
+.msg-bubble.ai {
     background: #ffffff;
-    color: #333;
-    align-self: flex-start;
+    color: #202124;
+    padding: 12px 18px;
+    border-radius: 18px;
+    max-width: 85%;
+    font-size: 0.95rem;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff) 1;
 }
 
-.message.ai {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    align-self: flex-end;
+.chat-input-bar {
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.chat-input-bar input {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #ff7e30, #e100ff);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
 }
