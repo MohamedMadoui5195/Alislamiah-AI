@@ -14,80 +14,130 @@ body {
 .view {
     display: none;
     width: 100%;
-    max-width: 480px;
+    max-width: 420px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 15px;
 }
 
 .view.active-view {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-/* --- الصفحة الرئيسية (الصورة 3) --- */
-.home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+/* --- الرئيسية الأصلية --- */
+.header-top {
     width: 100%;
-    min-height: 80vh;
-    text-align: center;
+    padding: 15px 0 10px 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.main-title {
+.logo-title {
     color: #1a73e8;
-    font-size: 2.8rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.search-subtext {
-    color: #70757a;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-}
-
-.main-input {
-    width: 100%;
-    padding: 15px 25px;
-    border-radius: 30px;
-    border: 1px solid #dfe1e5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    font-size: 1rem;
-    outline: none;
-    margin-bottom: 20px;
     text-align: right;
 }
 
-.main-btn {
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    padding: 12px 40px;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* --- واجهة التخيير (الصورة 2) --- */
-.decision-container {
-    width: 100%;
+.home-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     padding-top: 20px;
 }
 
-.header-nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 40px;
+.code-text {
+    color: #4a4a4a;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
 }
 
-.btn-back {
+.image-box {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    border: 1px solid #eee;
+}
+
+.palm-img {
+    width: 100%;
+    height: 100%;
+}
+
+.main-brand {
+    color: #1565c0;
+    font-size: 3.2rem;
+    line-height: 1.1;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.search-label {
+    color: #70757a;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.input-wrapper {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 16px 25px;
+    border-radius: 30px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    font-size: 1rem;
+    outline: none;
+    text-align: right;
+}
+
+.send-home-btn {
+    background-color: #1565c0;
+    color: white;
+    border: none;
+    padding: 14px 50px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(21, 101, 192, 0.3);
+    margin-bottom: 15px;
+}
+
+.open-chat-link {
+    background: none;
+    border: none;
+    color: #1a73e8;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+}
+
+/* --- واجهة التشات الجديدة فقط --- */
+.chat-wrapper {
+    width: 100%;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.back-link {
     color: #1a73e8;
     background: none;
     border: none;
@@ -95,35 +145,13 @@ body {
     cursor: pointer;
 }
 
-.decision-title {
-    font-size: 1.3rem;
+.logo-title-small {
     color: #202124;
-    margin-bottom: 40px;
-    line-height: 1.6;
-}
-
-.gradient-btn {
-    width: 100%;
-    padding: 16px;
-    border-radius: 25px;
-    border: none;
-    color: white;
     font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 15px;
-    cursor: pointer;
-    background: linear-gradient(90deg, #ff7e30, #e100ff, #0055ff);
 }
 
-/* --- واجهة التشات Chat UI (الصورة 1) --- */
-.chat-container {
-    width: 100%;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-messages {
+.messages-area {
     flex: 1;
     overflow-y: auto;
     padding: 10px 0;
@@ -132,22 +160,21 @@ body {
     gap: 15px;
 }
 
-.msg-wrapper {
+.msg-item {
     display: flex;
     flex-direction: column;
 }
 
-.msg-wrapper.user { align-items: flex-end; }
-.msg-wrapper.ai { align-items: flex-start; }
+.msg-item.user { align-items: flex-end; }
+.msg-item.ai { align-items: flex-start; }
 
-.sender-label {
+.msg-label {
     font-size: 0.8rem;
     color: #70757a;
     margin-bottom: 4px;
 }
 
-/* فقاعة المستخدم المتدرجة */
-.msg-bubble.user {
+.bubble.user {
     background: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff);
     color: white;
     padding: 12px 18px;
@@ -156,8 +183,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* فقاعة المساعد المؤطرة بالتدرج */
-.msg-bubble.ai {
+.bubble.ai {
     background: #ffffff;
     color: #202124;
     padding: 12px 18px;
@@ -168,14 +194,14 @@ body {
     border-image: linear-gradient(135deg, #ff7e30, #e100ff, #0055ff) 1;
 }
 
-.chat-input-bar {
+.bottom-input-bar {
     display: flex;
     gap: 10px;
-    padding-top: 10px;
+    padding: 10px 0;
     border-top: 1px solid #f0f0f0;
 }
 
-.chat-input-bar input {
+.bottom-input-bar input {
     flex: 1;
     padding: 12px 20px;
     border-radius: 25px;
@@ -183,7 +209,7 @@ body {
     outline: none;
 }
 
-.send-btn {
+.chat-send-btn {
     background: linear-gradient(135deg, #ff7e30, #e100ff);
     color: white;
     border: none;
