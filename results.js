@@ -1,6 +1,7 @@
 import { db } from './firebase.js';
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+
 // دالة لتنظيف النصوص ومقارنتها (تتجاهل الرموز والوصلات والمسافات)
 function normalizeText(text) {
     if (!text) return "";
