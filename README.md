@@ -1,4 +1,3 @@
-<img src="icon.png" width="70" style="display:none;">
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
