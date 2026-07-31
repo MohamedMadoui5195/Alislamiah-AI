@@ -1,0 +1,123 @@
+/* ضبط عام للتقليل من المشاكل */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ffffff;
+    color: #202124;
+    padding-top: 70px; /* مسافة لحساب الهيدر الثابت */
+}
+
+/* شريط الأزرار الثابت بأعلى الصفحة */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    z-index: 9999;
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #1557b0;
+}
+
+.btn-back {
+    background-color: #f1f3f4;
+    color: #3c4043;
+}
+
+.btn-back:hover {
+    background-color: #e8eaed;
+}
+
+/* حاوية النتائج */
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* كارت تصميم النتائج بطراز جوجل */
+.search-card {
+    margin-bottom: 24px;
+    text-align: right;
+    direction: rtl;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.card-favicon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.card-site-name {
+    font-size: 14px;
+    color: #202124;
+    font-weight: 500;
+}
+
+.card-url {
+    font-size: 12px;
+    color: #4d5156;
+    word-break: break-all;
+    margin-bottom: 4px;
+}
+
+.card-title a {
+    font-size: 18px;
+    color: #1a0dab;
+    text-decoration: none;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.card-title a:hover {
+    text-decoration: underline;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #4d5156;
+    line-height: 1.5;
+    margin-top: 4px;
+}
+
+.status-msg {
+    color: #5f6368;
+    font-size: 15px;
+}
