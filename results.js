@@ -1,7 +1,6 @@
 import { db } from './firebase.js';
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// دالة توحيد ونظافة النص
 function normalizeText(text) {
     if (!text) return "";
     return text.toString()
@@ -14,18 +13,21 @@ function normalizeText(text) {
         .trim();
 }
 
-// دالة لفتح الموقع داخل التطبيق بدون الخروج منه
+// دالة العرض المنبثقة تحت شريط الأزرار الرئيسي
 window.openSiteInApp = function(url) {
+    const existingModal = document.getElementById('active-site-modal');
+    if (existingModal) existingModal.remove();
+
     const modal = document.createElement('div');
     modal.className = 'site-modal-overlay';
     modal.id = 'active-site-modal';
     
     modal.innerHTML = `
-        <div class="site-modal-header">
+        <div class="site-modal-bar">
             <button class="btn-close-modal" onclick="document.getElementById('active-site-modal').remove()">
-                ✖ إغلاق والعودة للتطبيق
+                ✖ إغلاق المعاينة
             </button>
-            <span style="font-size:12px; opacity:0.8; word-break:break-all;">${url}</span>
+            <span style="font-size:11px; color:#5f6368; dir:ltr;">${url}</span>
         </div>
         <iframe src="${url}" class="site-modal-frame"></iframe>
     `;
@@ -47,7 +49,7 @@ async function fetchAndFilterResults() {
 
     try {
         const querySnapshot = await getDocs(collection(db, "sites"));
-        container.innerHTML = ""; // مسح رسالة التحميل فقط
+        container.innerHTML = "";
 
         const cleanQuery = normalizeText(searchQuery);
         const queryWords = cleanQuery.split(" ").filter(w => w.length > 0);
