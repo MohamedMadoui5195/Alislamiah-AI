@@ -1,3 +1,4 @@
+<img src="icon.png" width="70" style="display:none;">
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -74,6 +75,7 @@ padding:16px;
 border:none;
 outline:none;
 font-size:18px;
+color: #333;
 }
 .search button{
 width:80px;
@@ -130,22 +132,36 @@ font-size:13px;
 </style>
 
 <script>
-function searchAI(){
-let q = document.getElementById("search").value.trim();
-if(q !== ""){
-window.location.href = "results.html?q=" + encodeURIComponent(q);
-}
+// توجيه المدخلات بذكاء (روابط أو بحث/تشات)
+function handleInput() {
+    const inputElement = document.getElementById("searchInput");
+    if (!inputElement) return;
+    const query = inputElement.value.trim();
+
+    if (!query) return;
+
+    // 1. فحص هل المدخل رابط أم سؤال؟
+    const isWebsite = (query.includes(".") && !query.includes(" ")) || query.startsWith("http");
+
+    if (isWebsite) {
+        // 🌐 توجيه مباشر لصفحة النتائج لعرض الرابط
+        let url = query.startsWith("http") ? query : "https://" + query;
+        window.location.href = "results.html?url=" + encodeURIComponent(url);
+    } else {
+        // 💬 التعامل مع المحادثة والبحث والانتقال لصفحة النتائج
+        window.location.href = "results.html?q=" + encodeURIComponent(query);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-let inputField = document.getElementById("search");
-if(inputField){
-inputField.addEventListener("keypress", function(event) {
-if (event.key === "Enter") {
-searchAI();
-}
-});
-}
+    let inputField = document.getElementById("searchInput");
+    if(inputField){
+        inputField.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                handleInput();
+            }
+        });
+    }
 });
 </script>
 </head>
@@ -154,14 +170,14 @@ searchAI();
 
 <div class="background"></div>
 
-<div class="container">
+<div class="container" id="searchView">
     <div class="logo">AI</div>
     <h1>Alislamiah AI Browser</h1>
     <p>الذكاء الاصطناعي • البحث • السرعة • الخصوصية</p>
 
     <div class="search">
-        <input id="search" type="text" placeholder="ابحث أو اطرح سؤالك...">
-        <button onclick="searchAI()">🔍</button>
+        <input id="searchInput" type="text" placeholder="ابحث أو اطرح سؤالاً أو أدخل رابطاً...">
+        <button onclick="handleInput()">🔍</button>
     </div>
 
     <div class="quick">
@@ -178,7 +194,7 @@ searchAI();
 © 2026 Alislamiah AI Browser
 </footer>
 
-<!-- Firebase Auth Guard -->
+<!-- فحص الـ Firebase: إذا كان مسجلاً دخولاً مسبقاً، يبقيه في الرئيسية. إن لم يكن، يوجهه لـ signin.html -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -198,7 +214,11 @@ searchAI();
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
+        // المستخدم غير مسجل دخول -> إعادة توجيه إلى صفحة تسجيل الدخول
         window.location.href = "signin.html";
+      } else {
+        // المستخدم مسجل دخول بالفعل -> يبقى في هذه الواجهة بسلاسة تامة دون إزعاج
+        console.log("تم التحقق: المستخدم مسجل دخول مسبقاً:", user.email);
       }
     });
 </script>
