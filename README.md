@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 © 2026 Alislamiah AI Browser
 </footer>
 
-<!-- فحص الـ Firebase: إذا كان مسجلاً دخولاً مسبقاً، يبقيه في الرئيسية. إن لم يكن، يوجهه لـ signin.html -->
+<!-- فحص الـ Firebase الذكي والمستقر (مع مهلة أمان لمنع الطرد الخاطئ) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -213,12 +213,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const auth = getAuth(app);
 
     onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        // المستخدم غير مسجل دخول -> إعادة توجيه إلى صفحة تسجيل الدخول
-        window.location.href = "signin.html";
-      } else {
+      if (user) {
         // المستخدم مسجل دخول بالفعل -> يبقى في هذه الواجهة بسلاسة تامة دون إزعاج
         console.log("تم التحقق: المستخدم مسجل دخول مسبقاً:", user.email);
+      } else {
+        // منح مهلة قصيرة جداً للتأكد من حالة الجلسة المحلية وعدم الطرد العشوائي
+        setTimeout(() => {
+          if (!auth.currentUser) {
+            window.location.href = "signin.html";
+          }
+        }, 800);
       }
     });
 </script>
