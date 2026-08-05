@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إنشاء حساب جديد - Alislamiah AI Browser</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0b1020;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+.background{
+position:absolute;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%,#1e5eff55,transparent 30%),
+radial-gradient(circle at 80% 30%,#00bfff44,transparent 25%),
+radial-gradient(circle at 50% 80%,#0066ff33,transparent 30%);
+filter:blur(20px);
+}
+
+.container{
+position:relative;
+width:90%;
+max-width:420px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.15);
+padding:40px 30px;
+border-radius:24px;
+text-align:center;
+backdrop-filter:blur(15px);
+z-index:1;
+box-shadow:0 0 35px rgba(0,0,0,0.5);
+}
+
+.logo{
+width:80px;
+height:80px;
+margin:auto auto 20px auto;
+border-radius:20px;
+background:linear-gradient(135deg,#0077ff,#00c3ff);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:32px;
+font-weight:bold;
+box-shadow:0 0 25px rgba(0,153,255,.5);
+}
+
+h1{
+font-size:26px;
+margin-bottom:8px;
+}
+
+p{
+color:#c7d7ff;
+font-size:14px;
+margin-bottom:25px;
+}
+
+.input-group{
+margin-bottom:15px;
+text-align:right;
+}
+
+.input-group input{
+width:100%;
+padding:14px;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.2);
+border-radius:12px;
+outline:none;
+color:white;
+font-size:16px;
+transition:0.3s;
+}
+
+.input-group input:focus{
+border-color:#00c3ff;
+background:rgba(255,255,255,0.12);
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+background:linear-gradient(135deg,#0077ff,#00c3ff);
+color:white;
+font-size:18px;
+font-weight:bold;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
+margin-top:10px;
+box-shadow:0 4px 15px rgba(0,119,255,0.4);
+}
+
+.btn:hover{
+opacity:0.9;
+transform:translateY(-2px);
+}
+
+.links{
+margin-top:20px;
+font-size:14px;
+color:#9fb4d6;
+}
+
+.links a{
+color:#00c3ff;
+text-decoration:none;
+font-weight:bold;
+}
+
+.links a:hover{
+text-decoration:underline;
+}
+
+#error-msg{
+color:#ff4d4d;
+font-size:13px;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+<div class="logo">AI</div>
+<h1>إنشاء حساب جديد</h1>
+<p>انضم إلينا واستمتع بتجربة متصفح الإسلامية الذكي</p>
+
+<div class="input-group">
+<input type="email" id="email" placeholder="البريد الإلكتروني">
+</div>
+
+<div class="input-group">
+<input type="password" id="password" placeholder="كلمة المرور (6 أحرف على الأقل)">
+</div>
+
+<button class="btn" id="signup-btn">سجل الآن</button>
+<div id="error-msg"></div>
+
+<div class="links">
+لديك حساب بالفعل؟ <a href="signin.html">تسجيل الدخول</a>
+</div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFPwbDSeMzI5e0L8DeXNZovcr47JtlZnU",
+      authDomain: "alislamiah-ai.firebaseapp.com",
+      projectId: "alislamiah-ai",
+      storageBucket: "alislamiah-ai.appspot.com",
+      messagingSenderId: "956902867596",
+      appId: "1:956902867596:web:0e99d136f74565535f1a9",
+      measurementId: "G-MV3BQG10T2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // الحفاظ على الجلسة نشطة محلياً عند التسجيل
+    setPersistence(auth, browserLocalPersistence).catch((error) => {
+        console.error("خطأ في حفظ الجلسة:", error);
+    });
+
+    const signupBtn = document.getElementById("signup-btn");
+    const errorMsg = document.getElementById("error-msg");
+
+    signupBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        errorMsg.textContent = "";
+
+        if(!email || !password) {
+            errorMsg.textContent = "يرجى ملء جميع الحقول المطلوبة.";
+            return;
+        }
+
+        if(password.length < 6) {
+            errorMsg.textContent = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+            return;
+        }
+
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            window.location.href = "index.html";
+        } catch (error) {
+            console.error(error);
+            if(error.code === 'auth/email-already-in-use') {
+                errorMsg.textContent = "البريد الإلكتروني مستخدم بالفعل.";
+            } else if(error.code === 'auth/invalid-email') {
+                errorMsg.textContent = "البريد الإلكتروني غير صالح.";
+            } else {
+                errorMsg.textContent = "حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى.";
+            }
+        }
+    });
+
+    document.getElementById("password").addEventListener("keypress", (e) => {
+        if(e.key === "Enter") signupBtn.click();
+    });
+</script>
+
+</body>
+</html>
