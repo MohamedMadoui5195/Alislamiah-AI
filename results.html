@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتائج البحث - Alislamiah AI Browser</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0b1020;
+color:white;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* الشريط العلوي الثابت مع أزرار التنقل والبحث */
+.header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:rgba(11, 16, 32, 0.85);
+backdrop-filter:blur(15px);
+border-bottom:1px solid rgba(255,255,255,0.1);
+padding:12px 20px;
+display:flex;
+align-items:center;
+gap:15px;
+z-index:1000;
+}
+
+/* أزرار الرجوع والرئيسية */
+.nav-btn{
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.15);
+color:white;
+width:40px;
+height:40px;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+transition:0.3s;
+text-decoration:none;
+font-size:18px;
+}
+
+.nav-btn:hover{
+background:rgba(255,255,255,0.2);
+transform:translateY(-2px);
+}
+
+.search-box{
+flex:1;
+max-width:600px;
+display:flex;
+background:white;
+border-radius:12px;
+overflow:hidden;
+}
+
+.search-box input{
+flex:1;
+padding:10px 15px;
+border:none;
+outline:none;
+font-size:16px;
+color:#333;
+}
+
+.search-box button{
+width:50px;
+border:none;
+background:#0077ff;
+color:white;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+.search-box button:hover{
+background:#005bb5;
+}
+
+/* حاوية النتائج مع مسافة علوية تمنع التغطية تماماً */
+.container{
+max-width:800px;
+width:90%;
+margin:0 auto;
+padding-top:90px;
+padding-bottom:40px;
+flex:1;
+}
+
+.query-title{
+font-size:16px;
+color:#9fb4d6;
+margin-bottom:20px;
+}
+
+/* هيكل نتيجة البحث */
+.result-card{
+background:rgba(255,255,255,0.03);
+border:1px solid rgba(255,255,255,0.08);
+padding:20px;
+border-radius:16px;
+margin-bottom:20px;
+transition:0.3s;
+cursor:pointer;
+}
+
+.result-card:hover{
+background:rgba(255,255,255,0.06);
+border-color:rgba(255,255,255,0.15);
+}
+
+.site-info{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:8px;
+}
+
+.site-icon{
+width:24px;
+height:24px;
+border-radius:6px;
+object-fit:cover;
+}
+
+.site-url{
+font-size:14px;
+color:#9fb4d6;
+text-decoration:none;
+}
+
+.site-title{
+font-size:20px;
+color:#c7d7ff;
+text-decoration:none;
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+.site-title:hover{
+color:#00c3ff;
+}
+
+.site-desc{
+font-size:15px;
+color:#c0c0c0;
+line-height:1.5;
+}
+
+.no-results{
+text-align:center;
+color:#9fb4d6;
+margin-top:50px;
+font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- شريط علوي يحتوي على أزرار التوجيه وشريط البحث -->
+<div class="header">
+    <button class="nav-btn" onclick="history.back()" title="رجوع">⬅️</button>
+    <a href="index.html" class="nav-btn" title="الرئيسية">🏠</a>
+    
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="ابحث هنا...">
+        <button id="search-btn">🔍</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="query-title" id="query-display">نتائج البحث عن: <span></span></div>
+    <div id="results-container">
+        <!-- سيتم حقن النتائج هنا ديناميكياً من فايربايز -->
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFPwbDSeMzI5e0L8DeXNZovcr47JtlZnU",
+      authDomain: "alislamiah-ai.firebaseapp.com",
+      projectId: "alislamiah-ai",
+      storageBucket: "alislamiah-ai.appspot.com",
+      messagingSenderId: "956902867596",
+      appId: "1:956902867596:web:0e99d136f74565535f1a9",
+      measurementId: "G-MV3BQG10T2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('q') || '';
+    
+    document.getElementById('search-input').value = searchQuery;
+    document.querySelector('#query-display span').textContent = searchQuery;
+
+    const resultsContainer = document.getElementById('results-container');
+
+    async function fetchResults(q) {
+        resultsContainer.innerHTML = '<div class="no-results">جاري البحث في قاعدة البيانات...</div>';
+        try {
+            const querySnapshot = await getDocs(collection(db, "sites"));
+            let html = '';
+            let count = 0;
+
+            querySnapshot.forEach((doc) => {
+                const site = doc.data();
+                const matchText = (site.title + " " + site.description + " " + site.url).toLowerCase();
+                if (q === "" || matchText.includes(q.toLowerCase())) {
+                    count++;
+                    // التوجيه عبر الـ WebView الداخلي (viewer.html) بدل الفتح الخارجي
+                    html += `
+                        <div class="result-card" onclick="window.location.href='viewer.html?url=${encodeURIComponent(site.url)}'">
+                            <div class="site-info">
+                                <img src="${site.icon || 'https://www.google.com/s2/favicons?domain=' + site.url}" class="site-icon" onerror="this.src=''">
+                                <span class="site-url">${site.url}</span>
+                            </div>
+                            <span class="site-title">${site.title}</span>
+                            <div class="site-desc">${site.description}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (count === 0) {
+                resultsContainer.innerHTML = `<div class="no-results">عذراً، لم نجد أي نتائج مطابقة لـ "${q}". تأكد من إضافة المواقع في قاعدة البيانات بـ Firebase.</div>`;
+            } else {
+                resultsContainer.innerHTML = html;
+            }
+
+        } catch (error) {
+            console.error("خطأ في جلب البيانات:", error);
+            resultsContainer.innerHTML = '<div class="no-results">حدث خطأ أثناء جلب النتائج من قاعدة البيانات.</div>';
+        }
+    }
+
+    fetchResults(searchQuery);
+
+    document.getElementById('search-btn').addEventListener('click', () => {
+        const val = document.getElementById('search-input').value.trim();
+        if(val) {
+            window.location.href = `results.html?q=${encodeURIComponent(val)}`;
+        }
+    });
+
+    document.getElementById('search-input').addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') {
+            document.getElementById('search-btn').click();
+        }
+    });
+</script>
+
+</body>
+</html>
