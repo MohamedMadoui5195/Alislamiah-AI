@@ -42,7 +42,7 @@
     <div id="results-container"></div>
 
     <script>
-        // تعريف بيانات المواقع الإخبارية
+        // تعريف بيانات المواقع الإخبارية الخاصة بك
         const newsData = [
             {
                 title: "Alarabiya.net",
@@ -52,10 +52,21 @@
             }
         ];
 
-        // دالة عرض النتائج
+        // قراءة قيمة البحث من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+
+        let container = document.getElementById("results-container");
+
+        // التحقق مما إذا كانت كلمة البحث تطابق المخصص للأخبار
+        if (query && query.toLowerCase() === "news") {
+            displayNewsResults(newsData);
+        } else {
+            container.innerHTML = `<p>لا توجد نتائج مطابقة لـ: "${query || ""}"</p>`;
+        }
+
+        // دالة عرض النتائج الخاصة بك
         function displayNewsResults(data) {
-            let container = document.getElementById("results-container");
-            if (!container) return;
             container.innerHTML = ""; // مسح النتائج القديمة
 
             data.forEach(site => {
@@ -69,19 +80,6 @@
                 container.appendChild(card);
             });
         }
-
-        // منطق عرض النتائج عند تحميل الصفحة
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-            let container = document.getElementById("results-container");
-
-            if (query === "News") {
-                displayNewsResults(newsData);
-            } else {
-                container.innerHTML = `<p>نتائج البحث عن: ${query || "لاشيء"}</p>`;
-            }
-        };
     </script>
 
 </body>
