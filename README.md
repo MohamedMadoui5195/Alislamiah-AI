@@ -206,36 +206,5 @@ document.addEventListener("DOMContentLoaded", () => {
 © 2026 Alislamiah AI Browser
 </footer>
 
-<!-- فحص الـ Firebase الذكي مع حماية الجلسة وبدون طرد مبكر -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBFPwbDSeMzI5e0L8DeXNZovcr47JtlZnU",
-      authDomain: "alislamiah-ai.firebaseapp.com",
-      projectId: "alislamiah-ai",
-      storageBucket: "alislamiah-ai.appspot.com",
-      messagingSenderId: "956902867596",
-      appId: "1:956902867596:web:0e99d136f74565535f1a9",
-      measurementId: "G-MV3BQG10T2"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("المستخدم مسجل دخول بنجاح:", user.email);
-      } else {
-        setTimeout(() => {
-          if (!auth.currentUser) {
-            window.location.href = "signin.html";
-          }
-        }, 1000);
-      }
-    });
-</script>
-
 </body>
 </html>
