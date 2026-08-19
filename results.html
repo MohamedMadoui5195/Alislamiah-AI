@@ -56,7 +56,7 @@
         function displayNewsResults(data) {
             let container = document.getElementById("results-container");
             if (!container) return;
-            container.innerHTML = ""; 
+            container.innerHTML = ""; // مسح النتائج القديمة
 
             data.forEach(site => {
                 let card = document.createElement("div");
@@ -70,7 +70,7 @@
             });
         }
 
-        // تنفيذ الكود عند تحميل الصفحة
+        // منطق عرض النتائج عند تحميل الصفحة
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('q');
