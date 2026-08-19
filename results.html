@@ -5,37 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
         body {
             background: #0b1020;
             color: white;
             font-family: Arial, sans-serif;
-            /* مسافة علوية وسفلية لكي لا يغطي المحتوى الأزرار */
-            padding-top: 80px;
-            padding-bottom: 80px;
-            padding-left: 20px;
-            padding-right: 20px;
+            padding: 20px;
         }
-        /* شريط التنقل العلوي الثابت */
         .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #0b1020;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
             display: flex;
             gap: 10px;
             align-items: center;
-            z-index: 1000;
+            margin-bottom: 20px;
         }
         .top-nav button, .top-nav input {
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.08);
@@ -44,28 +27,6 @@
         .top-nav input {
             flex-grow: 1;
         }
-        /* شريط التنقل السفلي الثابت */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #0b1020;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-        .bottom-nav button {
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            cursor: pointer;
-        }
-        /* بطاقات النتائج بنفس التصميم المطلوب */
         .result-card {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -89,25 +50,39 @@
             text-decoration: none; 
             display: inline-block;
         }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .bottom-nav button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <!-- أزرار وشريط التنقل العلوي -->
+    <!-- الشريط العلوي للأزرار والبحث -->
     <div class="top-nav">
         <button onclick="history.back()">رجوع</button>
         <input type="text" id="search-input" placeholder="ابحث هنا...">
         <button onclick="performSearch()">بحث</button>
     </div>
 
-    <!-- حاوية المحتوى والنتائج (تبدأ من أسفل الأزرار العلوية وتنتهي قبل السفلية) -->
+    <!-- حاوية عرض النتائج الخاصة بك -->
     <div id="results-container"></div>
 
-    <!-- أزرار التنقل الرئيسية والسفلية -->
+    <!-- الأزرار السفلية الخاصة بك -->
     <div class="bottom-nav">
         <button onclick="location.href='index.html'">الرئيسية</button>
-        <button onclick="location.href='results.html?q=News'">أخبار (News)</button>
-        <button onclick="location.href='bookmarks.html'">المفضلة</button>
+        <button onclick="location.href='results.html?q=news'">أخبار (News)</button>
     </div>
 
     <script>
@@ -117,17 +92,17 @@
                 title: "Alarabiya.net",
                 description: "أهم الأخبار العاجلة من العالم العربي والعالم",
                 url: "https://www.alarabiya.net",
-                keywords: "alarabiya.net, alarabiya net, أخبار, news"
+                keywords: "alarabiya, news, أخبار, عربي"
             },
             {
-                title: "موقع إخباري آخر",
-                description: "تجربة عرض كافة النتائج من قاعدة بياناتك المحلية",
+                title: "موقع إخباري تاني",
+                description: "هذا موقع تجريبي آخر للتأكد من عرض جميع النتائج",
                 url: "https://www.example.com",
-                keywords: "example, أخبار, news"
+                keywords: "example, test, news, أخبار"
             }
         ];
 
-        // منطق جلب الكلمة من الرابط وعرض النتائج
+        // التقاط كلمة البحث من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
         let container = document.getElementById("results-container");
@@ -135,7 +110,7 @@
         if (query) {
             document.getElementById("search-input").value = query;
             
-            // فلترة وعرض النتائج المطابقة من قاعدة البيانات المحلية الخاصة بك
+            // تصفية النتائج من قاعدة البيانات حسب ما كتبه المستخدم
             let filteredResults = database.filter(item => 
                 item.title.toLowerCase().includes(query.toLowerCase()) || 
                 item.keywords.toLowerCase().includes(query.toLowerCase()) ||
@@ -145,14 +120,14 @@
             if (filteredResults.length > 0) {
                 displayResults(filteredResults);
             } else {
-                // إذا لم توجد مطابقة دقيقة، اعرض جميع البيانات الموجودة في قاعدة البيانات كخيار بديل
-                displayResults(database);
+                container.innerHTML = `<p style="text-align: center; color: #ff7676;">لا توجد نتائج مطابقة لـ: "${query}"</p>`;
             }
         } else {
             // عرض كل قاعدة البيانات إذا لم يتم إدخال بحث
             displayResults(database);
         }
 
+        // دالة عرض النتائج
         function displayResults(data) {
             container.innerHTML = ""; 
             data.forEach(site => {
@@ -167,10 +142,12 @@
             });
         }
 
-        // وظيفة البحث عند الضغط على زر بحث
+        // وظيفة تنفيذ البحث
         function performSearch() {
-            let val = document.getElementById("search-input").value;
-            window.location.href = `results.html?q=${encodeURIComponent(val)}`;
+            let val = document.getElementById("search-input").value.trim();
+            if(val) {
+                window.location.href = `results.html?q=${encodeURIComponent(val)}`;
+            }
         }
     </script>
 
