@@ -5,166 +5,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث - Alislamiah AI Browser</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        
-        body { 
-            background: #0b1020; 
-            color: white; 
-            padding-top: 60px; 
-            height: 100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b1020;
+            color: white;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            align-items: center;
+            min-height: 100vh;
         }
-        
-        /* شريط أزرار التنقل الثابت الذي لا يختفي أبداً */
-        .top-nav-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background: #0b1020;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+        }
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
-            z-index: 9999;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 15px;
         }
 
-        .nav-btn {
+        .back-btn {
             background: rgba(255, 255, 255, 0.08);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 15px;
             transition: 0.3s;
-            cursor: pointer;
         }
 
-        .nav-btn:hover {
+        .back-btn:hover {
             background: rgba(255, 255, 255, 0.15);
         }
 
-        .page-title {
-            font-size: 15px;
+        h1 {
+            font-size: 24px;
+            color: #00c3ff;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .result-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .result-card h3 {
+            font-size: 20px;
+            color: #00c3ff;
+            margin-bottom: 8px;
+        }
+
+        .result-card p {
             color: #c7d7ff;
+            font-size: 15px;
+            margin-bottom: 15px;
         }
 
-        #results-container { 
-            max-width: 800px; 
-            width: 100%; 
-            margin: 20px auto; 
-            padding: 0 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .result-card { 
-            background: rgba(255, 255, 255, 0.08); 
-            padding: 20px; 
-            border-radius: 20px; 
-            margin-bottom: 15px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-        }
-
-        .result-card h3 { color: #00c3ff; margin-bottom: 8px; }
-        .result-card p { color: #c7d7ff; font-size: 14px; margin-bottom: 10px; }
-        
-        .result-card button { 
-            cursor: pointer;
-            color: #fff; 
+        .result-card a {
+            display: inline-block;
             background: #0077ff;
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 10px;
+            text-decoration: none;
             font-size: 14px;
+            transition: 0.3s;
         }
 
-        .result-card button:hover {
+        .result-card a:hover {
             background: #005bb5;
         }
 
-        #browser-frame {
-            width: 100%;
-            height: calc(100vh - 60px);
-            border: none;
-            display: none;
-            background: white;
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: #9fb4d6;
+            font-size: 14px;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="top-nav-bar">
-    <div>
-        <a href="index.html" class="nav-btn">🏠 الرئيسية</a>
-        <button onclick="goBackToResults()" class="nav-btn" id="back-results-btn" style="display:none;">⬅ رجوع للنتائج</button>
+<div class="container">
+    <div class="header">
+        <a href="index.html" class="back-btn">⬅ الرئيسية</a>
+        <h1>نتائج البحث</h1>
     </div>
-    <div class="page-title" id="bar-title">Alislamiah Browser</div>
+
+    <div id="results-container">
+        <!-- ستظهر النتائج هنا تلقائياً -->
+    </div>
 </div>
 
-<div id="results-container"></div>
-<iframe id="browser-frame"></iframe>
+<footer>
+    © 2026 Alislamiah AI Browser
+</footer>
 
 <script>
-    const sitesDatabase = {
+    // قاعدة البيانات المرتبطة بـ News وباقي الأقسام
+    const database = {
         "News": [
-            { title: "Alarabiya.net", description: "أهم الأخبار العاجلة من العالم العربي والعالم.", url: "https://www.alarabiya.net" },
-            { title: "Al Jazeera Arabic", description: "تغطية حيّة لأبرز الأحداث والسياسة.", url: "https://www.aljazeera.net" }
+            {
+                title: "Alarabiya.net",
+                description: "أهم الأخبار العاجلة والأحداث السياسية والاقتصادية من العالم العربي والعالم.",
+                url: "https://www.alarabiya.net"
+            }
         ],
         "Quran": [
-            { title: "القرآن الكريم - مجمع الملك فهد", description: "تصفح وقراءة المصحف الشريف.", url: "https://quran.com" }
-        ],
-        "YouTube": [
-            // استخدمنا رابط يوتيوب المخصص للموبايل والنسخة المتوافقة لكي تفتح داخل التطبيق بلا مشاكل
-            { title: "YouTube", description: "منصة مقاطع الفيديو الشهيرة (تصفح مباشر داخل التطبيق).", url: "https://www.youtube.com/embed?autoplay=1" }
+            {
+                title: "القرآن الكريم",
+                description: "تصفح وقراءة القرآن الكريم مباشرة.",
+                url: "https://quran.com"
+            }
         ]
     };
 
-    function showResults() {
-        const query = new URLSearchParams(window.location.search).get('q');
+    function loadResults() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
         const container = document.getElementById("results-container");
-        container.innerHTML = "";
 
-        let results = sitesDatabase[query] || [
-            { title: query ? `نتيجة البحث: ${query}` : "البحث العام", description: "تصفح النتائج عبر الويب.", url: "https://lite.duckduckgo.com/lite/?q=" + encodeURIComponent(query || "") }
-        ];
+        let items = database[query];
 
-        results.forEach(site => {
-            container.innerHTML += `
+        if (items && items.length > 0) {
+            container.innerHTML = "";
+            items.forEach(item => {
+                container.innerHTML += `
+                    <div class="result-card">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <a href="${item.url}" target="_blank">زيارة الموقع</a>
+                    </div>
+                `;
+            });
+        } else {
+            // في حال تم البحث عن أي شيء آخر أو يوتيوب
+            container.innerHTML = `
                 <div class="result-card">
-                    <h3>${site.title}</h3>
-                    <p>${site.description}</p>
-                    <button onclick="openInApp('${site.url}', '${site.title}')">تصفح داخل التطبيق</button>
-                </div>`;
-        });
+                    <h3>نتيجة البحث عن: ${query || "الكل"}</h3>
+                    <p>يمكنك التصفح أو الانتقال للموقع المطلوب مباشرة.</p>
+                    <a href="https://www.google.com/search?q=${encodeURIComponent(query || '')}" target="_blank">بحث في الويب</a>
+                </div>
+            `;
+        }
     }
 
-    function openInApp(url, title) {
-        document.getElementById("results-container").style.display = "none";
-        let frame = document.getElementById("browser-frame");
-        frame.style.display = "block";
-        frame.src = url;
-        
-        document.getElementById("bar-title").innerText = title;
-        document.getElementById("back-results-btn").style.display = "inline-block";
-    }
-
-    function goBackToResults() {
-        let frame = document.getElementById("browser-frame");
-        frame.src = "";
-        frame.style.display = "none";
-        document.getElementById("results-container").style.display = "block";
-        
-        document.getElementById("bar-title").innerText = "Alislamiah Browser";
-        document.getElementById("back-results-btn").style.display = "none";
-    }
-
-    window.onload = showResults;
+    window.onload = loadResults;
 </script>
 
 </body>
