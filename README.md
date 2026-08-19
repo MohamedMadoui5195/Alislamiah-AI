@@ -192,12 +192,12 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <div class="quick">
-<a href="results.html?q=Google" class="item"><span>🌍</span>Google</a>
-<a href="chat.html" class="item"><span>🤖</span>AI</a>
 <a href="results.html?q=YouTube" class="item"><span>▶️</span>YouTube</a>
-<a href="results.html?q=Quran" class="item"><span>📖</span>Quran</a>
-<a href="settings.html" class="item"><span>⚙️</span>Settings</a>
+<a href="chat.html" class="item"><span>🤖</span>AI</a>
+<a href="results.html?q=News" class="item"><span>📰</span>News</a>
 <a href="results.html?q=Favorites" class="item"><span>⭐</span>Favorites</a>
+<a href="settings.html" class="item"><span>⚙️</span>Settings</a>
+<a href="results.html?q=Quran" class="item"><span>📖</span>Quran</a>
 </div>
 
 </div>
