@@ -52,25 +52,15 @@
             }
         ];
 
-        // منطق عرض النتائج
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('q');
-
-        if (query === "News") {
-            // كود عرض النتائج الخاصة بالأخبار
-            displayNewsResults(newsData);
-        } else {
-            let container = document.getElementById("results-container");
-            container.innerHTML = `<p>نتائج البحث عن: ${query}</p>`;
-        }
-
+        // دالة عرض النتائج
         function displayNewsResults(data) {
-            let container = document.getElementById("results-container"); // تأكد أن هذا هو معرف الحاوية عندك
-            container.innerHTML = ""; // مسح النتائج القديمة
+            let container = document.getElementById("results-container");
+            if (!container) return;
+            container.innerHTML = ""; 
 
             data.forEach(site => {
                 let card = document.createElement("div");
-                card.className = "result-card"; // تأكد من وجود هذا التنسيق في CSS
+                card.className = "result-card";
                 card.innerHTML = `
                     <h3>${site.title}</h3>
                     <p>${site.description}</p>
@@ -79,6 +69,19 @@
                 container.appendChild(card);
             });
         }
+
+        // تنفيذ الكود عند تحميل الصفحة
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            let container = document.getElementById("results-container");
+
+            if (query === "News") {
+                displayNewsResults(newsData);
+            } else {
+                container.innerHTML = `<p>نتائج البحث عن: ${query || "لاشيء"}</p>`;
+            }
+        };
     </script>
 
 </body>
