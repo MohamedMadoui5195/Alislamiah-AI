@@ -5,12 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background: #0b1020;
             color: white;
             font-family: Arial, sans-serif;
-            padding: 20px;
+            /* مسافة علوية وسفلية لكي لا يغطي المحتوى الأزرار */
+            padding-top: 80px;
+            padding-bottom: 80px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
+        /* شريط التنقل العلوي الثابت */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #0b1020;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 1000;
+        }
+        .top-nav button, .top-nav input {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        .top-nav input {
+            flex-grow: 1;
+        }
+        /* شريط التنقل السفلي الثابت */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #0b1020;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+        .bottom-nav button {
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            cursor: pointer;
+        }
+        /* بطاقات النتائج بنفس التصميم المطلوب */
         .result-card {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -38,37 +93,68 @@
 </head>
 <body>
 
-    <h1>نتائج البحث</h1>
+    <!-- أزرار وشريط التنقل العلوي -->
+    <div class="top-nav">
+        <button onclick="history.back()">رجوع</button>
+        <input type="text" id="search-input" placeholder="ابحث هنا...">
+        <button onclick="performSearch()">بحث</button>
+    </div>
+
+    <!-- حاوية المحتوى والنتائج (تبدأ من أسفل الأزرار العلوية وتنتهي قبل السفلية) -->
     <div id="results-container"></div>
 
+    <!-- أزرار التنقل الرئيسية والسفلية -->
+    <div class="bottom-nav">
+        <button onclick="location.href='index.html'">الرئيسية</button>
+        <button onclick="location.href='results.html?q=News'">أخبار (News)</button>
+        <button onclick="location.href='bookmarks.html'">المفضلة</button>
+    </div>
+
     <script>
-        // تعريف بيانات المواقع الإخبارية الخاصة بك
-        const newsData = [
+        // قاعدة البيانات الخاصة بك (جميع النتائج)
+        const database = [
             {
                 title: "Alarabiya.net",
                 description: "أهم الأخبار العاجلة من العالم العربي والعالم",
                 url: "https://www.alarabiya.net",
-                keywords: "alarabiya.net, alarabiya net, أخبار"
+                keywords: "alarabiya.net, alarabiya net, أخبار, news"
+            },
+            {
+                title: "موقع إخباري آخر",
+                description: "تجربة عرض كافة النتائج من قاعدة بياناتك المحلية",
+                url: "https://www.example.com",
+                keywords: "example, أخبار, news"
             }
         ];
 
-        // قراءة قيمة البحث من الرابط
+        // منطق جلب الكلمة من الرابط وعرض النتائج
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
-
         let container = document.getElementById("results-container");
 
-        // التحقق مما إذا كانت كلمة البحث تطابق المخصص للأخبار
-        if (query && query.toLowerCase() === "news") {
-            displayNewsResults(newsData);
+        if (query) {
+            document.getElementById("search-input").value = query;
+            
+            // فلترة وعرض النتائج المطابقة من قاعدة البيانات المحلية الخاصة بك
+            let filteredResults = database.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) || 
+                item.keywords.toLowerCase().includes(query.toLowerCase()) ||
+                item.description.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (filteredResults.length > 0) {
+                displayResults(filteredResults);
+            } else {
+                // إذا لم توجد مطابقة دقيقة، اعرض جميع البيانات الموجودة في قاعدة البيانات كخيار بديل
+                displayResults(database);
+            }
         } else {
-            container.innerHTML = `<p>لا توجد نتائج مطابقة لـ: "${query || ""}"</p>`;
+            // عرض كل قاعدة البيانات إذا لم يتم إدخال بحث
+            displayResults(database);
         }
 
-        // دالة عرض النتائج الخاصة بك
-        function displayNewsResults(data) {
-            container.innerHTML = ""; // مسح النتائج القديمة
-
+        function displayResults(data) {
+            container.innerHTML = ""; 
             data.forEach(site => {
                 let card = document.createElement("div");
                 card.className = "result-card";
@@ -79,6 +165,12 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        // وظيفة البحث عند الضغط على زر بحث
+        function performSearch() {
+            let val = document.getElementById("search-input").value;
+            window.location.href = `results.html?q=${encodeURIComponent(val)}`;
         }
     </script>
 
