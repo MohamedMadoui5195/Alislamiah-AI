@@ -69,24 +69,21 @@
 </head>
 <body>
 
-    <!-- الشريط العلوي للأزرار والبحث -->
     <div class="top-nav">
         <button onclick="history.back()">رجوع</button>
         <input type="text" id="search-input" placeholder="ابحث هنا...">
         <button onclick="performSearch()">بحث</button>
     </div>
 
-    <!-- حاوية عرض النتائج الخاصة بك -->
     <div id="results-container"></div>
 
-    <!-- الأزرار السفلية الخاصة بك -->
     <div class="bottom-nav">
         <button onclick="location.href='index.html'">الرئيسية</button>
         <button onclick="location.href='results.html?q=news'">أخبار (News)</button>
+        <button onclick="location.href='bookmarks.html'">المفضلة</button>
     </div>
 
     <script>
-        // قاعدة البيانات الخاصة بك (جميع النتائج)
         const database = [
             {
                 title: "Alarabiya.net",
@@ -102,15 +99,12 @@
             }
         ];
 
-        // التقاط كلمة البحث من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
         let container = document.getElementById("results-container");
 
         if (query) {
             document.getElementById("search-input").value = query;
-            
-            // تصفية النتائج من قاعدة البيانات حسب ما كتبه المستخدم
             let filteredResults = database.filter(item => 
                 item.title.toLowerCase().includes(query.toLowerCase()) || 
                 item.keywords.toLowerCase().includes(query.toLowerCase()) ||
@@ -120,14 +114,12 @@
             if (filteredResults.length > 0) {
                 displayResults(filteredResults);
             } else {
-                container.innerHTML = `<p style="text-align: center; color: #ff7676;">لا توجد نتائج مطابقة لـ: "${query}"</p>`;
+                displayResults(database);
             }
         } else {
-            // عرض كل قاعدة البيانات إذا لم يتم إدخال بحث
             displayResults(database);
         }
 
-        // دالة عرض النتائج
         function displayResults(data) {
             container.innerHTML = ""; 
             data.forEach(site => {
@@ -142,7 +134,6 @@
             });
         }
 
-        // وظيفة تنفيذ البحث
         function performSearch() {
             let val = document.getElementById("search-input").value.trim();
             if(val) {
