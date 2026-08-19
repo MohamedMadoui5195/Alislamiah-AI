@@ -1,210 +1,154 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alislamiah AI Browser</title>
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#0b1020;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-}
-
-.background{
-position:absolute;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle at 20% 20%,#1e5eff55,transparent 30%),
-radial-gradient(circle at 80% 30%,#00bfff44,transparent 25%),
-radial-gradient(circle at 50% 80%,#0066ff33,transparent 30%);
-filter:blur(20px);
-}
-
-.container{
-position:relative;
-width:90%;
-max-width:850px;
-text-align:center;
-z-index:1;
-}
-
-.logo{
-width:120px;
-height:120px;
-margin:auto;
-border-radius:30px;
-background:linear-gradient(135deg,#0077ff,#00c3ff);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:42px;
-font-weight:bold;
-box-shadow:0 0 35px rgba(0,153,255,.5);
-}
-
-h1{
-margin-top:25px;
-font-size:42px;
-}
-
-p{
-margin-top:8px;
-color:#c7d7ff;
-font-size:18px;
-margin-bottom:35px;
-}
-
-.search{
-display:flex;
-background:white;
-border-radius:18px;
-overflow:hidden;
-}
-
-.search input{
-flex:1;
-padding:18px;
-border:none;
-outline:none;
-font-size:18px;
-color: #333;
-}
-
-.search button{
-width:90px;
-border:none;
-background:#0077ff;
-color:white;
-font-size:22px;
-cursor:pointer;
-transition:0.3s;
-}
-
-.search button:hover{
-background:#005bb5;
-}
-
-.quick{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:15px;
-margin-top:40px;
-}
-
-.item{
-width:95px;
-height:95px;
-background:rgba(255,255,255,.08);
-border:1px solid rgba(255,255,255,.15);
-border-radius:20px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-transition:.3s;
-backdrop-filter:blur(10px);
-text-decoration:none;
-color:white;
-}
-
-.item:hover{
-transform:translateY(-8px);
-background:rgba(255,255,255,.15);
-}
-
-.item span{
-font-size:34px;
-margin-bottom:8px;
-}
-
-footer{
-position:absolute;
-bottom:20px;
-width:100%;
-text-align:center;
-color:#9fb4d6;
-font-size:14px;
-}
-</style>
-
-<script>
-function searchAI(){
-    let inputField = document.getElementById("search");
-    if(!inputField) return;
-    let q = inputField.value.trim();
-
-    if(q !== ""){
-        let isQuestion = q.includes("؟") || q.toLowerCase().startsWith("كيف") || q.toLowerCase().startsWith("ما") || q.toLowerCase().startsWith("لماذا") || q.length > 25;
-        
-        if(isQuestion){
-            window.location.href = "chat.html?q=" + encodeURIComponent(q);
-        } else {
-            window.location.href = "results.html?q=" + encodeURIComponent(q);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج البحث</title>
+    <style>
+        body {
+            background: #0b1020;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
         }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    let inputField = document.getElementById("search");
-    if(inputField){
-        inputField.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                searchAI();
-            }
-        });
-    }
-});
-</script>
-
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .top-nav button, .top-nav input {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        .top-nav input {
+            flex-grow: 1;
+        }
+        .result-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+        }
+        .result-card h3 {
+            color: #00c3ff;
+            margin-bottom: 8px;
+        }
+        .result-card p {
+            color: #c7d7ff;
+            margin-bottom: 10px;
+        }
+        a { 
+            color: #fff; 
+            background: #0077ff; 
+            padding: 8px 15px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: inline-block;
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .bottom-nav button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="background"></div>
+    <!-- الشريط العلوي للأزرار والبحث -->
+    <div class="top-nav">
+        <button onclick="history.back()">رجوع</button>
+        <input type="text" id="search-input" placeholder="ابحث هنا...">
+        <button onclick="performSearch()">بحث</button>
+    </div>
 
-<div class="container">
+    <!-- حاوية عرض النتائج الخاصة بك -->
+    <div id="results-container"></div>
 
-<div class="logo">AI</div>
+    <!-- الأزرار السفلية (بدون ربط نيوز) -->
+    <div class="bottom-nav">
+        <button onclick="location.href='index.html'">الرئيسية</button>
+    </div>
 
-<h1>Alislamiah AI Browser</h1>
+    <script>
+        // قاعدة البيانات الخاصة بك (جميع النتائج)
+        const database = [
+            {
+                title: "Alarabiya.net",
+                description: "أهم الأخبار العاجلة من العالم العربي والعالم",
+                url: "https://www.alarabiya.net",
+                keywords: "alarabiya, news, أخبار, عربي"
+            },
+            {
+                title: "موقع إخباري تاني",
+                description: "هذا موقع تجريبي آخر للتأكد من عرض جميع النتائج",
+                url: "https://www.example.com",
+                keywords: "example, test, news, أخبار"
+            }
+        ];
 
-<p>الذكاء الاصطناعي • البحث • السرعة • الخصوصية</p>
+        // التقاط كلمة البحث من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        let container = document.getElementById("results-container");
 
-<div class="search">
-<input id="search" type="text" placeholder="ابحث في الويب أو اطرح سؤالاً...">
-<button onclick="searchAI()">🔍</button>
-</div>
+        if (query) {
+            document.getElementById("search-input").value = query;
+            
+            // تصفية النتائج من قاعدة البيانات حسب ما كتبه المستخدم
+            let filteredResults = database.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) || 
+                item.keywords.toLowerCase().includes(query.toLowerCase()) ||
+                item.description.toLowerCase().includes(query.toLowerCase())
+            );
 
-<div class="quick">
-<a href="results.html?q=YouTube" class="item"><span>▶️</span>YouTube</a>
-<a href="chat.html" class="item"><span>🤖</span>AI</a>
-<a href="results.html?q=News" class="item"><span>📰</span>News</a>
-<a href="results.html?q=Favorites" class="item"><span>⭐</span>Favorites</a>
-<a href="settings.html" class="item"><span>⚙️</span>Settings</a>
-<a href="results.html?q=Quran" class="item"><span>📖</span>Quran</a>
-</div>
+            if (filteredResults.length > 0) {
+                displayResults(filteredResults);
+            } else {
+                container.innerHTML = `<p style="text-align: center; color: #ff7676;">لا توجد نتائج مطابقة لـ: "${query}"</p>`;
+            }
+        } else {
+            // عرض كل قاعدة البيانات إذا لم يتم إدخال بحث
+            displayResults(database);
+        }
 
-</div>
+        // دالة عرض النتائج
+        function displayResults(data) {
+            container.innerHTML = ""; 
+            data.forEach(site => {
+                let card = document.createElement("div");
+                card.className = "result-card";
+                card.innerHTML = `
+                    <h3>${site.title}</h3>
+                    <p>${site.description}</p>
+                    <a href="${site.url}" target="_blank">زيارة الموقع</a>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-<footer>
-© 2026 Alislamiah AI Browser
-</footer>
+        // وظيفة تنفيذ البحث
+        function performSearch() {
+            let val = document.getElementById("search-input").value.trim();
+            if(val) {
+                window.location.href = `results.html?q=${encodeURIComponent(val)}`;
+            }
+        }
+    </script>
 
 </body>
 </html>
