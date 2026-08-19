@@ -3,174 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج البحث</title>
+    <meta name="theme-color" content="#08142b">
+    <title>نتائج البحث - Alislamiah-AI</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
-            background: #0b1020;
-            color: white;
-            font-family: Arial, sans-serif;
-            /* مسافة علوية وسفلية لكي لا يغطي المحتوى الأزرار */
-            padding-top: 80px;
-            padding-bottom: 80px;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        /* شريط التنقل العلوي الثابت */
-        .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            background: #0b1020;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #040a17 0%, #07142a 55%, #06172c 100%);
+            color: #ffffff;
+            font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+            padding: 14px;
+        }
+        .app {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        /* شريط التنقل العلوي */
+        .topbar {
+            width: 100%;
+            height: 48px;
             display: flex;
-            gap: 10px;
             align-items: center;
-            z-index: 1000;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
-        .top-nav button, .top-nav input {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-        }
-        .top-nav input {
-            flex-grow: 1;
-        }
-        /* شريط التنقل السفلي الثابت */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #0b1020;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
+        .top-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .13);
+            background: rgba(255, 255, 255, .055);
+            color: #ffffff;
             display: flex;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-        .bottom-nav button {
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
             cursor: pointer;
+            text-decoration: none;
         }
-        /* بطاقات النتائج بنفس التصميم المطلوب */
+        .top-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #08b9ef;
+        }
+        /* حاوية النتائج */
+        #results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
         .result-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.075);
+            border: 1px solid rgba(255, 255, 255, 0.14);
             padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         .result-card h3 {
-            color: #00c3ff;
+            color: #08b9ef;
             margin-bottom: 8px;
+            font-size: 18px;
         }
         .result-card p {
-            color: #c7d7ff;
-            margin-bottom: 10px;
+            color: #bdc9df;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 14px;
         }
-        a { 
-            color: #fff; 
-            background: #0077ff; 
-            padding: 8px 15px; 
-            border-radius: 8px; 
-            text-decoration: none; 
+        .result-link {
             display: inline-block;
+            background: linear-gradient(145deg, #087fff, #0870e4);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .no-results {
+            text-align: center;
+            color: #aebbd2;
+            margin-top: 50px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-    <!-- أزرار وشريط التنقل العلوي -->
-    <div class="top-nav">
-        <button onclick="history.back()">رجوع</button>
-        <input type="text" id="search-input" placeholder="ابحث هنا...">
-        <button onclick="performSearch()">بحث</button>
-    </div>
+    <div class="app">
+        <!-- شريط علوي للرجوع -->
+        <div class="topbar">
+            <a href="index.html" class="top-button">🏠</a>
+            <div class="top-title" id="page-title">نتائج البحث</div>
+            <div style="width: 44px;"></div> <!-- توازن الفراغ -->
+        </div>
 
-    <!-- حاوية المحتوى والنتائج (تبدأ من أسفل الأزرار العلوية وتنتهي قبل السفلية) -->
-    <div id="results-container"></div>
-
-    <!-- أزرار التنقل الرئيسية والسفلية -->
-    <div class="bottom-nav">
-        <button onclick="location.href='index.html'">الرئيسية</button>
-        <button onclick="location.href='results.html?q=News'">أخبار (News)</button>
-        <button onclick="location.href='bookmarks.html'">المفضلة</button>
+        <!-- مكان عرض النتائج -->
+        <div id="results-container"></div>
     </div>
 
     <script>
-        // قاعدة البيانات الخاصة بك (جميع النتائج)
+        // قاعدة البيانات المحلية للمتصفح
         const database = [
             {
-                title: "Alarabiya.net",
-                description: "أهم الأخبار العاجلة من العالم العربي والعالم",
-                url: "https://www.alarabiya.net",
-                keywords: "alarabiya.net, alarabiya net, أخبار, news"
+                title: "منصة يوتيوب (YouTube)",
+                description: "تطبيق ومشاهدة الفيديوهات ومقاطع الفيديو المتنوعة.",
+                url: "https://www.youtube.com",
+                keywords: "youtube, يوتيوب, فيديو, فديو"
             },
             {
-                title: "موقع إخباري آخر",
-                description: "تجربة عرض كافة النتائج من قاعدة بياناتك المحلية",
-                url: "https://www.example.com",
-                keywords: "example, أخبار, news"
+                title: "القرآن الكريم والتلاوات",
+                description: "استماع وقراءة القرآن الكريم بأصوات نخبة من القراء.",
+                url: "https://quran.com",
+                keywords: "quran, قرآن, قريان, مصحف, تلاوة"
+            },
+            {
+                title: "المساعد الذكي (Alislamiah AI)",
+                description: "خدمات الذكاء الاصطناعي والإجابة على الأسئلة والمساعدة البرمجية.",
+                url: "https://chatgpt.com",
+                keywords: "ai, ذكاء اصطناعي, مساعد, chatgpt"
+            },
+            {
+                title: "المفضلة والمواقع المحفوظة",
+                description: "إدارة وتصفح المواقع المفضلة لديك بسرعة فائقة.",
+                url: "#",
+                keywords: "favorites, مفضلة"
             }
         ];
 
-        // منطق جلب الكلمة من الرابط وعرض النتائج
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
-        let container = document.getElementById("results-container");
+        const shortcut = urlParams.get('shortcut');
+        const container = document.getElementById("results-container");
+        const pageTitle = document.getElementById("page-title");
 
-        if (query) {
-            document.getElementById("search-input").value = query;
+        if (shortcut) {
+            pageTitle.innerText = "اختصار: " + shortcut.toUpperCase();
+            let matched = database.filter(item => item.keywords.includes(shortcut.toLowerCase()));
             
-            // فلترة وعرض النتائج المطابقة من قاعدة البيانات المحلية الخاصة بك
-            let filteredResults = database.filter(item => 
+            if (matched.length > 0) {
+                displayResults(matched);
+            } else {
+                container.innerHTML = `
+                    <div class="result-card">
+                        <h3>اختصار (${shortcut})</h3>
+                        <p>تم الوصول إلى قسم ${shortcut} بنجاح عبر متصفح Alislamiah AI.</p>
+                        <a href="index.html" class="result-link">العودة للرئيسية</a>
+                    </div>
+                `;
+            }
+        } else if (query) {
+            pageTitle.innerText = "نتائج: " + query;
+            let filtered = database.filter(item => 
                 item.title.toLowerCase().includes(query.toLowerCase()) || 
-                item.keywords.toLowerCase().includes(query.toLowerCase()) ||
-                item.description.toLowerCase().includes(query.toLowerCase())
+                item.description.toLowerCase().includes(query.toLowerCase()) ||
+                item.keywords.toLowerCase().includes(query.toLowerCase())
             );
 
-            if (filteredResults.length > 0) {
-                displayResults(filteredResults);
+            if (filtered.length > 0) {
+                displayResults(filtered);
             } else {
-                // إذا لم توجد مطابقة دقيقة، اعرض جميع البيانات الموجودة في قاعدة البيانات كخيار بديل
-                displayResults(database);
+                // إذا لم توجد في قاعدة البيانات، اقترح بحث خارجي أو اعرض رسالة
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>لا توجد نتائج مطابقة لـ: "<strong>${query}</strong>"</p>
+                        <br>
+                        <a href="https://www.google.com/search?q=${encodeURIComponent(query)}" target="_blank" class="result-link">البحث في الويب عبر جوجل</a>
+                    </div>
+                `;
             }
         } else {
-            // عرض كل قاعدة البيانات إذا لم يتم إدخال بحث
             displayResults(database);
         }
 
         function displayResults(data) {
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             data.forEach(site => {
                 let card = document.createElement("div");
                 card.className = "result-card";
                 card.innerHTML = `
                     <h3>${site.title}</h3>
                     <p>${site.description}</p>
-                    <a href="${site.url}" target="_blank">زيارة الموقع</a>
+                    <a href="${site.url}" class="result-link" target="_blank">زيارة الموقع</a>
                 `;
                 container.appendChild(card);
             });
-        }
-
-        // وظيفة البحث عند الضغط على زر بحث
-        function performSearch() {
-            let val = document.getElementById("search-input").value;
-            window.location.href = `results.html?q=${encodeURIComponent(val)}`;
         }
     </script>
 
