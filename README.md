@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
@@ -73,11 +74,8 @@ body{
 :root{
 
     --blue:#087fff;
-
     --blue-light:#08b9ef;
-
     --text:#ffffff;
-
     --muted:#aebbd2;
 
     --border:
@@ -125,7 +123,9 @@ body{
 
     align-items:center;
 
-    justify-content:space-between;
+    justify-content:flex-start;
+
+    gap:15px;
 
     margin-bottom:8px;
 
@@ -356,13 +356,6 @@ body{
     font-size:18px;
 
     line-height:1.8;
-
-}
-
-
-.hero p span{
-
-    color:#ffffff;
 
 }
 
@@ -999,16 +992,6 @@ body{
         </div>
 
 
-        <button
-            class="top-button"
-            type="button"
-            onclick="goToShortcut('ai')">
-
-            ✦
-
-        </button>
-
-
     </div>
 
 
@@ -1429,43 +1412,23 @@ body{
 <script>
 
 /* =====================================================
-   ALISLAMIAH AI BROWSER
-   MAIN JAVASCRIPT
+   RESULTS PAGE
 ===================================================== */
-
-
-/*
-    اسم صفحة النتائج.
-
-    جميع الاختصارات ستذهب إلى هذه الصفحة.
-*/
 
 const RESULTS_PAGE = "results.html";
 
 
 
 /* =====================================================
-   GO TO SHORTCUT
+   SHORTCUTS
 ===================================================== */
 
 function goToShortcut(shortcut){
-
-    /*
-        مثال:
-
-        results.html?shortcut=quran
-
-        results.html?shortcut=ai
-
-        results.html?shortcut=youtube
-    */
-
 
     const url =
         RESULTS_PAGE +
         "?shortcut=" +
         encodeURIComponent(shortcut);
-
 
     window.location.href = url;
 
@@ -1482,7 +1445,6 @@ function performSearch(){
     const input =
         document.getElementById("searchInput");
 
-
     const query =
         input.value.trim();
 
@@ -1494,13 +1456,6 @@ function performSearch(){
         return;
 
     }
-
-
-    /*
-        البحث يذهب إلى:
-
-        results.html?q=الكلمة
-    */
 
 
     const url =
@@ -1516,7 +1471,7 @@ function performSearch(){
 
 
 /* =====================================================
-   ENTER KEY
+   ENTER
 ===================================================== */
 
 function handleSearchKey(event){
@@ -1542,9 +1497,7 @@ function openMenu(){
     const overlay =
         document.getElementById("menuOverlay");
 
-
     overlay.classList.add("show");
-
 
     document.body.style.overflow =
         "hidden";
@@ -1558,11 +1511,6 @@ function openMenu(){
 ===================================================== */
 
 function closeMenu(event){
-
-    /*
-        إذا ضغط المستخدم خارج القائمة
-        تغلق القائمة.
-    */
 
     if(event){
 
@@ -1585,7 +1533,6 @@ function closeMenu(event){
 
     overlay.classList.remove("show");
 
-
     document.body.style.overflow =
         "";
 
@@ -1594,7 +1541,7 @@ function closeMenu(event){
 
 
 /* =====================================================
-   ESC KEY
+   ESC
 ===================================================== */
 
 document.addEventListener(
@@ -1603,14 +1550,9 @@ document.addEventListener(
 
         if(event.key === "Escape"){
 
-            const overlay =
-                document.getElementById(
-                    "menuOverlay"
-                );
-
-
-            overlay.classList.remove("show");
-
+            document
+                .getElementById("menuOverlay")
+                .classList.remove("show");
 
             document.body.style.overflow =
                 "";
@@ -1624,4 +1566,5 @@ document.addEventListener(
 
 
 </body>
+
 </html>
