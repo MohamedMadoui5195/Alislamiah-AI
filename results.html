@@ -5,174 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتائج البحث - Alislamiah AI Browser</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #0b1020;
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 850px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 15px;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        h1 {
-            font-size: 24px;
-            color: #00c3ff;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #0b1020; color: white; padding: 20px; }
+        
+        .header { margin-bottom: 30px; text-align: center; }
+        
+        #results-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .result-card {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-        }
-
-        .result-card:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .result-card h3 {
-            font-size: 20px;
-            color: #00c3ff;
-            margin-bottom: 8px;
-        }
-
-        .result-card p {
-            color: #c7d7ff;
-            font-size: 15px;
+            border-radius: 20px;
             margin-bottom: 15px;
         }
 
+        .result-card h3 { color: #00c3ff; margin-bottom: 8px; }
+        
         .result-card a {
             display: inline-block;
+            margin-top: 10px;
+            color: #fff;
             background: #0077ff;
-            color: white;
-            padding: 8px 18px;
+            padding: 8px 15px;
             border-radius: 10px;
             text-decoration: none;
             font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .result-card a:hover {
-            background: #005bb5;
-        }
-
-        footer {
-            margin-top: auto;
-            text-align: center;
-            color: #9fb4d6;
-            font-size: 14px;
-            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <a href="index.html" class="back-btn">⬅ الرئيسية</a>
-        <h1>نتائج البحث</h1>
-    </div>
-
-    <div id="results-container">
-        <!-- ستظهر النتائج هنا تلقائياً -->
-    </div>
+<div class="header">
+    <h1>نتائج البحث</h1>
 </div>
 
-<footer>
-    © 2026 Alislamiah AI Browser
-</footer>
+<div id="results-container">
+    <!-- هنا ستظهر النتائج -->
+</div>
 
 <script>
-    // قاعدة البيانات المرتبطة بـ News وباقي الأقسام
-    const database = {
-        "News": [
-            {
-                title: "Alarabiya.net",
-                description: "أهم الأخبار العاجلة والأحداث السياسية والاقتصادية من العالم العربي والعالم.",
-                url: "https://www.alarabiya.net"
-            }
-        ],
-        "Quran": [
-            {
-                title: "القرآن الكريم",
-                description: "تصفح وقراءة القرآن الكريم مباشرة.",
-                url: "https://quran.com"
-            }
-        ]
-    };
+    const newsData = [
+        {
+            title: "Alarabiya.net",
+            description: "أهم الأخبار العاجلة من العالم العربي والعالم.",
+            url: "https://www.alarabiya.net",
+            keywords: "alarabiya.net, alarabiya net, أخبار"
+        }
+    ];
 
-    function loadResults() {
+    function showResults() {
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
         const container = document.getElementById("results-container");
 
-        let items = database[query];
-
-        if (items && items.length > 0) {
-            container.innerHTML = "";
-            items.forEach(item => {
+        if (query === "News") {
+            newsData.forEach(site => {
                 container.innerHTML += `
                     <div class="result-card">
-                        <h3>${item.title}</h3>
-                        <p>${item.description}</p>
-                        <a href="${item.url}" target="_blank">زيارة الموقع</a>
+                        <h3>${site.title}</h3>
+                        <p>${site.description}</p>
+                        <a href="${site.url}" target="_blank">زيارة الموقع</a>
                     </div>
                 `;
             });
         } else {
-            // في حال تم البحث عن أي شيء آخر أو يوتيوب
-            container.innerHTML = `
-                <div class="result-card">
-                    <h3>نتيجة البحث عن: ${query || "الكل"}</h3>
-                    <p>يمكنك التصفح أو الانتقال للموقع المطلوب مباشرة.</p>
-                    <a href="https://www.google.com/search?q=${encodeURIComponent(query || '')}" target="_blank">بحث في الويب</a>
-                </div>
-            `;
+            container.innerHTML = `<p style="text-align:center;">جاري البحث عن: ${query}...</p>`;
         }
     }
 
-    window.onload = loadResults;
+    window.onload = showResults;
 </script>
 
 </body>
