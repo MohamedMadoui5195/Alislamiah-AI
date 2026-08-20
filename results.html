@@ -18,7 +18,6 @@
             background: linear-gradient(145deg, #040a17 0%, #07142a 55%, #06172c 100%);
             color: #ffffff;
             font-family: Arial, "Segoe UI", Tahoma, sans-serif;
-            /* مسافات دقيقة لكي لا يغطي شريط الأزرار العلوي والسفلي أي سنتيمتر من المحتوى */
             padding-top: 75px;
             padding-bottom: 85px;
             padding-left: 14px;
@@ -30,7 +29,6 @@
             margin: 0 auto;
         }
 
-        /* 1 & 2. شريط التنقل العلوي وثابت ولا يغطي المحتوى، وشريط البحث غير قابل للكتابة بل يعيد للرئيسية */
         .top-nav {
             position: fixed;
             top: 0;
@@ -62,7 +60,6 @@
             font-size: 18px;
             flex-shrink: 0;
         }
-        /* شريط بحث غير قابل للكتابة (للنقر فقط وإرجاعك للرئيسية للبحث) */
         .search-bar-fake {
             flex-grow: 1;
             padding: 0 15px;
@@ -115,7 +112,6 @@
             font-size: 16px;
         }
 
-        /* شريط التنقل السفلي الثابت */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -150,7 +146,6 @@
             font-size: 20px;
         }
 
-        /* 4. نافذة الـ WebView الداخلية (عرض الموقع داخل تطبيق الإسلامية بدل الخروج لموقع خارجي) */
         .webview-modal {
             position: fixed;
             inset: 0;
@@ -192,7 +187,6 @@
 </head>
 <body>
 
-    <!-- شريط علوي تنفيذي (البحث هنا غير قابل للكتابة، يوجهك فوراً للرئيسية للبحث) -->
     <div class="top-nav">
         <a href="index.html" class="top-button">🏠</a>
         <div class="search-bar-fake" onclick="location.href='index.html'">
@@ -202,13 +196,11 @@
     </div>
 
     <div class="app">
-        <!-- حاوية النتائج -->
         <div id="results-container">
             <div class="loading">جاري جلب البيانات عبر Alislamiah-AI...</div>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي الثابت -->
     <div class="bottom-nav">
         <a href="index.html">
             <span>🏠</span>
@@ -218,17 +210,16 @@
             <span>📖</span>
             القرآن
         </button>
-        <button onclick="location.href='results.html?shortcut=ai'">
-            <span>🤖</span>
-            الذكاء الاصطناعي
+        <button onclick="location.href='results.html?shortcut=youtube'">
+            <span>▶️</span>
+            يوتيوب
         </button>
-        <button onclick="location.href='results.html?shortcut=favorites'">
-            <span>⭐</span>
-            المفضلة
+        <button onclick="location.href='results.html?shortcut=alislamiah'">
+            <span>🌐</span>
+            الإسلامية
         </button>
     </div>
 
-    <!-- نافذة عرض الموقع داخل التطبيق (WebView Modal) -->
     <div id="webviewModal" class="webview-modal">
         <div class="webview-header">
             <div class="webview-title" id="webviewTitle">Alislamiah-AI Browser</div>
@@ -237,7 +228,6 @@
         <iframe id="webviewIframe" class="webview-iframe" src=""></iframe>
     </div>
 
-    <!-- استدعاء Firebase وجلب البيانات من Firestore -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -264,6 +254,8 @@
 
         if (query) {
             document.getElementById("search-placeholder-text").innerText = query;
+        } else if (shortcut) {
+            document.getElementById("search-placeholder-text").innerText = "اختصار: " + shortcut;
         }
 
         async function fetchFromFirestore() {
@@ -272,54 +264,72 @@
                 let database = [];
 
                 querySnapshot.forEach((doc) => {
-                    database.push(doc.data());
+                    const data = doc.data();
+                    // جلب المواقع التي تم اعتمادها فقط (approved: true) وحقولها بالكامل
+                    if (data.approved === true) {
+                        database.push({
+                            title: data.title || "",
+                            description: data.description || "",
+                            url: data.url || "#",
+                            category: data.category || "",
+                            approved: data.approved,
+                            keywords: data.keywords || ""
+                        });
+                    }
                 });
 
                 processResults(database);
 
             } catch (error) {
                 console.error("خطأ في جلب البيانات: ", error);
-                container.innerHTML = `<div class="no-results">عذراً، حدث خطأ في الاتصال بقاعدة البيانات. تأكد من إعدادات القواعد (Firestore Rules).</div>`;
+                container.innerHTML = `<div class="no-results">عذراً، حدث خطأ في الاتصال بقاعدة البيانات. تأكد من اتصال الإنترنت.</div>`;
             }
         }
 
         function processResults(database) {
-            if (shortcut) {
-                let matched = database.filter(item => 
-                    item.keywords && item.keywords.toLowerCase().includes(shortcut.toLowerCase())
-                );
-                
-                if (matched.length > 0) {
-                    displayResults(matched);
-                } else {
-                    container.innerHTML = `
-                        <div class="result-card">
-                            <h3>اختصار (${shortcut})</h3>
-                            <p>تم الانتقال إلى قسم ${shortcut} بنجاح عبر منصة الإسلامية.</p>
-                            <a href="index.html" class="result-link">العودة للرئيسية</a>
-                        </div>
-                    `;
-                }
-            } else if (query) {
-                let filtered = database.filter(item => 
-                    (item.title && item.title.toLowerCase().includes(query.toLowerCase())) || 
-                    (item.description && item.description.toLowerCase().includes(query.toLowerCase())) ||
-                    (item.keywords && item.keywords.toLowerCase().includes(query.toLowerCase()))
-                );
+            let resultsToShow = [];
 
-                if (filtered.length > 0) {
-                    displayResults(filtered);
-                } else {
-                    container.innerHTML = `
-                        <div class="no-results">
-                            <p>لا توجد نتائج مطابقة لـ: "<strong>${query}</strong>"</p>
-                            <br>
-                            <a href="index.html" class="result-link">العودة للرئيسية للبحث من جديد</a>
-                        </div>
-                    `;
-                }
+            if (shortcut) {
+                const target = shortcut.toLowerCase().trim();
+                // ربط الاختصارات الثلاثة المحددة بدقة (youtube, quran, alislamiah) بحقل الفئة أو الكلمات أو العنوان أو الرابط
+                resultsToShow = database.filter(item => {
+                    const cat = String(item.category || "").toLowerCase();
+                    const kw = String(item.keywords || "").toLowerCase();
+                    const title = String(item.title || "").toLowerCase();
+                    const url = String(item.url || "").toLowerCase();
+                    
+                    return cat.includes(target) || kw.includes(target) || title.includes(target) || url.includes(target);
+                });
+            } else if (query) {
+                const searchTerm = query.toLowerCase().trim();
+                // البحث العادي بدقة: يظهر النتائج المطابقة لكلمة البحث فقط في الحقول (العنوان، الوصف، الكلمات المفتاحية، الفئة)
+                resultsToShow = database.filter(item => {
+                    const title = String(item.title || "").toLowerCase();
+                    const desc = String(item.description || "").toLowerCase();
+                    const kw = String(item.keywords || "").toLowerCase();
+                    const cat = String(item.category || "").toLowerCase();
+
+                    return title.includes(searchTerm) || 
+                           desc.includes(searchTerm) || 
+                           kw.includes(searchTerm) || 
+                           cat.includes(searchTerm);
+                });
             } else {
-                displayResults(database);
+                // إذا لم يوجد بحث أو اختصار، لا نعرض نتائج عشوائية بل نطلب البحث
+                container.innerHTML = `<div class="no-results">الرجاء إدخال كلمة البحث أو اختيار أحد الاختصارات في الأعلى.</div>`;
+                return;
+            }
+
+            if (resultsToShow.length > 0) {
+                displayResults(resultsToShow);
+            } else {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>لا توجد نتائج مطابقة لـ: "<strong>${query || shortcut}</strong>"</p>
+                        <br>
+                        <a href="index.html" class="result-link">العودة للرئيسية للبحث من جديد</a>
+                    </div>
+                `;
             }
         }
 
@@ -331,16 +341,19 @@
                 card.innerHTML = `
                     <h3>${site.title || "بدون عنوان"}</h3>
                     <p>${site.description || "لا يوجد وصف"}</p>
-                    <button class="result-link" onclick="openWebView('${site.url || "#"}', '${site.title || "الموقع"}')">زيارة الموقع داخل الإسلامية</button>
+                    <button class="result-link" onclick="openWebView('${site.url || "#"}', '${escapeHtml(site.title || "الموقع")}')">زيارة الموقع داخل الإسلامية</button>
                 `;
                 container.appendChild(card);
             });
         }
 
+        function escapeHtml(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
         fetchFromFirestore();
     </script>
 
-    <!-- وظائف التحكم بالـ WebView الداخلي -->
     <script>
         function openWebView(url, title) {
             const modal = document.getElementById("webviewModal");
@@ -357,7 +370,7 @@
             const modal = document.getElementById("webviewModal");
             const iframe = document.getElementById("webviewIframe");
 
-            iframe.src = ""; // إيقاف تحميل الصفحة المفتوحة
+            iframe.src = "";
             modal.style.display = "none";
             document.body.style.overflow = "";
         }
@@ -365,3 +378,4 @@
 
 </body>
 </html>
+
