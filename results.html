@@ -27,7 +27,7 @@
         <!-- مربع البحث -->
         <div class="relative">
             <input type="text" id="searchInput" oninput="filterSites()" 
-                   placeholder="ابحث عن موقع، كتاب، أو قسم..." 
+                   placeholder="ابحث عن موقع، يوتيوب، فتوى، أو مكتبة..." 
                    class="w-full py-2.5 pr-10 pl-4 text-gray-900 bg-white rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-400">
             <i class="fas fa-search absolute right-3 top-3.5 text-gray-400"></i>
         </div>
@@ -39,6 +39,7 @@
             <button onclick="filterCategory('السنة النبوية')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">السنة النبوية</button>
             <button onclick="filterCategory('الفتاوى')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">الفتاوى</button>
             <button onclick="filterCategory('المكتبات')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">المكتبات</button>
+            <button onclick="filterCategory('مرئي ومسموع')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">مرئي ومسموع</button>
         </div>
     </div>
 
@@ -57,7 +58,7 @@
                     <span>إغلاق والعودة</span>
                 </button>
             </div>
-            <span id="modalTitle" class="text-xs font-medium truncate max-w-[200px]">تصفح الموقع</span>
+            <span id="modalTitle" class="text-xs font-medium truncate max-w-[200px]">تصفح المحتوى</span>
             <div class="w-16"></div>
         </div>
         <!-- إطار عرض الموقع من الداخل -->
@@ -67,6 +68,7 @@
     </div>
 
     <script>
+        // قاعدة البيانات الموسعة لتشمل المنصات والمرئيات (مثل اليوتيوب وغيرها)
         const initialSites = [
             {
                 title: "موقع القرآن الكريم - Quran.com",
@@ -98,7 +100,7 @@
             },
             {
                 title: "موقع الدرر السنية",
-                description: "موسوعة علمية للتأكد من صحة الأحاديـث النبوية والبحوث العقائدية والفيقهية التاريخية.",
+                description: "موسوعة علمية للتأكد من صحة الأحاديـث النبوية والبحوث العقائدية والفقهية التاريخية.",
                 url: "https://dorar.net",
                 category: "السنة النبوية",
                 icon: "fa-search"
@@ -109,6 +111,27 @@
                 url: "https://www.islamweb.net",
                 category: "الفتاوى",
                 icon: "fa-globe"
+            },
+            {
+                title: "قناة القرآن الكريم (يوتيوب)",
+                description: "البث المباشر للقرآن الكريم على مدار الساعة من الحرم المكي الشريف عبر منصة يوتيوب.",
+                url: "https://www.youtube.com/embed/live_stream?channel=UC1X3Y_8D7iW0C7t0_J6mF2g",
+                category: "مرئي ومسموع",
+                icon: "fa-video"
+            },
+            {
+                title: "إذاعة القرآن الكريم (مباشر)",
+                description: "بث إذاعي مسموع لتلاوات عطرة وبرامج إسلامية ومحاضرات علمية نافعة.",
+                url: "https://quranradio.org",
+                category: "مرئي ومسموع",
+                icon: "fa-headphones"
+            },
+            {
+                title: "طريق الإسلام - Islamway",
+                description: "منصة شاملة تحوي خطبًا ودروسًا ومحاضرات صوتية ومرئية لكبار العلماء والداعاة.",
+                url: "https://ar.islamway.net",
+                category: "مرئي ومسموع",
+                icon: "fa-microphone-alt"
             }
         ];
 
@@ -147,7 +170,7 @@
                     <div class="mt-3 pt-2 border-t border-gray-50 flex justify-end">
                         <button onclick="openModal('${site.url}', '${site.title}')" 
                            class="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl font-medium hover:bg-emerald-700 transition cursor-pointer">
-                            <span>زيارة الموقع</span>
+                            <span>زيارة الموقع داخل الإسلامية</span>
                             <i class="fas fa-external-link-alt text-[10px]"></i>
                         </button>
                     </div>
@@ -156,7 +179,6 @@
             });
         }
 
-        // فتح الموقع داخل النافذة الداخلية للتطبيق
         function openModal(url, title) {
             const modal = document.getElementById('siteModal');
             const iframe = document.getElementById('siteIframe');
@@ -167,12 +189,11 @@
             modal.classList.remove('hidden');
         }
 
-        // إغلاق النافذة الداخلية والعودة للتطبيق
         function closeModal() {
             const modal = document.getElementById('siteModal');
             const iframe = document.getElementById('siteIframe');
             
-            iframe.src = ''; // إيقاف تحميل الموقع في الخلفية
+            iframe.src = ''; 
             modal.classList.add('hidden');
         }
 
