@@ -3,237 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل المواقع الإسلامية - Alislamiah AI</title>
+    <title>دليل الإسلامية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { font-family: sans-serif; background-color: #0f172a; } /* خلفية التطبيق العامة داكنة */
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 pb-20">
+<body class="pb-10">
 
-    <!-- شريط العناوين والبحث الثابت -->
-    <div class="sticky top-0 z-50 bg-emerald-700 text-white shadow-md p-4">
-        <div class="flex items-center justify-between mb-3">
-            <button onclick="goBack()" class="p-2 rounded-full hover:bg-emerald-600 transition">
-                <i class="fas fa-arrow-right text-xl"></i>
-            </button>
-            <h1 class="text-lg font-bold">دليل المواقع الإسلامية</h1>
-            <div class="w-8"></div>
-        </div>
-
-        <!-- مربع البحث -->
-        <div class="relative">
-            <input type="text" id="searchInput" oninput="filterSites()" 
-                   placeholder="ابحث عن موقع، يوتيوب، فتوى، أو مكتبة..." 
-                   class="w-full py-2.5 pr-10 pl-4 text-gray-900 bg-white rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-400">
-            <i class="fas fa-search absolute right-3 top-3.5 text-gray-400"></i>
-        </div>
-
-        <!-- أزرار التصنيفات السريعة -->
-        <div class="flex gap-2 mt-3 overflow-x-auto hide-scrollbar pb-1 text-xs">
-            <button onclick="filterCategory('الكل')" class="cat-btn active bg-white text-emerald-800 px-3 py-1.5 rounded-full font-bold whitespace-nowrap shadow">الكل</button>
-            <button onclick="filterCategory('القرآن الكريم')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">القرآن الكريم</button>
-            <button onclick="filterCategory('السنة النبوية')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">السنة النبوية</button>
-            <button onclick="filterCategory('الفتاوى')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">الفتاوى</button>
-            <button onclick="filterCategory('المكتبات')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">المكتبات</button>
-            <button onclick="filterCategory('مرئي ومسموع')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">مرئي ومسموع</button>
-        </div>
-    </div>
-
-    <!-- حاوية عرض المواقع -->
-    <main class="p-4 max-w-2xl mx-auto" id="sitesContainer">
-        <!-- يتم ملء المواقع عبر JavaScript -->
-    </main>
-
-    <!-- نافذة عائمة داخلية (WebView Modal) لعرض المواقع داخل التطبيق حصرياً -->
-    <div id="siteModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex flex-col">
-        <!-- شريط علوي للنافذة الداخلية -->
-        <div class="bg-emerald-800 text-white p-3 flex items-center justify-between shadow-md">
-            <div class="flex items-center gap-2">
-                <button onclick="closeModal()" class="bg-emerald-700 hover:bg-emerald-600 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                    <i class="fas fa-arrow-right"></i>
-                    <span>إغلاق والعودة</span>
-                </button>
+    <!-- القسم الأول: المواقع الأساسية (أبيض وأخضر) -->
+    <div class="bg-emerald-700 p-5 rounded-b-3xl mb-6 shadow-xl">
+        <h2 class="text-white font-bold text-lg mb-4">المواقع الإسلامية الأساسية</h2>
+        <div id="mainSites" class="space-y-3">
+            <!-- المواقع الأساسية -->
+            <div class="bg-white text-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                <span class="font-bold">القرآن الكريم</span>
+                <button onclick="window.location.href='https://quran.com'" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-sm font-bold">زيارة</button>
             </div>
-            <span id="modalTitle" class="text-xs font-medium truncate max-w-[200px]">تصفح المحتوى</span>
-            <div class="w-16"></div>
-        </div>
-        <!-- إطار عرض الموقع من الداخل -->
-        <div class="flex-1 bg-white relative">
-            <iframe id="siteIframe" src="" class="w-full h-full border-0"></iframe>
+            <div class="bg-white text-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-sm">
+                <span class="font-bold">موقع الإسلام سؤال وجواب</span>
+                <button onclick="window.location.href='https://islamqa.info'" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-sm font-bold">زيارة</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // قاعدة البيانات الموسعة لتشمل المنصات والمرئيات (مثل اليوتيوب وغيرها)
-        const initialSites = [
-            {
-                title: "موقع القرآن الكريم - Quran.com",
-                description: "منصة تفاعلية للقراءة والإستماع لتلاوات القرآن الكريم مع التفسير والترجمات بمختلف اللغات.",
-                url: "https://quran.com",
-                category: "القرآن الكريم",
-                icon: "fa-quran"
-            },
-            {
-                title: "موسوعة السنة النبوية - Sunnah.com",
-                description: "أكبر محرك بحث في كتب الحديث النبوي الشريف (صحيح البخاري، مسلم، الكتب التسعة) مع التخريج.",
-                url: "https://sunnah.com",
-                category: "السنة النبوية",
-                icon: "fa-book-open"
-            },
-            {
-                title: "موقع الإسلام سؤال وجواب",
-                description: "موقع إسلامي دعوي علمي يهدف إلى تقديم الفتاوى والإجابات العلمية الموثوقة بإشراف الشيخ محمد صالح المنجد.",
-                url: "https://islamqa.info",
-                category: "الفتاوى",
-                icon: "fa-hands-praying"
-            },
-            {
-                title: "المكتبة الشاملة الحديثة",
-                description: "أكبر مكتبة إسلامية مجانية تضم آلاف أمهات الكتب الإسلامية والتاريخية واللغوية للبحث والقراءة.",
-                url: "https://shamela.ws",
-                category: "المكتبات",
-                icon: "fa-book"
-            },
-            {
-                title: "موقع الدرر السنية",
-                description: "موسوعة علمية للتأكد من صحة الأحاديـث النبوية والبحوث العقائدية والفقهية التاريخية.",
-                url: "https://dorar.net",
-                category: "السنة النبوية",
-                icon: "fa-search"
-            },
-            {
-                title: "شبكة إسلام ويب - Islamweb",
-                description: "موقع جامع يقدم الفتاوى، الاستشارات الطبية والنفسية، مقالات إسلامية، ومكتبة صوتية شاملة.",
-                url: "https://www.islamweb.net",
-                category: "الفتاوى",
-                icon: "fa-globe"
-            },
-            {
-                title: "قناة القرآن الكريم (يوتيوب)",
-                description: "البث المباشر للقرآن الكريم على مدار الساعة من الحرم المكي الشريف عبر منصة يوتيوب.",
-                url: "https://www.youtube.com/embed/live_stream?channel=UC1X3Y_8D7iW0C7t0_J6mF2g",
-                category: "مرئي ومسموع",
-                icon: "fa-video"
-            },
-            {
-                title: "إذاعة القرآن الكريم (مباشر)",
-                description: "بث إذاعي مسموع لتلاوات عطرة وبرامج إسلامية ومحاضرات علمية نافعة.",
-                url: "https://quranradio.org",
-                category: "مرئي ومسموع",
-                icon: "fa-headphones"
-            },
-            {
-                title: "طريق الإسلام - Islamway",
-                description: "منصة شاملة تحوي خطبًا ودروسًا ومحاضرات صوتية ومرئية لكبار العلماء والداعاة.",
-                url: "https://ar.islamway.net",
-                category: "مرئي ومسموع",
-                icon: "fa-microphone-alt"
-            }
-        ];
+    <!-- القسم الثاني: المنصات والمواقع الإضافية (داكن وأنيق) -->
+    <div class="p-4">
+        <h2 class="text-gray-400 font-bold text-sm mb-4 px-1">منصات التواصل والمواقع الأخرى</h2>
+        <div id="extraSites" class="space-y-4">
+            <!-- المنصات الإضافية -->
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-3xl shadow-lg">
+                <h3 class="text-white font-bold text-lg mb-3">يوتيوب (الإسلامية)</h3>
+                <button onclick="window.location.href='https://www.youtube.com'" class="w-full bg-blue-600 text-white py-3 rounded-2xl font-bold shadow-md">زيارة الموقع داخل التطبيق</button>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-3xl shadow-lg">
+                <h3 class="text-white font-bold text-lg mb-3">فيسبوك</h3>
+                <button onclick="window.location.href='https://www.facebook.com'" class="w-full bg-blue-600 text-white py-3 rounded-2xl font-bold shadow-md">زيارة الموقع داخل التطبيق</button>
+            </div>
+        </div>
+    </div>
 
-        let selectedCategory = 'الكل';
-
-        function renderSites(sites) {
-            const container = document.getElementById('sitesContainer');
-            container.innerHTML = '';
-
-            if (sites.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-search-minus text-4xl mb-3 text-gray-300"></i>
-                        <p>عذراً، لم نجد نتائج تطابق بحثك.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            sites.forEach(site => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl p-4 mb-3 border border-gray-100 shadow-sm hover:shadow-md transition duration-200";
-                card.innerHTML = `
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
-                                <i class="fas ${site.icon}"></i>
-                            </div>
-                            <div>
-                                <h2 class="font-bold text-gray-900 text-base mb-0.5">${site.title}</h2>
-                                <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">${site.category}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-xs mt-2.5 leading-relaxed">${site.description}</p>
-                    <div class="mt-3 pt-2 border-t border-gray-50 flex justify-end">
-                        <button onclick="openModal('${site.url}', '${site.title}')" 
-                           class="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl font-medium hover:bg-emerald-700 transition cursor-pointer">
-                            <span>زيارة الموقع داخل الإسلامية</span>
-                            <i class="fas fa-external-link-alt text-[10px]"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function openModal(url, title) {
-            const modal = document.getElementById('siteModal');
-            const iframe = document.getElementById('siteIframe');
-            const modalTitle = document.getElementById('modalTitle');
-
-            modalTitle.innerText = title;
-            iframe.src = url;
-            modal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('siteModal');
-            const iframe = document.getElementById('siteIframe');
-            
-            iframe.src = ''; 
-            modal.classList.add('hidden');
-        }
-
-        function filterSites() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            const filtered = initialSites.filter(site => {
-                const matchesSearch = site.title.toLowerCase().includes(searchText) || 
-                                     site.description.toLowerCase().includes(searchText);
-                const matchesCategory = selectedCategory === 'الكل' || site.category === selectedCategory;
-
-                return matchesSearch && matchesCategory;
-            });
-
-            renderSites(filtered);
-        }
-
-        function filterCategory(cat) {
-            selectedCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if(btn.innerText === cat) {
-                    btn.classList.add('bg-white', 'text-emerald-800', 'font-bold');
-                    btn.classList.remove('bg-emerald-800', 'text-white');
-                } else {
-                    btn.classList.remove('bg-white', 'text-emerald-800', 'font-bold');
-                    btn.classList.add('bg-emerald-800', 'text-white');
-                }
-            });
-            filterSites();
-        }
-
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = "index.html"; 
-            }
-        }
-
-        renderSites(initialSites);
-    </script>
 </body>
 </html>
