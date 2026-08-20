@@ -3,366 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#08142b">
-    <title>نتائج البحث - Alislamiah-AI</title>
+    <title>دليل المواقع الإسلامية - Alislamiah AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            width: 100%;
-            min-height: 100vh;
-            background: linear-gradient(145deg, #040a17 0%, #07142a 55%, #06172c 100%);
-            color: #ffffff;
-            font-family: Arial, "Segoe UI", Tahoma, sans-serif;
-            padding-top: 75px;
-            padding-bottom: 85px;
-            padding-left: 14px;
-            padding-right: 14px;
-        }
-        .app {
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* الشريط العلوي الثابت مع شريط بحث غير قابل للكتابة يوجه للرئيسية */
-        .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(7, 20, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 15px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            z-index: 1000;
-        }
-        .top-nav button, .search-bar-fake {
-            height: 42px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.13);
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .top-nav button {
-            width: 42px;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-        .search-bar-fake {
-            flex-grow: 1;
-            padding: 0 15px;
-            color: #99aabf;
-            font-size: 14px;
-            justify-content: flex-start;
-            cursor: pointer;
-        }
-
-        #results-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        .result-card {
-            background: rgba(255, 255, 255, 0.075);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        .result-card h3 {
-            color: #08b9ef;
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-        .result-card p {
-            color: #bdc9df;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 14px;
-        }
-        .result-link {
-            display: inline-block;
-            background: linear-gradient(145deg, #087fff, #0870e4);
-            color: #fff;
-            padding: 8px 18px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
-        .loading, .no-results {
-            text-align: center;
-            color: #aebbd2;
-            margin-top: 50px;
-            font-size: 16px;
-        }
-
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(7, 20, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-        }
-        .bottom-nav button, .bottom-nav a {
-            background: none;
-            border: none;
-            color: #aebbd2;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .bottom-nav button:hover, .bottom-nav a:hover {
-            color: #08b9ef;
-        }
-        .bottom-nav span {
-            font-size: 20px;
-        }
-
-        /* نافذة الـ WebView الداخلية لعرض المواقع دون الخروج */
-        .webview-modal {
-            position: fixed;
-            inset: 0;
-            background: #07142a;
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-        }
-        .webview-header {
-            height: 55px;
-            background: #040a17;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-        }
-        .webview-title {
-            color: #08b9ef;
-            font-size: 15px;
-            font-weight: bold;
-        }
-        .close-webview {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .webview-iframe {
-            flex-grow: 1;
-            width: 100%;
-            border: none;
-            background: white;
-        }
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 pb-20">
 
-    <!-- الشريط العلوي -->
-    <div class="top-nav">
-        <a href="index.html" class="top-button">🏠</a>
-        <div class="search-bar-fake" onclick="location.href='index.html'">
-            <span id="search-placeholder-text">ابحث في Alislamiah-AI...</span>
+    <!-- شريط العناوين والبحث الثابت -->
+    <div class="sticky top-0 z-50 bg-emerald-700 text-white shadow-md p-4">
+        <div class="flex items-center justify-between mb-3">
+            <button onclick="goBack()" class="p-2 rounded-full hover:bg-emerald-600 transition">
+                <i class="fas fa-arrow-right text-xl"></i>
+            </button>
+            <h1 class="text-lg font-bold">دليل المواقع الإسلامية</h1>
+            <div class="w-8"></div>
         </div>
-        <button class="top-button" onclick="location.href='index.html'">🔍</button>
-    </div>
 
-    <div class="app">
-        <div id="results-container">
-            <div class="loading">جاري جلب النتائج...</div>
+        <!-- مربع البحث -->
+        <div class="relative">
+            <input type="text" id="searchInput" oninput="filterSites()" 
+                   placeholder="ابحث عن موقع، كتاب، أو قسم..." 
+                   class="w-full py-2.5 pr-10 pl-4 text-gray-900 bg-white rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-400">
+            <i class="fas fa-search absolute right-3 top-3.5 text-gray-400"></i>
+        </div>
+
+        <!-- أزرار التصنيفات السريعة -->
+        <div class="flex gap-2 mt-3 overflow-x-auto hide-scrollbar pb-1 text-xs">
+            <button onclick="filterCategory('الكل')" class="cat-btn active bg-white text-emerald-800 px-3 py-1.5 rounded-full font-bold whitespace-nowrap shadow">الكل</button>
+            <button onclick="filterCategory('القرآن الكريم')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">القرآن الكريم</button>
+            <button onclick="filterCategory('السنة النبوية')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">السنة النبوية</button>
+            <button onclick="filterCategory('الفتاوى')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">الفتاوى</button>
+            <button onclick="filterCategory('المكتبات')" class="cat-btn bg-emerald-800 text-white px-3 py-1.5 rounded-full whitespace-nowrap shadow">المكتبات</button>
         </div>
     </div>
 
-    <!-- الشريط السفلي -->
-    <div class="bottom-nav">
-        <a href="index.html">
-            <span>🏠</span>
-            الرئيسية
-        </a>
-        <button onclick="location.href='results.html?shortcut=quran'">
-            <span>📖</span>
-            القرآن
-        </button>
-        <button onclick="location.href='results.html?shortcut=ai'">
-            <span>🤖</span>
-            الذكاء الاصطناعي
-        </button>
-        <button onclick="location.href='results.html?shortcut=favorites'">
-            <span>⭐</span>
-            المفضلة
-        </button>
-    </div>
+    <!-- حاوية عرض المواقع -->
+    <main class="p-4 max-w-2xl mx-auto" id="sitesContainer">
+        <!-- يتم ملء المواقع عبر JavaScript -->
+    </main>
 
-    <!-- نافذة الـ WebView -->
-    <div id="webviewModal" class="webview-modal">
-        <div class="webview-header">
-            <div class="webview-title" id="webviewTitle">Alislamiah-AI Browser</div>
-            <button class="close-webview" onclick="closeWebView()">إغلاق والرجوع</button>
+    <!-- نافذة عائمة داخلية (WebView Modal) لعرض المواقع داخل التطبيق حصرياً -->
+    <div id="siteModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex flex-col">
+        <!-- شريط علوي للنافذة الداخلية -->
+        <div class="bg-emerald-800 text-white p-3 flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-2">
+                <button onclick="closeModal()" class="bg-emerald-700 hover:bg-emerald-600 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>إغلاق والعودة</span>
+                </button>
+            </div>
+            <span id="modalTitle" class="text-xs font-medium truncate max-w-[200px]">تصفح الموقع</span>
+            <div class="w-16"></div>
         </div>
-        <iframe id="webviewIframe" class="webview-iframe" src=""></iframe>
+        <!-- إطار عرض الموقع من الداخل -->
+        <div class="flex-1 bg-white relative">
+            <iframe id="siteIframe" src="" class="w-full h-full border-0"></iframe>
+        </div>
     </div>
 
-    <!-- كود جلب البيانات الأصلي الذي كان يعمل معك بدقة -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyBFPwbDSeMzI5eOL8DeXNZovcr47JtlZnU",
-          authDomain: "alislamiah-ai.firebaseapp.com",
-          projectId: "alislamiah-ai",
-          storageBucket: "alislamiah-ai.firebasestorage.app",
-          messagingSenderId: "956902867596",
-          appId: "1:956902867596:web:0e99d136f745655535f1a9",
-          measurementId: "G-MV3BQG10T2"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('q');
-        const shortcut = urlParams.get('shortcut');
-        const container = document.getElementById("results-container");
-
-        if (query) {
-            document.getElementById("search-placeholder-text").innerText = query;
-        }
-
-        async function fetchFromFirestore() {
-            try {
-                const querySnapshot = await getDocs(collection(db, "sites"));
-                let database = [];
-
-                querySnapshot.forEach((doc) => {
-                    database.push(doc.data());
-                });
-
-                processResults(database);
-
-            } catch (error) {
-                console.error("خطأ في جلب البيانات: ", error);
-                container.innerHTML = `<div class="no-results">عذراً، حدث خطأ في الاتصال بقاعدة البيانات.</div>`;
+    <script>
+        const initialSites = [
+            {
+                title: "موقع القرآن الكريم - Quran.com",
+                description: "منصة تفاعلية للقراءة والإستماع لتلاوات القرآن الكريم مع التفسير والترجمات بمختلف اللغات.",
+                url: "https://quran.com",
+                category: "القرآن الكريم",
+                icon: "fa-quran"
+            },
+            {
+                title: "موسوعة السنة النبوية - Sunnah.com",
+                description: "أكبر محرك بحث في كتب الحديث النبوي الشريف (صحيح البخاري، مسلم، الكتب التسعة) مع التخريج.",
+                url: "https://sunnah.com",
+                category: "السنة النبوية",
+                icon: "fa-book-open"
+            },
+            {
+                title: "موقع الإسلام سؤال وجواب",
+                description: "موقع إسلامي دعوي علمي يهدف إلى تقديم الفتاوى والإجابات العلمية الموثوقة بإشراف الشيخ محمد صالح المنجد.",
+                url: "https://islamqa.info",
+                category: "الفتاوى",
+                icon: "fa-hands-praying"
+            },
+            {
+                title: "المكتبة الشاملة الحديثة",
+                description: "أكبر مكتبة إسلامية مجانية تضم آلاف أمهات الكتب الإسلامية والتاريخية واللغوية للبحث والقراءة.",
+                url: "https://shamela.ws",
+                category: "المكتبات",
+                icon: "fa-book"
+            },
+            {
+                title: "موقع الدرر السنية",
+                description: "موسوعة علمية للتأكد من صحة الأحاديـث النبوية والبحوث العقائدية والفيقهية التاريخية.",
+                url: "https://dorar.net",
+                category: "السنة النبوية",
+                icon: "fa-search"
+            },
+            {
+                title: "شبكة إسلام ويب - Islamweb",
+                description: "موقع جامع يقدم الفتاوى، الاستشارات الطبية والنفسية، مقالات إسلامية، ومكتبة صوتية شاملة.",
+                url: "https://www.islamweb.net",
+                category: "الفتاوى",
+                icon: "fa-globe"
             }
-        }
+        ];
 
-        function processResults(database) {
-            if (shortcut) {
-                let matched = database.filter(item => 
-                    item.keywords && item.keywords.toLowerCase().includes(shortcut.toLowerCase())
-                );
-                
-                if (matched.length > 0) {
-                    displayResults(matched);
-                } else {
-                    container.innerHTML = `
-                        <div class="result-card">
-                            <h3>اختصار (${shortcut})</h3>
-                            <p>تم الانتقال إلى قسم ${shortcut} بنجاح عبر منصة الإسلامية.</p>
-                            <a href="index.html" class="result-link">العودة للرئيسية</a>
-                        </div>
-                    `;
-                }
-            } else if (query) {
-                let filtered = database.filter(item => 
-                    (item.title && item.title.toLowerCase().includes(query.toLowerCase())) || 
-                    (item.description && item.description.toLowerCase().includes(query.toLowerCase())) ||
-                    (item.keywords && item.keywords.toLowerCase().includes(query.toLowerCase()))
-                );
+        let selectedCategory = 'الكل';
 
-                if (filtered.length > 0) {
-                    displayResults(filtered);
-                } else {
-                    container.innerHTML = `
-                        <div class="no-results">
-                            <p>لا توجد نتائج مطابقة لـ: "<strong>${query}</strong>"</p>
-                            <br>
-                            <a href="index.html" class="result-link">العودة للرئيسية للبحث من جديد</a>
-                        </div>
-                    `;
-                }
-            } else {
-                displayResults(database);
+        function renderSites(sites) {
+            const container = document.getElementById('sitesContainer');
+            container.innerHTML = '';
+
+            if (sites.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-search-minus text-4xl mb-3 text-gray-300"></i>
+                        <p>عذراً، لم نجد نتائج تطابق بحثك.</p>
+                    </div>
+                `;
+                return;
             }
-        }
 
-        function displayResults(data) {
-            container.innerHTML = "";
-            data.forEach(site => {
-                let card = document.createElement("div");
-                card.className = "result-card";
+            sites.forEach(site => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-4 mb-3 border border-gray-100 shadow-sm hover:shadow-md transition duration-200";
                 card.innerHTML = `
-                    <h3>${site.title || "بدون عنوان"}</h3>
-                    <p>${site.description || "لا يوجد وصف"}</p>
-                    <button class="result-link" onclick="openWebView('${site.url || "#"}', '${escapeHtml(site.title || "الموقع")}')">زيارة الموقع داخل الإسلامية</button>
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                                <i class="fas ${site.icon}"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-gray-900 text-base mb-0.5">${site.title}</h2>
+                                <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">${site.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-xs mt-2.5 leading-relaxed">${site.description}</p>
+                    <div class="mt-3 pt-2 border-t border-gray-50 flex justify-end">
+                        <button onclick="openModal('${site.url}', '${site.title}')" 
+                           class="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl font-medium hover:bg-emerald-700 transition cursor-pointer">
+                            <span>زيارة الموقع</span>
+                            <i class="fas fa-external-link-alt text-[10px]"></i>
+                        </button>
+                    </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function escapeHtml(text) {
-            return String(text).replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        }
+        // فتح الموقع داخل النافذة الداخلية للتطبيق
+        function openModal(url, title) {
+            const modal = document.getElementById('siteModal');
+            const iframe = document.getElementById('siteIframe');
+            const modalTitle = document.getElementById('modalTitle');
 
-        fetchFromFirestore();
-    </script>
-
-    <!-- وظائف الـ WebView -->
-    <script>
-        function openWebView(url, title) {
-            const modal = document.getElementById("webviewModal");
-            const iframe = document.getElementById("webviewIframe");
-            const titleElem = document.getElementById("webviewTitle");
-
-            titleElem.innerText = "Alislamiah - " + title;
+            modalTitle.innerText = title;
             iframe.src = url;
-            modal.style.display = "flex";
-            document.body.style.overflow = "hidden";
+            modal.classList.remove('hidden');
         }
 
-        function closeWebView() {
-            const modal = document.getElementById("webviewModal");
-            const iframe = document.getElementById("webviewIframe");
-
-            iframe.src = "";
-            modal.style.display = "none";
-            document.body.style.overflow = "";
+        // إغلاق النافذة الداخلية والعودة للتطبيق
+        function closeModal() {
+            const modal = document.getElementById('siteModal');
+            const iframe = document.getElementById('siteIframe');
+            
+            iframe.src = ''; // إيقاف تحميل الموقع في الخلفية
+            modal.classList.add('hidden');
         }
+
+        function filterSites() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            const filtered = initialSites.filter(site => {
+                const matchesSearch = site.title.toLowerCase().includes(searchText) || 
+                                     site.description.toLowerCase().includes(searchText);
+                const matchesCategory = selectedCategory === 'الكل' || site.category === selectedCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderSites(filtered);
+        }
+
+        function filterCategory(cat) {
+            selectedCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.innerText === cat) {
+                    btn.classList.add('bg-white', 'text-emerald-800', 'font-bold');
+                    btn.classList.remove('bg-emerald-800', 'text-white');
+                } else {
+                    btn.classList.remove('bg-white', 'text-emerald-800', 'font-bold');
+                    btn.classList.add('bg-emerald-800', 'text-white');
+                }
+            });
+            filterSites();
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "index.html"; 
+            }
+        }
+
+        renderSites(initialSites);
     </script>
-
 </body>
 </html>
