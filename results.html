@@ -29,6 +29,7 @@
             margin: 0 auto;
         }
 
+        /* الشريط العلوي الثابت مع شريط بحث غير قابل للكتابة يوجه للرئيسية */
         .top-nav {
             position: fixed;
             top: 0;
@@ -112,6 +113,7 @@
             font-size: 16px;
         }
 
+        /* شريط التنقل السفلي */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -146,6 +148,7 @@
             font-size: 20px;
         }
 
+        /* نافذة الـ WebView الداخلية لعرض المواقع دون الخروج */
         .webview-modal {
             position: fixed;
             inset: 0;
@@ -187,6 +190,7 @@
 </head>
 <body>
 
+    <!-- الشريط العلوي -->
     <div class="top-nav">
         <a href="index.html" class="top-button">🏠</a>
         <div class="search-bar-fake" onclick="location.href='index.html'">
@@ -197,10 +201,11 @@
 
     <div class="app">
         <div id="results-container">
-            <div class="loading">جاري جلب البيانات عبر Alislamiah-AI...</div>
+            <div class="loading">جاري جلب النتائج...</div>
         </div>
     </div>
 
+    <!-- الشريط السفلي -->
     <div class="bottom-nav">
         <a href="index.html">
             <span>🏠</span>
@@ -210,16 +215,17 @@
             <span>📖</span>
             القرآن
         </button>
-        <button onclick="location.href='results.html?shortcut=youtube'">
-            <span>▶️</span>
-            يوتيوب
+        <button onclick="location.href='results.html?shortcut=ai'">
+            <span>🤖</span>
+            الذكاء الاصطناعي
         </button>
-        <button onclick="location.href='results.html?shortcut=alislamiah'">
-            <span>🌐</span>
-            الإسلامية
+        <button onclick="location.href='results.html?shortcut=favorites'">
+            <span>⭐</span>
+            المفضلة
         </button>
     </div>
 
+    <!-- نافذة الـ WebView -->
     <div id="webviewModal" class="webview-modal">
         <div class="webview-header">
             <div class="webview-title" id="webviewTitle">Alislamiah-AI Browser</div>
@@ -228,6 +234,7 @@
         <iframe id="webviewIframe" class="webview-iframe" src=""></iframe>
     </div>
 
+    <!-- كود جلب البيانات الأصلي الذي كان يعمل معك بدقة -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -254,8 +261,6 @@
 
         if (query) {
             document.getElementById("search-placeholder-text").innerText = query;
-        } else if (shortcut) {
-            document.getElementById("search-placeholder-text").innerText = "اختصار: " + shortcut;
         }
 
         async function fetchFromFirestore() {
@@ -264,72 +269,54 @@
                 let database = [];
 
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    // جلب المواقع التي تم اعتمادها فقط (approved: true) وحقولها بالكامل
-                    if (data.approved === true) {
-                        database.push({
-                            title: data.title || "",
-                            description: data.description || "",
-                            url: data.url || "#",
-                            category: data.category || "",
-                            approved: data.approved,
-                            keywords: data.keywords || ""
-                        });
-                    }
+                    database.push(doc.data());
                 });
 
                 processResults(database);
 
             } catch (error) {
                 console.error("خطأ في جلب البيانات: ", error);
-                container.innerHTML = `<div class="no-results">عذراً، حدث خطأ في الاتصال بقاعدة البيانات. تأكد من اتصال الإنترنت.</div>`;
+                container.innerHTML = `<div class="no-results">عذراً، حدث خطأ في الاتصال بقاعدة البيانات.</div>`;
             }
         }
 
         function processResults(database) {
-            let resultsToShow = [];
-
             if (shortcut) {
-                const target = shortcut.toLowerCase().trim();
-                // ربط الاختصارات الثلاثة المحددة بدقة (youtube, quran, alislamiah) بحقل الفئة أو الكلمات أو العنوان أو الرابط
-                resultsToShow = database.filter(item => {
-                    const cat = String(item.category || "").toLowerCase();
-                    const kw = String(item.keywords || "").toLowerCase();
-                    const title = String(item.title || "").toLowerCase();
-                    const url = String(item.url || "").toLowerCase();
-                    
-                    return cat.includes(target) || kw.includes(target) || title.includes(target) || url.includes(target);
-                });
+                let matched = database.filter(item => 
+                    item.keywords && item.keywords.toLowerCase().includes(shortcut.toLowerCase())
+                );
+                
+                if (matched.length > 0) {
+                    displayResults(matched);
+                } else {
+                    container.innerHTML = `
+                        <div class="result-card">
+                            <h3>اختصار (${shortcut})</h3>
+                            <p>تم الانتقال إلى قسم ${shortcut} بنجاح عبر منصة الإسلامية.</p>
+                            <a href="index.html" class="result-link">العودة للرئيسية</a>
+                        </div>
+                    `;
+                }
             } else if (query) {
-                const searchTerm = query.toLowerCase().trim();
-                // البحث العادي بدقة: يظهر النتائج المطابقة لكلمة البحث فقط في الحقول (العنوان، الوصف، الكلمات المفتاحية، الفئة)
-                resultsToShow = database.filter(item => {
-                    const title = String(item.title || "").toLowerCase();
-                    const desc = String(item.description || "").toLowerCase();
-                    const kw = String(item.keywords || "").toLowerCase();
-                    const cat = String(item.category || "").toLowerCase();
+                let filtered = database.filter(item => 
+                    (item.title && item.title.toLowerCase().includes(query.toLowerCase())) || 
+                    (item.description && item.description.toLowerCase().includes(query.toLowerCase())) ||
+                    (item.keywords && item.keywords.toLowerCase().includes(query.toLowerCase()))
+                );
 
-                    return title.includes(searchTerm) || 
-                           desc.includes(searchTerm) || 
-                           kw.includes(searchTerm) || 
-                           cat.includes(searchTerm);
-                });
+                if (filtered.length > 0) {
+                    displayResults(filtered);
+                } else {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <p>لا توجد نتائج مطابقة لـ: "<strong>${query}</strong>"</p>
+                            <br>
+                            <a href="index.html" class="result-link">العودة للرئيسية للبحث من جديد</a>
+                        </div>
+                    `;
+                }
             } else {
-                // إذا لم يوجد بحث أو اختصار، لا نعرض نتائج عشوائية بل نطلب البحث
-                container.innerHTML = `<div class="no-results">الرجاء إدخال كلمة البحث أو اختيار أحد الاختصارات في الأعلى.</div>`;
-                return;
-            }
-
-            if (resultsToShow.length > 0) {
-                displayResults(resultsToShow);
-            } else {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <p>لا توجد نتائج مطابقة لـ: "<strong>${query || shortcut}</strong>"</p>
-                        <br>
-                        <a href="index.html" class="result-link">العودة للرئيسية للبحث من جديد</a>
-                    </div>
-                `;
+                displayResults(database);
             }
         }
 
@@ -348,12 +335,13 @@
         }
 
         function escapeHtml(text) {
-            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            return String(text).replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
 
         fetchFromFirestore();
     </script>
 
+    <!-- وظائف الـ WebView -->
     <script>
         function openWebView(url, title) {
             const modal = document.getElementById("webviewModal");
@@ -378,4 +366,3 @@
 
 </body>
 </html>
-
