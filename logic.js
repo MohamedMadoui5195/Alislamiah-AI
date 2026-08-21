@@ -1,69 +1,46 @@
-// قاعدة البيانات المحلية الأولية للتجربة
-const localLibrary = [
-    { keywords: ["صيام", "مريض"], answer: "يجوز للمريض الذي يرجى برؤه الفطر في رمضان وعليه القضاء." }
-];
+// logic.js - محرك البحث الصارم
 
-// دالة معالجة رسالة المستخدم وإرسالها للتشات
-async function processUserMessage() {
-    const inputField = document.getElementById('ai-input');
-    const userText = inputField.value.trim();
-    if (!userText) return;
+async function processUserMessage(userQuery) {
+    // 1. البحث في قاعدة البيانات الداخلية (أولاً)
+    let response = await searchInInternalDatabase(userQuery);
+    if (response) return displayResponse(response);
 
-    const chatHistory = document.getElementById('chat-history');
-    if (!chatHistory) return;
+    // 2. البحث في مواقع التطبيق (ثانياً)
+    response = await searchInAppSources(userQuery);
+    if (response) return displayResponse(response);
 
-    // عرض رسالة المستخدم بتدرج إنستغرام
-    chatHistory.innerHTML += `
-        <div class="flex justify-end mb-2">
-            <div class="chat-bubble insta-gradient text-white">${userText}</div>
-        </div>`;
-    inputField.value = '';
-
-    // جلب الرد ومعالجته
-    const response = await getAIResponse(userText);
-    renderBotResponse(response, chatHistory);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-}
-
-// دالة محاكاة منطق البحث والقواعد التي اتفقنا عليها
-async function getAIResponse(query) {
-    const localMatch = localLibrary.find(item => item.keywords.some(kw => query.includes(kw)));
-    if (localMatch) {
-        return { type: "direct", text: localMatch.answer };
-    }
-
-    // شرط الرفض الصارم عند انعدام المصدر
-    if (query.includes("مجهول")) {
-        return { type: "strict_reject", text: "تعذر إمكانية الجواب على سؤالك" };
-    }
-
-    // شرط منح الخيار في المسائل غير المؤكدة أو الاحتمالية
-    if (query.includes("هل")) {
-        return { type: "uncertain", text: "هي هكذا..... ولك القرار لأن المعلومة غير مؤكدة." };
-    }
-
-    // الرد الافتراضي في حال نجاح البحث
-    return { type: "direct", text: "تم جلب هذه الإجابة من المصادر الموثوقة عبر محرك البحث." };
-}
-
-// دالة عرض رد الذكاء الاصطناعي في واجهة المحادثة
-function renderBotResponse(response, container) {
-    let htmlContent = '';
-    
-    if (response.type === "strict_reject") {
-        htmlContent = `<div class="chat-bubble bg-red-600 text-white">${response.text}</div>`;
-    } else if (response.type === "uncertain") {
-        htmlContent = `
-            <div class="chat-bubble insta-border bg-white">
-                ${response.text}
-                <div class="mt-3 flex gap-2">
-                    <button class="bg-gray-200 px-3 py-1 rounded text-sm font-bold text-black">عرض التفاصيل</button>
-                    <button class="bg-gray-200 px-3 py-1 rounded text-sm font-bold text-black">إلغاء</button>
-                </div>
-            </div>`;
+    // 3. البحث في جوجل (ثالثاً وأخيراً)
+    response = await searchInGoogle(userQuery);
+    if (response) {
+        return displayResponse(response);
     } else {
-        htmlContent = `<div class="chat-bubble insta-border bg-white">${response.text}</div>`;
+        // الرد في حال عدم العثور على نتيجة موثوقة (شرط الصرامة)
+        return displayResponse("عذراً، المعلومات غير مؤكدة في المصادر المتاحة.");
     }
-    
-    container.innerHTML += `<div class="flex justify-start mb-2">${htmlContent}</div>`;
+}
+
+// دوال المحاكاة للبحث
+async function searchInInternalDatabase(query) {
+    // هنا تضع فتاوى جاهزة مخزنة مسبقاً
+    if (query.includes("صيام")) return "الصيام للمريض يجوز فيه الفطر إذا كان في ذلك مشقة معتبرة.";
+    return null; 
+}
+
+async function searchInAppSources(query) {
+    // هنا يتم البحث في الروابط المحددة داخل تطبيقك
+    return null; 
+}
+
+async function searchInGoogle(query) {
+    // هنا يتم ربط API بحث جوجل
+    return "تم العثور على نتيجة من محرك بحث جوجل...";
+}
+
+function displayResponse(text) {
+    const history = document.getElementById('chat-history');
+    history.innerHTML += `
+        <div class="flex justify-start">
+            <div class="border-gradient text-gray-800 px-5 py-3 rounded-2xl max-w-[80%]">${text}</div>
+        </div>`;
+    history.scrollTop = history.scrollHeight;
 }
