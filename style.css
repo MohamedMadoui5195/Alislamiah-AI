@@ -1,0 +1,17 @@
+/* تصميم ألوان إنستغرام وتنسيق فقاعات المحادثة */
+.insta-gradient { 
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+}
+
+.insta-border { 
+    border: 2px solid #e6683c; 
+}
+
+.chat-bubble { 
+    padding: 12px 16px; 
+    border-radius: 20px; 
+    font-weight: bold; 
+    max-width: 85%; 
+    margin-bottom: 12px; 
+    color: #333; 
+}
