@@ -13,7 +13,7 @@
 </head>
 <body class="pb-24">
 
-    <!-- شريط البحث والتنقل الثابت -->
+    <!-- شريط البحث والتنقل -->
     <div class="sticky top-0 z-50 bg-emerald-700 p-4 rounded-b-3xl shadow-xl">
         <div class="flex items-center justify-between mb-3 text-white">
             <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
@@ -21,8 +21,8 @@
             <div class="w-8"></div>
         </div>
         
-        <input type="text" id="searchInput" oninput="filterContent()" placeholder="ابحث عن محتوى..." 
-               class="w-full py-2.5 px-4 rounded-xl shadow-inner focus:outline-none mb-3">
+        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="ابحث هنا..." 
+               class="w-full py-2.5 px-4 rounded-xl shadow-inner focus:outline-none mb-3 text-gray-900">
 
         <div class="flex gap-2 overflow-x-auto hide-scrollbar">
             <button onclick="setCategory('الكل')" class="bg-white text-emerald-800 px-4 py-1 rounded-full text-sm font-bold">الكل</button>
@@ -34,57 +34,71 @@
     <main id="container" class="p-4 space-y-6"></main>
 
     <script>
-        const allItems = [
-            { title: "فضاء الأولياء", url: "https://example.com/parents", type: "أساسية", theme: "light" },
-            { title: "موقع الإسلامية نت", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", type: "أساسية", theme: "light" },
-            { title: "متجر الإسلامية", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net-store", type: "أساسية", theme: "light" },
-            // قنوات دينية موثوقة ومحددة:
-            { title: "قناة القرآن الكريم", url: "https://www.youtube.com/@quran_kariem", type: "منصات", theme: "dark" },
-            { title: "قناة الشيخ عثمان الخميس", url: "https://www.youtube.com/@othmanalkamees", type: "منصات", theme: "dark" },
-            { title: "منصة فايربيز", url: "https://console.firebase.google.com", type: "منصات", theme: "dark" }
+        const data = [
+            // استخدمت روابط مباشرة وتأكدت من صيغتها
+            { title: "فضاء الأولياء", type: "أساسية", theme: "light", url: "https://awlya.education.gov.dz/" },
+            { title: "موقع الإسلامية نت", type: "أساسية", theme: "light", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/" },
+            { title: "متجر الإسلامية", type: "أساسية", theme: "light", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net-store" },
+            { title: "قناة القرآن الكريم", type: "منصات", theme: "dark", url: "https://www.youtube.com/@quran_kariem" },
+            { title: "قناة الشيخ عثمان الخميس", type: "منصات", theme: "dark", url: "https://www.youtube.com/@othmanalkamees" }
         ];
 
-        let currentCategory = 'الكل';
+        let currentCat = 'الكل';
 
         function setCategory(cat) {
-            currentCategory = cat;
-            filterContent();
+            currentCat = cat;
+            applyFilters();
         }
 
-        function filterContent() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
+        // دالة فتح الروابط بطريقة تضمن عملها
+        function openLink(url) {
+            // نقوم بالتحويل المباشر للرابط
+            window.location.href = url;
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
             const container = document.getElementById('container');
             container.innerHTML = '';
 
-            const filtered = allItems.filter(i => 
-                (currentCategory === 'الكل' || i.type === currentCategory) && 
-                i.title.toLowerCase().includes(searchText)
-            );
+            const filtered = data.filter(item => {
+                const matchQuery = item.title.toLowerCase().includes(query);
+                const matchCat = (currentCat === 'الكل' || item.type === currentCat);
+                return matchQuery && matchCat;
+            });
 
-            // القسم الأساسي
-            const main = filtered.filter(i => i.theme === 'light');
-            if(main.length > 0) {
-                let html = `<div class="bg-emerald-800 p-4 rounded-3xl"><h2 class="text-white mb-3 font-bold text-sm">القسم الأساسي</h2>`;
-                main.forEach(i => html += `<div class="bg-white p-4 rounded-2xl flex justify-between items-center mb-2 shadow-sm">
-                    <span class="font-bold text-gray-800">${i.title}</span>
-                    <a href="${i.url}" target="_self" class="bg-emerald-600 text-white px-4 py-1.5 rounded-lg text-sm font-bold">زيارة</a>
-                </div>`);
-                container.innerHTML += html + `</div>`;
+            // عرض القسم الأساسي
+            const mainItems = filtered.filter(i => i.theme === 'light');
+            if (mainItems.length > 0) {
+                container.innerHTML += `
+                    <div class="bg-emerald-800 p-4 rounded-3xl">
+                        <h2 class="text-white mb-3 font-bold text-sm">المواقع الأساسية</h2>
+                        ${mainItems.map(i => `
+                            <div class="bg-white p-4 rounded-2xl flex justify-between items-center mb-2 shadow-sm">
+                                <span class="font-bold text-gray-800">${i.title}</span>
+                                <button onclick="openLink('${i.url}')" class="bg-emerald-600 text-white px-4 py-1.5 rounded-lg text-sm font-bold">زيارة</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
             }
 
-            // القسم الداكن
-            const dark = filtered.filter(i => i.theme === 'dark');
-            if(dark.length > 0) {
-                let html = `<h2 class="text-gray-400 font-bold px-1 text-sm">منصات ومواقع دينية</h2>`;
-                dark.forEach(i => html += `<div class="bg-slate-800 border border-slate-700 p-4 rounded-3xl mb-3 shadow-lg">
-                    <h3 class="text-white font-bold mb-3">${i.title}</h3>
-                    <a href="${i.url}" target="_self" class="block text-center w-full bg-blue-600 text-white py-2 rounded-xl font-bold">زيارة القناة</a>
-                </div>`);
-                container.innerHTML += html;
+            // عرض القسم الداكن
+            const darkItems = filtered.filter(i => i.theme === 'dark');
+            if (darkItems.length > 0) {
+                container.innerHTML += `
+                    <h2 class="text-gray-400 font-bold px-1 text-sm mb-2">منصات ومواقع دينية</h2>
+                    ${darkItems.map(i => `
+                        <div class="bg-slate-800 border border-slate-700 p-4 rounded-3xl mb-3 shadow-lg">
+                            <h3 class="text-white font-bold mb-3">${i.title}</h3>
+                            <button onclick="openLink('${i.url}')" class="block text-center w-full bg-blue-600 text-white py-2 rounded-xl font-bold">زيارة القناة</button>
+                        </div>
+                    `).join('')}
+                `;
             }
         }
 
-        filterContent();
+        applyFilters();
     </script>
 </body>
 </html>
