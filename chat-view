@@ -1,122 +1,914 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alislamiah-AI Chat</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * { box-sizing: border-box; }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-        }
-        .insta-gradient { 
-            background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45); 
-        }
-        .user-bubble {
-            background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 18px;
-            max-width: 80%;
-            word-break: break-word;
-            font-weight: 500;
-        }
-        .ai-bubble {
-            background: #ffffff;
-            color: #333333;
-            padding: 12px 18px;
-            border-radius: 18px;
-            max-width: 80%;
-            word-break: break-word;
-            font-weight: 500;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            position: relative;
-        }
-        .ai-bubble::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; bottom: 0; left: 0;
-            z-index: -1;
-            margin: -2px;
-            border-radius: 18px;
-            background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#833AB4">
+
+<title>Alislamiah-AI | Chat</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,"Segoe UI",sans-serif;
+}
+
+body{
+    background:#fff;
+    color:#222;
+    height:100vh;
+    overflow:hidden;
+}
+
+.chat-app{
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:#fff;
+}
+
+/* ===== الهيدر ===== */
+
+.chat-header{
+    height:65px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 16px;
+
+    background:linear-gradient(
+        90deg,
+        #833AB4,
+        #C13584,
+        #E1306C,
+        #FD1D1D,
+        #F77737
+    );
+
+    color:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+    color:#fff;
+
+    font-size:28px;
+    line-height:42px;
+
+    cursor:pointer;
+}
+
+.back-btn:active{
+    transform:scale(.92);
+}
+
+.ai-logo{
+    width:43px;
+    height:43px;
+
+    border-radius:50%;
+
+    background:#fff;
+    color:#833AB4;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+.header-info{
+    flex:1;
+}
+
+.header-info h2{
+    font-size:17px;
+    margin-bottom:3px;
+}
+
+.status{
+    font-size:12px;
+    opacity:.9;
+}
+
+.online-dot{
+    display:inline-block;
+
+    width:7px;
+    height:7px;
+
+    background:#4cff78;
+    border-radius:50%;
+
+    margin-left:4px;
+}
+
+/* ===== منطقة الرسائل ===== */
+
+.messages{
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:20px 14px 100px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(131,58,180,.07),
+            transparent 35%
+        ),
+        #fff;
+}
+
+/* ===== رسالة ===== */
+
+.message{
+    display:flex;
+    margin-bottom:15px;
+
+    animation:messageIn .25s ease;
+}
+
+@keyframes messageIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.message.user{
+    justify-content:flex-start;
+}
+
+.message.ai{
+    justify-content:flex-end;
+}
+
+.message-content{
+    max-width:82%;
+
+    padding:12px 15px;
+
+    border-radius:18px;
+
+    line-height:1.7;
+
+    font-size:15px;
+
+    word-wrap:break-word;
+}
+
+/* رسالة المستخدم */
+
+.user .message-content{
+    background:linear-gradient(
+        135deg,
+        #833AB4,
+        #E1306C,
+        #FD1D1D
+    );
+
+    color:#fff;
+
+    border-bottom-left-radius:5px;
+}
+
+/* رسالة الذكاء الاصطناعي */
+
+.ai .message-content{
+    background:#f1f1f1;
+
+    color:#222;
+
+    border-bottom-right-radius:5px;
+}
+
+/* ===== الوقت ===== */
+
+.message-time{
+    display:block;
+
+    font-size:10px;
+
+    opacity:.6;
+
+    margin-top:5px;
+
+    text-align:left;
+}
+
+/* ===== رسالة الترحيب ===== */
+
+.welcome{
+    text-align:center;
+
+    padding:50px 15px 20px;
+}
+
+.welcome-logo{
+    width:80px;
+    height:80px;
+
+    margin:auto;
+
+    border-radius:24px;
+
+    background:linear-gradient(
+        135deg,
+        #833AB4,
+        #C13584,
+        #E1306C,
+        #FD1D1D,
+        #F77737
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:35px;
+    font-weight:bold;
+
+    box-shadow:
+        0 8px 25px
+        rgba(131,58,180,.25);
+}
+
+.welcome h1{
+    margin-top:15px;
+
+    font-size:23px;
+}
+
+.welcome p{
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:14px;
+}
+
+/* ===== منطقة الكتابة ===== */
+
+.input-area{
+    position:fixed;
+
+    bottom:0;
+    right:0;
+    left:0;
+
+    padding:10px 12px 14px;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(12px);
+
+    border-top:1px solid #eee;
+}
+
+.input-box{
+    max-width:900px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:8px;
+
+    background:#f3f3f3;
+
+    border:1px solid #ddd;
+
+    border-radius:25px;
+
+    padding:6px 7px 6px 10px;
+
+    transition:.2s;
+}
+
+.input-box:focus-within{
+    border-color:#C13584;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(193,53,132,.08);
+}
+
+#messageInput{
+    flex:1;
+
+    border:none;
+    outline:none;
+
+    background:transparent;
+
+    resize:none;
+
+    min-height:40px;
+    max-height:120px;
+
+    padding:10px 7px;
+
+    font-size:15px;
+
+    direction:rtl;
+}
+
+.send-btn{
+    width:43px;
+    height:43px;
+
+    flex-shrink:0;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #833AB4,
+        #E1306C,
+        #FD1D1D
+    );
+
+    color:#fff;
+
+    font-size:19px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
+}
+
+.send-btn:hover{
+    transform:scale(1.05);
+}
+
+.send-btn:active{
+    transform:scale(.92);
+}
+
+.send-btn:disabled{
+    opacity:.5;
+
+    cursor:not-allowed;
+}
+
+/* ===== مؤشر الكتابة ===== */
+
+.typing{
+    display:flex;
+
+    align-items:center;
+
+    gap:4px;
+
+    width:max-content;
+
+    padding:12px 16px;
+
+    background:#f1f1f1;
+
+    border-radius:18px;
+}
+
+.typing span{
+    width:7px;
+
+    height:7px;
+
+    background:#999;
+
+    border-radius:50%;
+
+    animation:typing 1.2s infinite;
+}
+
+.typing span:nth-child(2){
+    animation-delay:.2s;
+}
+
+.typing span:nth-child(3){
+    animation-delay:.4s;
+}
+
+@keyframes typing{
+    0%,60%,100%{
+        transform:translateY(0);
+    }
+
+    30%{
+        transform:translateY(-5px);
+    }
+}
+
+/* ===== الهاتف ===== */
+
+@media(max-width:600px){
+
+    .chat-header{
+        height:60px;
+    }
+
+    .message-content{
+        max-width:88%;
+        font-size:14px;
+    }
+
+    .welcome{
+        padding-top:35px;
+    }
+
+    .welcome-logo{
+        width:70px;
+        height:70px;
+
+        font-size:30px;
+    }
+
+    .welcome h1{
+        font-size:21px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="w-full h-full bg-white flex flex-col justify-between overflow-hidden">
-        
-        <!-- الهيدر العلوي الثابت تماماً -->
-        <div class="p-3 bg-white border-b border-gray-100 flex items-center justify-between shrink-0">
-            <button onclick="window.location.href='index.html'" class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold">🏠 الرئيسية</button>
-            <span class="font-bold text-gray-800 text-sm">Alislamiah AI</span>
-            <div class="w-6"></div>
+<div class="chat-app">
+
+    <!-- الهيدر -->
+
+    <header class="chat-header">
+
+        <button
+            class="back-btn"
+            onclick="goBack()">
+
+            ‹
+
+        </button>
+
+        <div class="ai-logo">
+            AI
         </div>
 
-        <!-- سجل المحادثة (الرسائل فقط بدون أي تسميات مزعجة) -->
-        <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-4 bg-white">
-            <div class="flex justify-start">
-                <div class="ai-bubble text-sm">
-                    أهلاً بك! اسأل وسأبحث لك ضمن المصادر الموثوقة.
-                </div>
+        <div class="header-info">
+
+            <h2>
+                Alislamiah-AI
+            </h2>
+
+            <div class="status">
+
+                <span class="online-dot"></span>
+
+                متصل الآن
+
             </div>
+
         </div>
 
-        <!-- شريط الإدخال السفلي الثابت -->
-        <div class="p-3 bg-white border-t border-gray-100 shrink-0">
-            <div class="flex items-center border border-gray-300 rounded-full p-1 bg-white shadow-sm">
-                <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-gray-800 text-sm bg-transparent" placeholder="اكتب سؤالك هنا..." onkeydown="handleKey(event)">
-                <button type="button" onclick="sendMessage()" class="insta-gradient text-white px-5 py-2 rounded-full font-bold text-xs shadow">
-                    إرسال
-                </button>
+    </header>
+
+
+    <!-- منطقة المحادثة -->
+
+    <main
+        class="messages"
+        id="messages">
+
+        <div
+            class="welcome"
+            id="welcome">
+
+            <div class="welcome-logo">
+                AI
             </div>
+
+            <h1>
+                مرحباً بك في Alislamiah-AI
+            </h1>
+
+            <p>
+                كيف يمكنني مساعدتك اليوم؟
+            </p>
+
         </div>
+
+    </main>
+
+
+    <!-- مربع الكتابة -->
+
+    <div class="input-area">
+
+        <div class="input-box">
+
+            <textarea
+                id="messageInput"
+                placeholder="اكتب رسالتك..."
+                rows="1"
+                oninput="autoResize(this)"
+                onkeydown="handleKey(event)">
+            </textarea>
+
+            <button
+                class="send-btn"
+                id="sendBtn"
+                onclick="sendMessage()"
+                title="إرسال">
+
+                ➤
+
+            </button>
+
+        </div>
+
     </div>
 
-    <script>
-        function sendMessage() {
-            const input = document.getElementById('ai-input');
-            const history = document.getElementById('chat-history');
-            const query = input.value.trim();
-            
-            if (!query) return;
+</div>
 
-            // رسالة المستخدم
-            history.innerHTML += `
-                <div class="flex justify-end">
-                    <div class="user-bubble text-sm">${query}</div>
-                </div>`;
-            
-            input.value = "";
-            history.scrollTop = history.scrollHeight;
 
-            // رد المساعد الافتراضي
-            setTimeout(() => {
-                history.innerHTML += `
-                    <div class="flex justify-start">
-                        <div class="ai-bubble text-sm">
-                            إليك المعلومات المعتمدة من المصادر الموثوقة حول طلبك.
-                        </div>
-                    </div>`;
-                history.scrollTop = history.scrollHeight;
-            }, 500);
+<script>
+
+/* ================================
+   العناصر
+================================ */
+
+const messages =
+    document.getElementById("messages");
+
+const input =
+    document.getElementById("messageInput");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+let isSending = false;
+
+
+/* ================================
+   الوقت
+================================ */
+
+function getTime(){
+
+    return new Date().toLocaleTimeString(
+        "ar-DZ",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
         }
+    );
 
-        function handleKey(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendMessage();
-            }
-        }
-    </script>
+}
+
+
+/* ================================
+   حماية النص
+================================ */
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ================================
+   إضافة رسالة
+================================ */
+
+function addMessage(text,type){
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message " + type;
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+
+    content.innerHTML =
+        escapeHTML(text)
+        .replace(/\n/g,"<br>");
+
+
+    const time =
+        document.createElement("span");
+
+    time.className =
+        "message-time";
+
+    time.textContent =
+        getTime();
+
+
+    content.appendChild(time);
+
+    message.appendChild(content);
+
+    messages.appendChild(message);
+
+    scrollToBottom();
+
+}
+
+
+/* ================================
+   التمرير
+================================ */
+
+function scrollToBottom(){
+
+    setTimeout(() => {
+
+        messages.scrollTo({
+
+            top:messages.scrollHeight,
+
+            behavior:"smooth"
+
+        });
+
+    },50);
+
+}
+
+
+/* ================================
+   مؤشر الكتابة
+================================ */
+
+function showTyping(){
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message ai";
+
+    message.id =
+        "typingMessage";
+
+
+    message.innerHTML = `
+        <div class="typing">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+    `;
+
+
+    messages.appendChild(message);
+
+    scrollToBottom();
+
+}
+
+
+function hideTyping(){
+
+    const typing =
+        document.getElementById(
+            "typingMessage"
+        );
+
+    if(typing){
+
+        typing.remove();
+
+    }
+
+}
+
+
+/* ================================
+   إرسال الرسالة
+================================ */
+
+async function sendMessage(){
+
+    if(isSending){
+        return;
+    }
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!text){
+        return;
+    }
+
+
+    isSending = true;
+
+    sendBtn.disabled = true;
+
+
+    /* إخفاء الترحيب */
+
+    const welcome =
+        document.getElementById("welcome");
+
+    if(welcome){
+
+        welcome.style.display =
+            "none";
+
+    }
+
+
+    /* إضافة رسالة المستخدم */
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    input.value = "";
+
+    autoResize(input);
+
+
+    showTyping();
+
+
+    try{
+
+        /*
+        =====================================
+        API الخاص بك يوضع هنا
+        =====================================
+        */
+
+
+        /* رد تجريبي مؤقت */
+
+        await new Promise(
+            resolve =>
+            setTimeout(resolve,900)
+        );
+
+
+        const answer =
+            "تم استلام رسالتك بنجاح. 🤖";
+
+
+        hideTyping();
+
+        addMessage(
+            answer,
+            "ai"
+        );
+
+    }
+
+    catch(error){
+
+        hideTyping();
+
+        addMessage(
+            "حدث خطأ أثناء الاتصال بالخادم.",
+            "ai"
+        );
+
+        console.error(error);
+
+    }
+
+    finally{
+
+        isSending = false;
+
+        sendBtn.disabled = false;
+
+        input.focus();
+
+    }
+
+}
+
+
+/* ================================
+   تغيير حجم مربع الكتابة
+================================ */
+
+function autoResize(element){
+
+    element.style.height =
+        "auto";
+
+    element.style.height =
+        Math.min(
+            element.scrollHeight,
+            120
+        ) + "px";
+
+}
+
+
+/* ================================
+   زر Enter
+================================ */
+
+function handleKey(event){
+
+    if(
+        event.key === "Enter" &&
+        !event.shiftKey
+    ){
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+}
+
+
+/* ================================
+   زر الرجوع
+================================ */
+
+function goBack(){
+
+    if(document.referrer){
+
+        history.back();
+
+    }
+    else{
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+
+/* ================================
+   تشغيل الصفحة
+================================ */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        input.focus();
+
+    }
+);
+
+</script>
+
 </body>
 </html>
