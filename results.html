@@ -3,95 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل المواقع الإسلامية</title>
+    <title>دليل الإسلامية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8fafc; font-family: sans-serif; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        body { margin: 0; padding-top: 140px; background-color: #f8fafc; font-family: sans-serif; }
+        #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
     </style>
 </head>
-<body class="pb-10">
+<body>
 
-    <!-- الشريط العلوي (الأخضر) كما في الصورة -->
-    <div class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg sticky top-0 z-50">
-        <h1 class="text-white font-bold text-xl mb-4">دليل المواقع الإسلامية</h1>
-        
-        <!-- البحث -->
-        <div class="relative mb-4">
-            <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن موقع، كتاب، أو قسم..." 
-                   class="w-full py-3 pr-4 pl-10 rounded-xl focus:outline-none">
-            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+    <!-- الشريط الأخضر الثابت (لا يقلص مساحة المحتوى) -->
+    <header id="app-header" class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg">
+        <div class="flex items-center justify-between mb-3 text-white">
+            <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
+            <h1 class="font-bold text-lg">دليل الإسلامية</h1>
+            <div class="w-8"></div>
         </div>
+        <input type="text" id="searchInput" oninput="render()" placeholder="ابحث (إسلام ويب / يوتيوب / فركوس)..." 
+               class="w-full py-2 px-4 rounded-xl focus:outline-none shadow-inner">
+    </header>
 
-        <!-- أزرار التصنيفات -->
-        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
-            <button onclick="setCat('الكل')" class="cat-btn bg-white text-emerald-800 px-4 py-1.5 rounded-full font-bold text-sm whitespace-nowrap">الكل</button>
-            <button onclick="setCat('القرآن الكريم')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">القرآن الكريم</button>
-            <button onclick="setCat('السنة النبوية')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">السنة النبوية</button>
-            <button onclick="setCat('الفتاوى')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">الفتاوى</button>
-        </div>
-    </div>
-
-    <!-- منطقة عرض المواقع -->
     <main id="container" class="p-4 space-y-4 max-w-lg mx-auto"></main>
 
     <script>
-        const data = [
-            // المواقع الأساسية (تظهر دائماً في الصفحة الخضراء/البيضاء)
-            { title: "القرآن الكريم", category: "القرآن الكريم", theme: "islamic", url: "https://quran.com" },
-            { title: "موقع الإسلام سؤال وجواب", category: "الفتاوى", theme: "islamic", url: "https://islamqa.info" },
-            { title: "موسوعة السنة النبوية", category: "السنة النبوية", theme: "islamic", url: "https://sunnah.com" },
-            { title: "فضاء الأولياء", category: "أساسية", theme: "islamic", url: "https://awlya.education.gov.dz/" },
-            
-            // منصات التواصل (تظهر في الصفحة الداكنة)
-            { title: "يوتيوب قنوات دينية", category: "منصات", theme: "dark", url: "https://youtube.com" },
-            { title: "منصة فايربيز", category: "منصات", theme: "dark", url: "https://firebase.google.com" }
+        const library = [
+            { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/" },
+            { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/" },
+            { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.gov.dz/" },
+            { title: "قناة الشيخ فركوس", type: "منصة", url: "https://www.youtube.com/@ferkous" },
+            { title: "قناة القرآن الكريم", type: "منصة", url: "https://www.youtube.com/@quran_kariem" },
+            { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net" },
+            { title: "موقع الإسلام سؤال وجواب", type: "موقع", url: "https://islamqa.info" }
         ];
 
-        let activeCat = 'الكل';
-        function setCat(cat) { activeCat = cat; render(); }
-
         function render() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const container = document.getElementById('container');
             container.innerHTML = '';
 
-            const filtered = data.filter(i => 
-                (activeCat === 'الكل' || i.category === activeCat) && 
-                i.title.toLowerCase().includes(query)
-            );
+            if (query === '') return;
 
-            // المنطق: إذا كان البحث يخص المنصات فقط، لا تظهر القسم الإسلامي والعكس صحيح
-            const islamicItems = filtered.filter(i => i.theme === 'islamic');
-            const darkItems = filtered.filter(i => i.theme === 'dark');
+            const filtered = library.filter(i => i.title.toLowerCase().includes(query));
 
-            if (islamicItems.length > 0) {
-                islamicItems.forEach(i => {
-                    container.innerHTML += `
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-                            <div>
-                                <span class="block text-emerald-600 text-xs font-bold mb-1">${i.category}</span>
-                                <span class="font-bold text-gray-800">${i.title}</span>
-                            </div>
-                            <button onclick="window.location.href='${i.url}'" class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold">زيارة الموقع</button>
-                        </div>
-                    `;
-                });
+            // القسم الداكن: المنصات
+            const platforms = filtered.filter(i => i.type === "منصة");
+            if (platforms.length > 0) {
+                container.innerHTML += `<div class="bg-slate-800 p-5 rounded-3xl shadow-2xl">
+                    <h2 class="text-white font-bold mb-4">المنصات (قنوات، تطبيقات، بوابات)</h2>` +
+                    platforms.map(i => `<div class="bg-slate-700 p-4 rounded-xl mb-2 flex justify-between items-center text-white font-bold">
+                        <span>${i.title}</span>
+                        <button onclick="window.location.href='${i.url}'" class="bg-blue-600 px-4 py-2 rounded-lg text-xs">فتح</button>
+                    </div>`).join('') + `</div>`;
             }
 
-            if (darkItems.length > 0) {
-                darkItems.forEach(i => {
-                    container.innerHTML += `
-                        <div class="bg-slate-800 p-5 rounded-2xl shadow-lg mt-6">
-                            <h3 class="text-white font-bold mb-3">${i.title}</h3>
-                            <button onclick="window.location.href='${i.url}'" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">زيارة</button>
-                        </div>
-                    `;
-                });
+            // القسم الأخضر: المواقع الدينية
+            const sites = filtered.filter(i => i.type === "موقع");
+            if (sites.length > 0) {
+                container.innerHTML += `<div class="bg-emerald-800 p-5 rounded-3xl shadow-xl">
+                    <h2 class="text-white font-bold mb-4">المواقع الدينية</h2>` +
+                    sites.map(i => `<div class="bg-white p-4 rounded-xl mb-2 flex justify-between items-center text-emerald-900 font-bold">
+                        <span>${i.title}</span>
+                        <button onclick="window.location.href='${i.url}'" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs">زيارة</button>
+                    </div>`).join('') + `</div>`;
             }
         }
-        render();
     </script>
 </body>
 </html>
