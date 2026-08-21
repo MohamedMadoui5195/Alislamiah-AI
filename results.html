@@ -3,87 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل الإسلامية</title>
+    <title>دليل المواقع الإسلامية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* أجبر الصفحة على أخذ كامل الطول */
-        body { margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* الشريط الثابت (Header) */
-        #main-header { flex-shrink: 0; z-index: 10; }
-        
-        /* منطقة المحتوى تبدأ من تحت الشريط مباشرة */
-        #content-wrapper { flex-grow: 1; overflow: hidden; position: relative; }
-        
-        /* iframe يأخذ كل المساحة المتوفرة تحت الشريط */
-        #site-frame { width: 100%; height: 100%; border: none; display: none; }
-        #list-container { width: 100%; height: 100%; overflow-y: auto; }
+        body { background-color: #f8fafc; font-family: sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-slate-900">
+<body class="pb-10">
 
-    <!-- شريط التنقل (يأخذ مساحته ولا يغطي المحتوى) -->
-    <header id="main-header" class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg">
-        <div class="flex items-center justify-between mb-3 text-white">
-            <button onclick="goBack()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
-            <h1 class="font-bold text-lg">دليل الإسلامية</h1>
-            <div class="w-8"></div>
+    <!-- الشريط العلوي (الأخضر) كما في الصورة -->
+    <div class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg sticky top-0 z-50">
+        <h1 class="text-white font-bold text-xl mb-4">دليل المواقع الإسلامية</h1>
+        
+        <!-- البحث -->
+        <div class="relative mb-4">
+            <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن موقع، كتاب، أو قسم..." 
+                   class="w-full py-3 pr-4 pl-10 rounded-xl focus:outline-none">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
         </div>
-        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="ابحث هنا..." 
-               class="w-full py-2 px-4 rounded-xl shadow-inner focus:outline-none text-gray-900">
-    </header>
 
-    <!-- منطقة العرض (تبدأ تحت الشريط مباشرة) -->
-    <div id="content-wrapper">
-        <main id="list-container" class="p-4 space-y-4"></main>
-        <iframe id="site-frame"></iframe>
+        <!-- أزرار التصنيفات -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+            <button onclick="setCat('الكل')" class="cat-btn bg-white text-emerald-800 px-4 py-1.5 rounded-full font-bold text-sm whitespace-nowrap">الكل</button>
+            <button onclick="setCat('القرآن الكريم')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">القرآن الكريم</button>
+            <button onclick="setCat('السنة النبوية')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">السنة النبوية</button>
+            <button onclick="setCat('الفتاوى')" class="cat-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">الفتاوى</button>
+        </div>
     </div>
+
+    <!-- منطقة عرض المواقع -->
+    <main id="container" class="p-4 space-y-4 max-w-lg mx-auto"></main>
 
     <script>
         const data = [
-            { title: "فضاء الأولياء", type: "أساسية", theme: "light", url: "https://awlya.education.gov.dz/" },
-            { title: "موقع الإسلامية نت", type: "أساسية", theme: "light", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/" },
-            { title: "قناة القرآن الكريم", type: "منصات", theme: "dark", url: "https://www.youtube.com/@quran_kariem" }
+            // المواقع الأساسية (تظهر دائماً في الصفحة الخضراء/البيضاء)
+            { title: "القرآن الكريم", category: "القرآن الكريم", theme: "islamic", url: "https://quran.com" },
+            { title: "موقع الإسلام سؤال وجواب", category: "الفتاوى", theme: "islamic", url: "https://islamqa.info" },
+            { title: "موسوعة السنة النبوية", category: "السنة النبوية", theme: "islamic", url: "https://sunnah.com" },
+            { title: "فضاء الأولياء", category: "أساسية", theme: "islamic", url: "https://awlya.education.gov.dz/" },
+            
+            // منصات التواصل (تظهر في الصفحة الداكنة)
+            { title: "يوتيوب قنوات دينية", category: "منصات", theme: "dark", url: "https://youtube.com" },
+            { title: "منصة فايربيز", category: "منصات", theme: "dark", url: "https://firebase.google.com" }
         ];
 
-        function applyFilters() {
+        let activeCat = 'الكل';
+        function setCat(cat) { activeCat = cat; render(); }
+
+        function render() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('list-container');
+            const container = document.getElementById('container');
             container.innerHTML = '';
-            
-            const filtered = data.filter(i => i.title.toLowerCase().includes(query));
 
-            // عرض النتائج بناءً على الفلترة
-            filtered.forEach(i => {
-                container.innerHTML += `
-                    <div class="${i.theme === 'light' ? 'bg-white' : 'bg-slate-800'} p-4 rounded-2xl flex justify-between items-center shadow-md">
-                        <span class="${i.theme === 'light' ? 'text-gray-900' : 'text-white'} font-bold">${i.title}</span>
-                        <button onclick="openSite('${i.url}')" class="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm font-bold">زيارة</button>
-                    </div>
-                `;
-            });
-        }
+            const filtered = data.filter(i => 
+                (activeCat === 'الكل' || i.category === activeCat) && 
+                i.title.toLowerCase().includes(query)
+            );
 
-        function openSite(url) {
-            document.getElementById('list-container').style.display = 'none';
-            const frame = document.getElementById('site-frame');
-            frame.src = url;
-            frame.style.display = 'block';
-        }
+            // المنطق: إذا كان البحث يخص المنصات فقط، لا تظهر القسم الإسلامي والعكس صحيح
+            const islamicItems = filtered.filter(i => i.theme === 'islamic');
+            const darkItems = filtered.filter(i => i.theme === 'dark');
 
-        function goBack() {
-            const frame = document.getElementById('site-frame');
-            if (frame.style.display === 'block') {
-                frame.style.display = 'none';
-                frame.src = '';
-                document.getElementById('list-container').style.display = 'block';
-            } else {
-                window.history.back();
+            if (islamicItems.length > 0) {
+                islamicItems.forEach(i => {
+                    container.innerHTML += `
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+                            <div>
+                                <span class="block text-emerald-600 text-xs font-bold mb-1">${i.category}</span>
+                                <span class="font-bold text-gray-800">${i.title}</span>
+                            </div>
+                            <button onclick="window.location.href='${i.url}'" class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold">زيارة الموقع</button>
+                        </div>
+                    `;
+                });
+            }
+
+            if (darkItems.length > 0) {
+                darkItems.forEach(i => {
+                    container.innerHTML += `
+                        <div class="bg-slate-800 p-5 rounded-2xl shadow-lg mt-6">
+                            <h3 class="text-white font-bold mb-3">${i.title}</h3>
+                            <button onclick="window.location.href='${i.url}'" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">زيارة</button>
+                        </div>
+                    `;
+                });
             }
         }
-
-        applyFilters();
+        render();
     </script>
 </body>
 </html>
