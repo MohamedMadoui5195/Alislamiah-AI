@@ -13,18 +13,17 @@
 </head>
 <body>
 
-    <!-- الشريط الأخضر الثابت (لا يقلص مساحة المحتوى) -->
     <header id="app-header" class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white">
             <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
             <h1 class="font-bold text-lg">دليل الإسلامية</h1>
             <div class="w-8"></div>
         </div>
-        <input type="text" id="searchInput" oninput="render()" placeholder="ابحث (إسلام ويب / يوتيوب / فركوس)..." 
+        <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
                class="w-full py-2 px-4 rounded-xl focus:outline-none shadow-inner">
     </header>
 
-    <main id="container" class="p-4 space-y-4 max-w-lg mx-auto"></main>
+    <main id="container" class="p-4 max-w-lg mx-auto"></main>
 
     <script>
         const library = [
@@ -32,7 +31,6 @@
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/" },
             { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.gov.dz/" },
             { title: "قناة الشيخ فركوس", type: "منصة", url: "https://www.youtube.com/@ferkous" },
-            { title: "قناة القرآن الكريم", type: "منصة", url: "https://www.youtube.com/@quran_kariem" },
             { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net" },
             { title: "موقع الإسلام سؤال وجواب", type: "موقع", url: "https://islamqa.info" }
         ];
@@ -46,23 +44,25 @@
 
             const filtered = library.filter(i => i.title.toLowerCase().includes(query));
 
-            // القسم الداكن: المنصات
-            const platforms = filtered.filter(i => i.type === "منصة");
-            if (platforms.length > 0) {
-                container.innerHTML += `<div class="bg-slate-800 p-5 rounded-3xl shadow-2xl">
-                    <h2 class="text-white font-bold mb-4">المنصات (قنوات، تطبيقات، بوابات)</h2>` +
-                    platforms.map(i => `<div class="bg-slate-700 p-4 rounded-xl mb-2 flex justify-between items-center text-white font-bold">
+            // تحقق من وجود نتائج
+            if (filtered.length === 0) return;
+
+            // تحديد النوع بناءً على أول نتيجة مطابقة
+            const type = filtered[0].type;
+
+            if (type === "منصة") {
+                // عرض المنصات فقط (صفحة داكنة)
+                container.innerHTML = `<div class="bg-slate-800 p-5 rounded-3xl shadow-2xl">
+                    <h2 class="text-white font-bold mb-4">المنصات (تطبيقات وقنوات)</h2>` +
+                    filtered.map(i => `<div class="bg-slate-700 p-4 rounded-xl mb-2 flex justify-between items-center text-white font-bold">
                         <span>${i.title}</span>
                         <button onclick="window.location.href='${i.url}'" class="bg-blue-600 px-4 py-2 rounded-lg text-xs">فتح</button>
                     </div>`).join('') + `</div>`;
-            }
-
-            // القسم الأخضر: المواقع الدينية
-            const sites = filtered.filter(i => i.type === "موقع");
-            if (sites.length > 0) {
-                container.innerHTML += `<div class="bg-emerald-800 p-5 rounded-3xl shadow-xl">
+            } else {
+                // عرض المواقع الدينية فقط (صفحة خضراء)
+                container.innerHTML = `<div class="bg-emerald-800 p-5 rounded-3xl shadow-xl">
                     <h2 class="text-white font-bold mb-4">المواقع الدينية</h2>` +
-                    sites.map(i => `<div class="bg-white p-4 rounded-xl mb-2 flex justify-between items-center text-emerald-900 font-bold">
+                    filtered.map(i => `<div class="bg-white p-4 rounded-xl mb-2 flex justify-between items-center text-emerald-900 font-bold">
                         <span>${i.title}</span>
                         <button onclick="window.location.href='${i.url}'" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs">زيارة</button>
                     </div>`).join('') + `</div>`;
