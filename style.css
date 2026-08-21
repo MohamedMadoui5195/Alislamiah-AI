@@ -1,17 +1,21 @@
-/* تصميم ألوان إنستغرام وتنسيق فقاعات المحادثة */
-.insta-gradient { 
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+/* الفقاعات الملونة */
+.user-bubble {
+    background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 20px 20px 0 20px;
+    max-width: 80%;
+    align-self: flex-end;
 }
 
-.insta-border { 
-    border: 2px solid #e6683c; 
-}
-
-.chat-bubble { 
-    padding: 12px 16px; 
-    border-radius: 20px; 
-    font-weight: bold; 
-    max-width: 85%; 
-    margin-bottom: 12px; 
-    color: #333; 
+/* فقاعات المساعد بإطار متدرج */
+.ai-bubble {
+    background: white;
+    color: #333;
+    padding: 12px 18px;
+    border-radius: 20px 20px 20px 0;
+    max-width: 80%;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45) 1;
+    align-self: flex-start;
 }
