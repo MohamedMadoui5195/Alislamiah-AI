@@ -6,12 +6,9 @@
     <title>Alislamiah-AI Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* تدرج إنستغرام الأفقي المطابق لصورتك */
         .insta-gradient { 
             background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45); 
         }
-        
-        /* فقاعة المستخدم المتدرجة تماماً كالصورة */
         .user-bubble {
             background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
             color: white;
@@ -21,8 +18,6 @@
             word-break: break-word;
             font-weight: 500;
         }
-
-        /* فقاعة المساعد بإطار متدرج تماماً كالصورة */
         .ai-bubble {
             background: #ffffff;
             color: #333333;
@@ -44,8 +39,6 @@
             border-radius: 18px;
             background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
         }
-
-        /* منع أي اهتزاز أو حركة غير مستقرة للشاشة */
         html, body {
             height: 100%;
             margin: 0;
@@ -56,19 +49,17 @@
 </head>
 <body class="flex justify-center items-center">
 
-    <!-- إطار ثابت ونظيف متطابق مع صورتك -->
     <div class="w-full max-w-[420px] h-full sm:h-[92vh] bg-white flex flex-col sm:rounded-[35px] shadow-2xl border border-gray-200 overflow-hidden">
         
-        <!-- الهيدر العلوي الثابت -->
+        <!-- الهيدر -->
         <div class="p-4 bg-white border-b border-gray-100 flex items-center justify-between">
             <button onclick="window.location.href='index.html'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-xl text-sm font-bold">🏠 الرئيسية</button>
             <span class="font-bold text-gray-800 text-base">Alislamiah AI Chat</span>
             <span class="text-xl">🤖</span>
         </div>
 
-        <!-- سجل المحادثة (الرسائل) -->
+        <!-- سجل المحادثة -->
         <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-4 bg-white">
-            <!-- رسالة المساعد الافتراضية مطابقة للصورة -->
             <div class="flex justify-start">
                 <div class="ai-bubble">
                     أهلاً بك في Alislamiah AI. اسأل وسأبحث لك ضمن المصادر الموثوقة.
@@ -76,7 +67,7 @@
             </div>
         </div>
 
-        <!-- شريط الإدخال السفلي الثابت -->
+        <!-- شريط الإدخال -->
         <div class="p-4 bg-white border-t border-gray-100">
             <div class="flex items-center border border-gray-300 rounded-full p-1 bg-white shadow-sm">
                 <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-gray-800 text-sm bg-transparent" placeholder="اكتب سؤالك هنا..." onkeydown="handleKey(event)">
@@ -95,7 +86,6 @@
             
             if (!query) return;
 
-            // 1. رسالة المستخدم (يمين)
             history.innerHTML += `
                 <div class="flex justify-end">
                     <div class="user-bubble">${query}</div>
@@ -104,7 +94,6 @@
             input.value = "";
             history.scrollTop = history.scrollHeight;
 
-            // 2. رد المساعد (يسار)
             setTimeout(() => {
                 history.innerHTML += `
                     <div class="flex justify-start">
