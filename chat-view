@@ -1,31 +1,36 @@
-<!-- =====================================================
-     AI CHAT VIEW (واجهة التشات)
-===================================================== -->
-<div id="chat-view" class="hidden app flex flex-col h-[90vh]">
-    
-    <!-- رأس التشات ويحتوي على زر العودة للرئيسية -->
-    <div class="p-3 flex items-center justify-between bg-slate-900 border-b border-gray-800 rounded-t-2xl shadow-md">
-        <button onclick="backToHome()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition">
-            <span>🏠</span> الرئيسية
-        </button>
-        <span class="font-bold text-white tracking-wide">Alislamiah AI Chat</span>
-        <span class="text-xl">🤖</span>
-    </div>
-
+<div id="chat-view" class="h-screen flex flex-col bg-white">
     <!-- سجل المحادثة -->
-    <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col bg-slate-900">
-        <div class="flex justify-start mb-2">
-            <div class="chat-bubble insta-border bg-white text-gray-800">
-                أهلاً بك في Alislamiah AI. اسأل وسأبحث لك ضمن المصادر الموثوقة.
-            </div>
-        </div>
+    <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-4">
+        <!-- هنا ستظهر الرسائل تلقائياً -->
     </div>
 
     <!-- شريط الإدخال -->
-    <div class="p-3 bg-slate-900 border-t border-gray-800 rounded-b-2xl">
-        <div class="flex items-center insta-border rounded-full p-1 bg-white">
-            <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-black bg-transparent" placeholder="اكتب سؤالك هنا...">
-            <button onclick="processUserMessage()" class="insta-gradient text-white px-6 py-2 rounded-full font-bold shadow">إرسال</button>
+    <div class="p-4 border-t">
+        <div class="flex items-center border border-gray-300 rounded-full p-1 shadow-inner">
+            <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full" placeholder="اكتب سؤالك...">
+            <button onclick="handleSend()" class="text-white px-6 py-2 rounded-full font-bold" style="background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);">
+                إرسال
+            </button>
         </div>
     </div>
 </div>
+
+<script>
+async function handleSend() {
+    const input = document.getElementById('ai-input');
+    const history = document.getElementById('chat-history');
+    const query = input.value.trim();
+    if (!query) return;
+
+    // 1. عرض رسالة المستخدم
+    history.innerHTML += `<div class="user-bubble">${query}</div>`;
+    input.value = "";
+
+    // 2. محرك البحث (يستدعي منطقك في logic.js)
+    let response = await processUserMessage(query); 
+    
+    // 3. عرض رد المساعد
+    history.innerHTML += `<div class="ai-bubble">${response}</div>`;
+    history.scrollTop = history.scrollHeight;
+}
+</script>
