@@ -2,10 +2,20 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Alislamiah-AI Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
         .insta-gradient { 
             background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45); 
         }
@@ -39,39 +49,33 @@
             border-radius: 18px;
             background: linear-gradient(to right, #833ab4, #fd1d1d, #fcaf45);
         }
-        html, body {
-            height: 100%;
-            margin: 0;
-            background-color: #ffffff;
-            overflow: hidden;
-        }
     </style>
 </head>
-<body class="flex justify-center items-center">
+<body>
 
-    <div class="w-full max-w-[420px] h-full sm:h-[92vh] bg-white flex flex-col sm:rounded-[35px] shadow-2xl border border-gray-200 overflow-hidden">
+    <div class="w-full h-full bg-white flex flex-col justify-between overflow-hidden">
         
-        <!-- الهيدر -->
-        <div class="p-4 bg-white border-b border-gray-100 flex items-center justify-between">
-            <button onclick="window.location.href='index.html'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-xl text-sm font-bold">🏠 الرئيسية</button>
-            <span class="font-bold text-gray-800 text-base">Alislamiah AI Chat</span>
-            <span class="text-xl">🤖</span>
+        <!-- الهيدر العلوي الثابت تماماً -->
+        <div class="p-3 bg-white border-b border-gray-100 flex items-center justify-between shrink-0">
+            <button onclick="window.location.href='index.html'" class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold">🏠 الرئيسية</button>
+            <span class="font-bold text-gray-800 text-sm">Alislamiah AI</span>
+            <div class="w-6"></div>
         </div>
 
-        <!-- سجل المحادثة -->
+        <!-- سجل المحادثة (الرسائل فقط بدون أي تسميات مزعجة) -->
         <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-4 bg-white">
             <div class="flex justify-start">
-                <div class="ai-bubble">
-                    أهلاً بك في Alislamiah AI. اسأل وسأبحث لك ضمن المصادر الموثوقة.
+                <div class="ai-bubble text-sm">
+                    أهلاً بك! اسأل وسأبحث لك ضمن المصادر الموثوقة.
                 </div>
             </div>
         </div>
 
-        <!-- شريط الإدخال -->
-        <div class="p-4 bg-white border-t border-gray-100">
+        <!-- شريط الإدخال السفلي الثابت -->
+        <div class="p-3 bg-white border-t border-gray-100 shrink-0">
             <div class="flex items-center border border-gray-300 rounded-full p-1 bg-white shadow-sm">
                 <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-gray-800 text-sm bg-transparent" placeholder="اكتب سؤالك هنا..." onkeydown="handleKey(event)">
-                <button type="button" onclick="sendMessage()" class="insta-gradient text-white px-6 py-2 rounded-full font-bold text-sm shadow">
+                <button type="button" onclick="sendMessage()" class="insta-gradient text-white px-5 py-2 rounded-full font-bold text-xs shadow">
                     إرسال
                 </button>
             </div>
@@ -86,19 +90,21 @@
             
             if (!query) return;
 
+            // رسالة المستخدم
             history.innerHTML += `
                 <div class="flex justify-end">
-                    <div class="user-bubble">${query}</div>
+                    <div class="user-bubble text-sm">${query}</div>
                 </div>`;
             
             input.value = "";
             history.scrollTop = history.scrollHeight;
 
+            // رد المساعد الافتراضي
             setTimeout(() => {
                 history.innerHTML += `
                     <div class="flex justify-start">
-                        <div class="ai-bubble">
-                            أهلاً بك! إليك الفتاوى المعتمدة من المجامع الفقهية والمصادر الموثوقة.
+                        <div class="ai-bubble text-sm">
+                            إليك المعلومات المعتمدة من المصادر الموثوقة حول طلبك.
                         </div>
                     </div>`;
                 history.scrollTop = history.scrollHeight;
