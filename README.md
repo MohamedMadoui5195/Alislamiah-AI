@@ -10,8 +10,6 @@
 
 <title>Alislamiah-AI Browser</title>
 
-<link rel="stylesheet" href="style.css">
-
 <style>
 /* =====================================================
    RESET
@@ -207,12 +205,6 @@ body{
     transition:.15s;
 }
 
-.search-button img{
-    width:30px;
-    height:30px;
-    object-fit:contain;
-}
-
 .search-button:active{
     transform:scale(.96);
 }
@@ -281,13 +273,6 @@ body{
     align-items:center;
     justify-content:center;
     font-size:38px;
-    overflow:hidden;
-}
-
-.shortcut-icon img{
-    width:34px;
-    height:34px;
-    object-fit:contain;
 }
 
 .shortcut-name{
@@ -307,15 +292,6 @@ body{
 
 .footer strong{
     color:#b9c8e2;
-}
-
-/* واجهة التشات الجديدة (مخفية افتراضياً) */
-#chat-view {
-    background: #ffffff;
-    color: #1d2938;
-    border-radius: 24px;
-    margin-top: 10px;
-    box-shadow: 0 15px 45px rgba(0,0,0,.3);
 }
 
 .menu-overlay{
@@ -400,37 +376,47 @@ body{
 
 <body>
 
+<!-- =====================================================
+     MAIN APP (القسم الرئيسي)
+===================================================== -->
 <div id="home-view" class="app">
 
+    <!-- TOP BAR -->
     <div class="topbar">
         <button class="top-button" type="button" onclick="openMenu()">☰</button>
         <div class="top-title">Alislamiah AI</div>
     </div>
 
+    <!-- BRAND -->
     <div class="brand">
         <div class="brand-name">Alislamiah-AI</div>
         <div class="brand-line"></div>
     </div>
 
+    <!-- AI LOGO (تتغير الأيقونة هنا حسب محرك البحث المختار) -->
     <div class="ai-logo" id="mainAiLogo">
         <span>AI</span>
     </div>
 
+    <!-- HERO -->
     <div class="hero">
         <h1>Alislamiah AI Browser</h1>
         <div class="hero-line"></div>
         <p>الذكاء الاصطناعي • البحث • السرعة • الخصوصية</p>
     </div>
 
+    <!-- SEARCH -->
     <div class="search-area">
         <div class="search-box">
-            <button class="search-button" id="mainSearchBtn" type="button" onclick="performSearch()">🔍</button>
+            <button class="search-button" type="button" onclick="performSearch()">🔍</button>
             <input id="searchInput" class="search-input" type="text" autocomplete="off" placeholder="ابحث في الويب أو اطرح سؤالاً..." onkeydown="handleSearchKey(event)">
         </div>
     </div>
 
+    <!-- SHORTCUT TITLE -->
     <div class="shortcuts-title">الوصول السريع</div>
 
+    <!-- SHORTCUTS -->
     <div class="shortcuts">
         <div class="shortcut" onclick="goToShortcut('youtube')">
             <div class="shortcut-icon">▶️</div>
@@ -438,7 +424,7 @@ body{
         </div>
 
         <div class="shortcut" onclick="goToShortcut('ai')">
-            <div class="shortcut-icon" id="shortcutAiIcon">🤖</div>
+            <div class="shortcut-icon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
 
@@ -457,44 +443,22 @@ body{
             <div class="shortcut-name">Settings</div>
         </div>
 
-
         <div class="shortcut" onclick="goToShortcut('quran')">
             <div class="shortcut-icon">📖</div>
             <div class="shortcut-name">Quran</div>
         </div>
     </div>
 
+    <!-- FOOTER -->
     <div class="footer">
         <strong>Alislamiah AI Browser</strong><br>2026 ©
     </div>
 
 </div>
 
-
-<div id="chat-view" class="hidden app flex flex-col h-[90vh]">
-    <div class="p-2 flex items-center justify-between border-b bg-gray-900 text-white rounded-t-2xl">
-        <button onclick="backToHome()" class="bg-gray-800 px-4 py-1 rounded-xl text-sm font-bold">🏠 الرئيسية</button>
-        <span class="font-bold">Alislamiah AI Chat</span>
-        <span>🤖</span>
-    </div>
-
-    <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col bg-slate-900">
-        <div class="flex justify-start mb-2">
-            <div class="chat-bubble insta-border bg-white text-gray-800">
-                أهلاً بك في Alislamiah AI. اسأل وسأبحث لك ضمن المصادر الموثوقة.
-            </div>
-        </div>
-    </div>
-
-    <div class="p-3 bg-slate-900 border-t border-gray-800 rounded-b-2xl">
-        <div class="flex items-center insta-border rounded-full p-1 bg-white">
-            <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-black bg-transparent" placeholder="اكتب سؤالك هنا...">
-            <button onclick="processUserMessage()" class="insta-gradient text-white px-6 py-2 rounded-full font-bold shadow">إرسال</button>
-        </div>
-    </div>
-</div>
-
-
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu(event)">
     <div class="side-menu" onclick="event.stopPropagation()">
         <div class="menu-header">
@@ -502,7 +466,7 @@ body{
             <button class="close-menu" type="button" onclick="closeMenu()">✕</button>
         </div>
 
-        <button class="menu-item" type="button" onclick="backToHome(); closeMenu();">🏠 الرئيسية</button>
+        <button class="menu-item" type="button" onclick="window.location.href='index.html'; closeMenu();">🏠 الرئيسية</button>
         <button class="menu-item" type="button" onclick="goToShortcut('quran')">📖 Quran</button>
         <button class="menu-item" type="button" onclick="goToShortcut('favorites')">⭐ Favorites</button>
         <button class="menu-item" type="button" onclick="goToShortcut('ai'); closeMenu();">🤖 AI</button>
@@ -512,62 +476,40 @@ body{
     </div>
 </div>
 
-
-<script src="https://cdn.tailwindcss.com"></script>
-
 <script>
 const RESULTS_PAGE = "results.html";
 
-/* دالة لتحديث أيقونات محرك البحث والـ AI بناءً على الإعدادات المخزنة */
-function updateSearchEngineElements() {
+/* دالة تحديث الأيقونة الكبيرة بناءً على محرك البحث (Google, Microsoft Bing, Alislamiah) */
+function updateMainAiLogo() {
     const engine = localStorage.getItem("searchEngine") || "Alislamiah";
-    const searchBtn = document.getElementById("mainSearchBtn");
-    const mainAiLogo = document.getElementById("mainAiLogo");
-    const shortcutAiIcon = document.getElementById("shortcutAiIcon");
+    const logoContainer = document.getElementById("mainAiLogo");
+
+    if (!logoContainer) return;
 
     if (engine === "Alislamiah") {
-        if (searchBtn) searchBtn.innerHTML = '<img src="icon.png" alt="Alislamiah">';
-        if (mainAiLogo) mainAiLogo.innerHTML = '<img src="icon.png" alt="Alislamiah">';
-        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '<img src="icon.png" alt="Alislamiah">';
+        logoContainer.innerHTML = '<img src="icon.png" alt="Alislamiah">';
     } else if (engine === "Google") {
-        if (searchBtn) searchBtn.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google">';
-        if (mainAiLogo) mainAiLogo.innerHTML = '<span>AI</span>';
-        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '🤖';
+        // أيقونة جوجل بالألوان (أو رابط أيقونة واضحة)
+        logoContainer.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" style="width:70px; height:70px; object-fit:contain;">';
     } else if (engine === "Microsoft Bing") {
-        if (searchBtn) searchBtn.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing">';
-        if (mainAiLogo) mainAiLogo.innerHTML = '<span>AI</span>';
-        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '🤖';
+        // أيقونة مايكروسوفت بينج بالألوان
+        logoContainer.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing" style="width:70px; height:70px; object-fit:contain;">';
     }
 }
 
-// تشغيل التحديث فور تحميل الصفحة
 window.addEventListener("load", function() {
-    updateSearchEngineElements();
+    updateMainAiLogo();
 });
 
-// الاستماع لتغيرات التخزين لتحديث الواجهة فوراً عند تعديل الإعدادات
 window.addEventListener("storage", function(event) {
     if (event.key === "searchEngine") {
-        updateSearchEngineElements();
+        updateMainAiLogo();
     }
 });
 
-/* تعديل دالة الاختصارات لفتح التشات محلياً إذا كان الاختصار هو AI */
 function goToShortcut(shortcut){
-    if (shortcut === 'ai') {
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chat-view').classList.remove('hidden');
-        return;
-    }
-
     const url = RESULTS_PAGE + "?shortcut=" + encodeURIComponent(shortcut);
     window.location.href = url;
-}
-
-/* دالة العودة للرئيسية من التشات */
-function backToHome() {
-    document.getElementById('chat-view').classList.add('hidden');
-    document.getElementById('home-view').classList.remove('hidden');
 }
 
 function performSearch(){
@@ -608,8 +550,6 @@ document.addEventListener("keydown", function(event){
     }
 });
 </script>
-
-<script src="logic.js"></script>
 
 </body>
 </html>
