@@ -943,23 +943,13 @@ function closeSearchEngine(){
 
 function selectEngine(engine){
 
-    /*
-       حفظ المحرك المختار فعلياً
-       للصفحة الرئيسية.
-    */
-
     localStorage.setItem(
         "searchEngine",
         engine
     );
 
-
     updateCurrentEngine();
-
-
     updateEngineSelection();
-
-
     closeSearchEngine();
 
 }
@@ -1052,6 +1042,8 @@ function openDefaultBrowser(){
         "browserPopup"
     ).style.display = "flex";
 
+    updateBrowserSelection();
+
 }
 
 
@@ -1064,33 +1056,58 @@ function closeBrowser(){
 }
 
 
-/*
-   إذا كان تطبيق Android يحتوي على
-   JavaScript Interface باسم Android
-   نستدعيه لفتح إعدادات المتصفح الافتراضي.
-*/
-
 function setAlislamiahDefault(){
+
+    let isAlreadyDefault = false;
+
+    if(
+        window.Android &&
+        typeof Android.isAlislamiahDefaultBrowser ===
+        "function"
+    ){
+        isAlreadyDefault = Android.isAlislamiahDefaultBrowser();
+    }
+
+    if(isAlreadyDefault){
+
+        localStorage.setItem(
+            "defaultBrowser",
+            "Alislamiah"
+        );
+
+        document.getElementById(
+            "defaultBrowserText"
+        ).textContent = "Alislamiah";
+
+        closeBrowser();
+        updateBrowserSelection();
+        return;
+
+    }
 
     if(
         window.Android &&
         typeof Android.setAlislamiahAsDefaultBrowser ===
         "function"
     ){
-
         Android.setAlislamiahAsDefaultBrowser();
-
         return;
     }
 
+    localStorage.setItem(
+        "defaultBrowser",
+        "Alislamiah"
+    );
 
-    /*
-       في حالة عدم وجود Android Bridge
-       لا ندعي أن العملية تمت.
-    */
+    document.getElementById(
+        "defaultBrowserText"
+    ).textContent = "Alislamiah";
+
+    closeBrowser();
+    updateBrowserSelection();
 
     alert(
-        "اضبط Alislamiah كتطبيق البحث الإفتراضي لكي نلبي طلباتك"
+        "ضع Alislamiah كتطبيق البحث الإفتراضي لكي نلبي طلباتك"
     );
 
 }
@@ -1098,24 +1115,48 @@ function setAlislamiahDefault(){
 
 function selectOtherBrowser(browser){
 
-    /*
-       المستخدم اختار متصفحاً آخر.
-       لذلك لا نحاول إجبار Alislamiah
-       على أنه الافتراضي.
-    */
-
     localStorage.setItem(
         "defaultBrowser",
         browser
     );
 
-
     document.getElementById(
         "defaultBrowserText"
     ).textContent = browser;
 
-
     closeBrowser();
+    updateBrowserSelection();
+
+}
+
+
+function updateBrowserSelection(){
+
+    const currentBrowser =
+        localStorage.getItem(
+            "defaultBrowser"
+        ) || "Alislamiah";
+
+
+    document
+        .querySelectorAll(
+            "#browserPopup .option"
+        )
+        .forEach(function(option){
+
+            option.classList.remove(
+                "selected"
+            );
+
+            const name = option.querySelector(".option-name").textContent.trim();
+
+            if(name === currentBrowser){
+                option.classList.add(
+                    "selected"
+                );
+            }
+
+        });
 
 }
 
@@ -1141,11 +1182,6 @@ window.addEventListener(
 
         updateCurrentEngine();
 
-
-        /*
-           الافتراضي هو Alislamiah
-           إذا لم يوجد اختيار محفوظ.
-        */
 
         const browser =
             localStorage.getItem(
