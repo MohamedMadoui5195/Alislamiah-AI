@@ -442,7 +442,7 @@ body{
             <div class="shortcut-name">Favorites</div>
         </div>
 
-        <div class="shortcut" onclick="window.location.href='settings.html'">
+        <div class="shortcut" onclick="window.location.href='Settings.html'">
             <div class="shortcut-icon">⚙️</div>
             <div class="shortcut-name">Settings</div>
         </div>
