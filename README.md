@@ -393,7 +393,7 @@ body{
         <div class="brand-line"></div>
     </div>
 
-    <!-- AI LOGO (تتغير الأيقونة هنا حسب محرك البحث المختار) -->
+    <!-- AI LOGO -->
     <div class="ai-logo" id="mainAiLogo">
         <span>AI</span>
     </div>
@@ -418,22 +418,22 @@ body{
 
     <!-- SHORTCUTS -->
     <div class="shortcuts">
-        <div class="shortcut" onclick="goToShortcut('youtube')">
+        <div class="shortcut" onclick="goToShortcut('youtube', 'YouTube', 'https://www.youtube.com', 'https://www.youtube.com/favicon.ico')">
             <div class="shortcut-icon">▶️</div>
             <div class="shortcut-name">YouTube</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('ai')">
+        <div class="shortcut" onclick="goToShortcut('ai', 'AI Assistant', 'results.html?shortcut=ai', '')">
             <div class="shortcut-icon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('alislamiah')">
+        <div class="shortcut" onclick="goToShortcut('alislamiah', 'Alislamiah', 'https://www.alislamiah.com', 'icon.png')">
             <div class="shortcut-icon">🌐</div>
             <div class="shortcut-name">Alislamiah</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('favorites')">
+        <div class="shortcut" onclick="goToShortcut('favorites', 'Favorites', 'favorites.html', '')">
             <div class="shortcut-icon">⭐</div>
             <div class="shortcut-name">Favorites</div>
         </div>
@@ -443,7 +443,7 @@ body{
             <div class="shortcut-name">Settings</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('quran')">
+        <div class="shortcut" onclick="goToShortcut('quran', 'Quran', 'quran.html', '')">
             <div class="shortcut-icon">📖</div>
             <div class="shortcut-name">Quran</div>
         </div>
@@ -467,19 +467,43 @@ body{
         </div>
 
         <button class="menu-item" type="button" onclick="window.location.href='index.html'; closeMenu();">🏠 الرئيسية</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('quran')">📖 Quran</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('favorites')">⭐ Favorites</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('ai'); closeMenu();">🤖 AI</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('settings')">⚙️ Settings</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('alislamiah')">🌐 Alislamiah</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('youtube')">▶️ YouTube</button>
+        <button class="menu-item" type="button" onclick="goToShortcut('quran', 'Quran', 'quran.html', '')">📖 Quran</button>
+        <button class="menu-item" type="button" onclick="goToShortcut('favorites', 'Favorites', 'favorites.html', '')">⭐ Favorites</button>
+        <button class="menu-item" type="button" onclick="goToShortcut('ai', 'AI Assistant', 'results.html?shortcut=ai', ''); closeMenu();">🤖 AI</button>
+        <button class="menu-item" type="button" onclick="window.location.href='Settings.html'">⚙️ Settings</button>
+        <button class="menu-item" type="button" onclick="goToShortcut('alislamiah', 'Alislamiah', 'https://www.alislamiah.com', 'icon.png')">🌐 Alislamiah</button>
+        <button class="menu-item" type="button" onclick="goToShortcut('youtube', 'YouTube', 'https://www.youtube.com', 'https://www.youtube.com/favicon.ico')">▶️ YouTube</button>
+        <!-- رابط السجل المضاف هنا -->
+        <button class="menu-item" type="button" onclick="window.location.href='history.html'; closeMenu();">🕒 History</button>
     </div>
 </div>
 
 <script>
 const RESULTS_PAGE = "results.html";
+const HISTORY_KEY = "alislamiah_history";
 
-/* دالة تحديث الأيقونة الكبيرة بناءً على محرك البحث (Google, Microsoft Bing, Alislamiah) */
+/* دالة لحفظ السجل في LocalStorage */
+function addToHistory(title, url, icon) {
+    try {
+        let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+        // إضافة العنصر الجديد في البداية
+        history.unshift({
+            title: title,
+            url: url,
+            icon: icon || "",
+            time: Date.now()
+        });
+        // الاحتفاظ بآخر 100 عنصر فقط لمنع الامتلأ
+        if (history.length > 100) {
+            history = history.slice(0, 100);
+        }
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+/* تحديث أيقونة AI الكبرى حسب محرك البحث */
 function updateMainAiLogo() {
     const engine = localStorage.getItem("searchEngine") || "Alislamiah";
     const logoContainer = document.getElementById("mainAiLogo");
@@ -489,10 +513,8 @@ function updateMainAiLogo() {
     if (engine === "Alislamiah") {
         logoContainer.innerHTML = '<img src="icon.png" alt="Alislamiah">';
     } else if (engine === "Google") {
-        // أيقونة جوجل بالألوان (أو رابط أيقونة واضحة)
         logoContainer.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" style="width:70px; height:70px; object-fit:contain;">';
     } else if (engine === "Microsoft Bing") {
-        // أيقونة مايكروسوفت بينج بالألوان
         logoContainer.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing" style="width:70px; height:70px; object-fit:contain;">';
     }
 }
@@ -507,7 +529,8 @@ window.addEventListener("storage", function(event) {
     }
 });
 
-function goToShortcut(shortcut){
+function goToShortcut(shortcut, title, targetUrl, icon){
+    addToHistory(title || shortcut, targetUrl || (RESULTS_PAGE + "?shortcut=" + shortcut), icon);
     const url = RESULTS_PAGE + "?shortcut=" + encodeURIComponent(shortcut);
     window.location.href = url;
 }
@@ -516,6 +539,15 @@ function performSearch(){
     const input = document.getElementById("searchInput");
     const query = input.value.trim();
     if(query === ""){ input.focus(); return; }
+    
+    // تسجيل عملية البحث في السجل
+    const engine = localStorage.getItem("searchEngine") || "Alislamiah";
+    let searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(query);
+    if(engine === "Alislamiah") searchUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
+    else if(engine === "Microsoft Bing") searchUrl = "https://www.bing.com/search?q=" + encodeURIComponent(query);
+
+    addToHistory(query, searchUrl, engine === "Google" ? "https://www.google.com/favicon.ico" : (engine === "Microsoft Bing" ? "https://www.bing.com/favicon.ico" : "icon.png"));
+
     const url = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
     window.location.href = url;
 }
