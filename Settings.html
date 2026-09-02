@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings | Alislamiah</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#060c16;
+    color:#fff;
+    min-height:100vh;
+}
+
+/* HEADER */
+
+.header{
+    height:68px;
+    background:#081321;
+    border-bottom:1px solid #17283e;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 18px;
+
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.back{
+    width:42px;
+    height:42px;
+
+    border:0;
+    background:none;
+
+    color:white;
+    font-size:34px;
+
+    cursor:pointer;
+
+    margin-right:15px;
+}
+
+.header h1{
+    font-size:22px;
+    font-weight:500;
+}
+
+
+/* MAIN */
+
+.container{
+    width:94%;
+    max-width:650px;
+
+    margin:28px auto 50px;
+}
+
+.section-title{
+    color:#7187a5;
+
+    font-size:13px;
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+    margin:0 5px 10px;
+}
+
+
+/* SETTINGS BOX */
+
+.settings-box{
+    background:#0a1525;
+
+    border:1px solid #17283e;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.4);
+}
+
+
+/* ITEM */
+
+.setting{
+    min-height:78px;
+
+    padding:15px 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    border-bottom:1px solid #16263b;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.setting:last-child{
+    border-bottom:none;
+}
+
+.setting:hover{
+    background:#0f1e31;
+}
+
+.setting:active{
+    background:#142840;
+}
+
+
+/* LEFT */
+
+.setting-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    min-width:0;
+}
+
+
+/* ICON */
+
+.icon{
+    width:44px;
+    height:44px;
+
+    border-radius:13px;
+
+    background:#12243b;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    flex-shrink:0;
+}
+
+.icon img{
+    width:27px;
+    height:27px;
+
+    object-fit:contain;
+}
+
+
+/* TEXT */
+
+.text{
+    min-width:0;
+}
+
+.text h2{
+    font-size:16px;
+    font-weight:500;
+
+    margin-bottom:5px;
+}
+
+.text p{
+    color:#788aa3;
+    font-size:13px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+/* ARROW */
+
+.arrow{
+    color:#62758f;
+
+    font-size:26px;
+
+    margin-left:10px;
+
+    flex-shrink:0;
+}
+
+
+/* SWITCH */
+
+.switch{
+    width:48px;
+    height:27px;
+
+    position:relative;
+
+    flex-shrink:0;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+
+    background:#344257;
+
+    border-radius:30px;
+
+    transition:.25s;
+
+    cursor:pointer;
+}
+
+.slider:before{
+    content:"";
+
+    position:absolute;
+
+    width:21px;
+    height:21px;
+
+    left:3px;
+    top:3px;
+
+    background:#e3e8ef;
+
+    border-radius:50%;
+
+    transition:.25s;
+}
+
+.switch input:checked + .slider{
+    background:#21579d;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(21px);
+    background:white;
+}
+
+
+/* POPUP */
+
+.popup{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.75);
+
+    display:none;
+
+    align-items:flex-end;
+    justify-content:center;
+
+    z-index:100;
+}
+
+.popup-box{
+    width:100%;
+    max-width:650px;
+
+    background:#0a1525;
+
+    border:1px solid #1a2d45;
+
+    border-radius:23px 23px 0 0;
+
+    padding:24px;
+
+    box-shadow:
+        0 -15px 50px rgba(0,0,0,.55);
+
+    animation:popup .22s ease;
+}
+
+@keyframes popup{
+
+    from{
+        transform:translateY(100%);
+    }
+
+    to{
+        transform:translateY(0);
+    }
+
+}
+
+.popup-title{
+    font-size:20px;
+
+    font-weight:500;
+
+    margin-bottom:16px;
+}
+
+
+/* OPTION */
+
+.option{
+    min-height:60px;
+
+    padding:10px 13px;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.option:hover{
+    background:#12253c;
+}
+
+.option:active{
+    background:#162d49;
+}
+
+.option-left{
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+}
+
+.option-icon{
+    width:40px;
+    height:40px;
+
+    border-radius:10px;
+
+    background:#12243b;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    font-weight:bold;
+}
+
+.option-icon img{
+    width:27px;
+    height:27px;
+
+    object-fit:contain;
+}
+
+.option-name{
+    font-size:15px;
+}
+
+.check{
+    color:#61a0ff;
+
+    font-size:22px;
+
+    display:none;
+}
+
+.option.selected .check{
+    display:block;
+}
+
+
+/* CLOSE BUTTON */
+
+.close{
+    width:100%;
+
+    margin-top:12px;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#173967;
+
+    color:white;
+
+    font-size:15px;
+
+    cursor:pointer;
+}
+
+.close:active{
+    transform:scale(.98);
+}
+
+
+/* DEFAULT BROWSER MESSAGE */
+
+.default-message{
+    color:#9aa9bd;
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    margin-bottom:15px;
+}
+
+
+/* MOBILE */
+
+@media(max-width:500px){
+
+    .header{
+        height:64px;
+        padding:0 15px;
+    }
+
+    .header h1{
+        font-size:21px;
+    }
+
+    .container{
+        width:94%;
+        margin-top:22px;
+    }
+
+    .setting{
+        min-height:73px;
+        padding:13px 15px;
+    }
+
+    .icon{
+        width:41px;
+        height:41px;
+    }
+
+    .text h2{
+        font-size:15px;
+    }
+
+    .text p{
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <button
+        class="back"
+        onclick="history.back()">
+        ‹
+    </button>
+
+    <h1>Settings</h1>
+
+</header>
+
+
+
+<main class="container">
+
+    <div class="section-title">
+        SETTINGS
+    </div>
+
+
+    <div class="settings-box">
+
+
+        <!-- HISTORY -->
+
+        <div
+            class="setting"
+            onclick="openHistory()">
+
+            <div class="setting-left">
+
+                <div class="icon">
+                    🕘
+                </div>
+
+                <div class="text">
+
+                    <h2>History</h2>
+
+                    <p>
+                        View browsing history
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- DESKTOP SITE -->
+
+        <div class="setting">
+
+            <div class="setting-left">
+
+                <div class="icon">
+                    🖥️
+                </div>
+
+                <div class="text">
+
+                    <h2>Desktop site</h2>
+
+                    <p>
+                        Request desktop version of websites
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <label
+                class="switch"
+                onclick="event.stopPropagation()">
+
+                <input
+                    type="checkbox"
+                    id="desktopSite"
+                    onchange="saveDesktopSite()">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+
+        <!-- SEARCH ENGINE -->
+
+        <div
+            class="setting"
+            onclick="openSearchEngine()">
+
+            <div class="setting-left">
+
+                <div
+                    class="icon"
+                    id="currentEngineIcon">
+                </div>
+
+                <div class="text">
+
+                    <h2>Search Engine</h2>
+
+                    <p id="currentEngine">
+                        Alislamiah
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- DEFAULT BROWSER -->
+
+        <div
+            class="setting"
+            onclick="openDefaultBrowser()">
+
+            <div class="setting-left">
+
+                <div class="icon">
+                    <img src="icon.png" alt="Alislamiah">
+                </div>
+
+                <div class="text">
+
+                    <h2>Default browser</h2>
+
+                    <p id="defaultBrowserText">
+                        Alislamiah
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================
+     SEARCH ENGINE POPUP
+========================================= -->
+
+<div
+    class="popup"
+    id="searchPopup">
+
+    <div class="popup-box">
+
+        <div class="popup-title">
+            Search Engine
+        </div>
+
+
+        <!-- ALISLAMIAH -->
+
+        <div
+            class="option"
+            data-engine="Alislamiah"
+            onclick="selectEngine('Alislamiah')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="icon.png"
+                        alt="Alislamiah">
+
+                </div>
+
+                <div class="option-name">
+                    Alislamiah
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+
+        <!-- GOOGLE -->
+
+        <div
+            class="option"
+            data-engine="Google"
+            onclick="selectEngine('Google')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="https://www.google.com/favicon.ico"
+                        alt="Google">
+
+                </div>
+
+                <div class="option-name">
+                    Google
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+
+        <!-- MICROSOFT BING -->
+
+        <div
+            class="option"
+            data-engine="Microsoft Bing"
+            onclick="selectEngine('Microsoft Bing')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="https://www.bing.com/sa/simg/favicon-2x.ico"
+                        alt="Microsoft Bing">
+
+                </div>
+
+                <div class="option-name">
+                    Microsoft Bing
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+        <button
+            class="close"
+            onclick="closeSearchEngine()">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     DEFAULT BROWSER POPUP
+========================================= -->
+
+<div
+    class="popup"
+    id="browserPopup">
+
+    <div class="popup-box">
+
+        <div class="popup-title">
+            Default browser
+        </div>
+
+
+        <p class="default-message">
+            Choose the browser you want to use as your default browser.
+        </p>
+
+
+        <!-- ALISLAMIAH -->
+
+        <div
+            class="option"
+            onclick="setAlislamiahDefault()">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="icon.png"
+                        alt="Alislamiah">
+
+                </div>
+
+                <div class="option-name">
+                    Alislamiah
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+
+        <!-- MICROSOFT BING -->
+
+        <div
+            class="option"
+            onclick="selectOtherBrowser('Microsoft Bing')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="https://www.bing.com/sa/simg/favicon-2x.ico"
+                        alt="Microsoft Bing">
+
+                </div>
+
+                <div class="option-name">
+                    Microsoft Bing
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+
+        <!-- GOOGLE -->
+
+        <div
+            class="option"
+            onclick="selectOtherBrowser('Google')">
+
+            <div class="option-left">
+
+                <div class="option-icon">
+
+                    <img
+                        src="https://www.google.com/favicon.ico"
+                        alt="Google">
+
+                </div>
+
+                <div class="option-name">
+                    Google
+                </div>
+
+            </div>
+
+            <div class="check">
+                ✓
+            </div>
+
+        </div>
+
+
+        <button
+            class="close"
+            onclick="closeBrowser()">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================
+   HISTORY
+========================================= */
+
+function openHistory(){
+
+    window.location.href = "history.html";
+
+}
+
+
+/* =========================================
+   DESKTOP SITE
+========================================= */
+
+function saveDesktopSite(){
+
+    const enabled =
+        document.getElementById(
+            "desktopSite"
+        ).checked;
+
+    localStorage.setItem(
+        "desktopSite",
+        enabled ? "true" : "false"
+    );
+
+}
+
+
+/* =========================================
+   SEARCH ENGINE
+========================================= */
+
+function openSearchEngine(){
+
+    document.getElementById(
+        "searchPopup"
+    ).style.display = "flex";
+
+    updateEngineSelection();
+
+}
+
+
+function closeSearchEngine(){
+
+    document.getElementById(
+        "searchPopup"
+    ).style.display = "none";
+
+}
+
+
+function selectEngine(engine){
+
+    /*
+       حفظ المحرك المختار فعلياً
+       للصفحة الرئيسية.
+    */
+
+    localStorage.setItem(
+        "searchEngine",
+        engine
+    );
+
+
+    updateCurrentEngine();
+
+
+    updateEngineSelection();
+
+
+    closeSearchEngine();
+
+}
+
+
+function updateCurrentEngine(){
+
+    const engine =
+        localStorage.getItem(
+            "searchEngine"
+        ) || "Alislamiah";
+
+
+    document.getElementById(
+        "currentEngine"
+    ).textContent = engine;
+
+
+    const icon =
+        document.getElementById(
+            "currentEngineIcon"
+        );
+
+
+    if(engine === "Alislamiah"){
+
+        icon.innerHTML =
+            '<img src="icon.png" alt="Alislamiah">';
+
+    }
+
+    else if(engine === "Google"){
+
+        icon.innerHTML =
+            '<img src="https://www.google.com/favicon.ico" alt="Google">';
+
+    }
+
+    else if(engine === "Microsoft Bing"){
+
+        icon.innerHTML =
+            '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing">';
+
+    }
+
+}
+
+
+function updateEngineSelection(){
+
+    const engine =
+        localStorage.getItem(
+            "searchEngine"
+        ) || "Alislamiah";
+
+
+    document
+        .querySelectorAll(
+            "#searchPopup .option"
+        )
+        .forEach(function(option){
+
+            option.classList.remove(
+                "selected"
+            );
+
+
+            if(
+                option.dataset.engine === engine
+            ){
+
+                option.classList.add(
+                    "selected"
+                );
+
+            }
+
+        });
+
+}
+
+
+/* =========================================
+   DEFAULT BROWSER
+========================================= */
+
+function openDefaultBrowser(){
+
+    document.getElementById(
+        "browserPopup"
+    ).style.display = "flex";
+
+}
+
+
+function closeBrowser(){
+
+    document.getElementById(
+        "browserPopup"
+    ).style.display = "none";
+
+}
+
+
+/*
+   إذا كان تطبيق Android يحتوي على
+   JavaScript Interface باسم Android
+   نستدعيه لفتح إعدادات المتصفح الافتراضي.
+*/
+
+function setAlislamiahDefault(){
+
+    if(
+        window.Android &&
+        typeof Android.setAlislamiahAsDefaultBrowser ===
+        "function"
+    ){
+
+        Android.setAlislamiahAsDefaultBrowser();
+
+        return;
+    }
+
+
+    /*
+       في حالة عدم وجود Android Bridge
+       لا ندعي أن العملية تمت.
+    */
+
+    alert(
+        "اضبط Alislamiah كتطبيق البحث الإفتراضي لكي نلبي طلباتك"
+    );
+
+}
+
+
+function selectOtherBrowser(browser){
+
+    /*
+       المستخدم اختار متصفحاً آخر.
+       لذلك لا نحاول إجبار Alislamiah
+       على أنه الافتراضي.
+    */
+
+    localStorage.setItem(
+        "defaultBrowser",
+        browser
+    );
+
+
+    document.getElementById(
+        "defaultBrowserText"
+    ).textContent = browser;
+
+
+    closeBrowser();
+
+}
+
+
+/* =========================================
+   LOAD SETTINGS
+========================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        const desktop =
+            localStorage.getItem(
+                "desktopSite"
+            ) === "true";
+
+
+        document.getElementById(
+            "desktopSite"
+        ).checked = desktop;
+
+
+        updateCurrentEngine();
+
+
+        /*
+           الافتراضي هو Alislamiah
+           إذا لم يوجد اختيار محفوظ.
+        */
+
+        const browser =
+            localStorage.getItem(
+                "defaultBrowser"
+            ) || "Alislamiah";
+
+
+        document.getElementById(
+            "defaultBrowserText"
+        ).textContent = browser;
+
+    }
+);
+
+
+/* =========================================
+   RETURN TO PAGE
+   WHEN STORAGE CHANGES
+========================================= */
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+            event.key === "searchEngine"
+        ){
+
+            updateCurrentEngine();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
