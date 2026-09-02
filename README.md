@@ -10,7 +10,6 @@
 
 <title>Alislamiah-AI Browser</title>
 
-<!-- ربط ملف الـ CSS الخاص بالتشات (ألوان إنستغرام والفقاعات) -->
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -126,6 +125,7 @@ body{
     background: linear-gradient(145deg, #087cff 0%, #08b9ee 100%);
     box-shadow: 0 18px 55px rgba(0,120,255,.32), inset 0 1px 1px rgba(255,255,255,.38);
     position:relative;
+    overflow:hidden;
 }
 
 .ai-logo::before{
@@ -140,6 +140,14 @@ body{
     color:#ffffff;
     font-size:60px;
     font-weight:800;
+    position:relative;
+    z-index:2;
+}
+
+.ai-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
     position:relative;
     z-index:2;
 }
@@ -197,6 +205,12 @@ body{
     align-items:center;
     justify-content:center;
     transition:.15s;
+}
+
+.search-button img{
+    width:30px;
+    height:30px;
+    object-fit:contain;
 }
 
 .search-button:active{
@@ -267,6 +281,13 @@ body{
     align-items:center;
     justify-content:center;
     font-size:38px;
+    overflow:hidden;
+}
+
+.shortcut-icon img{
+    width:34px;
+    height:34px;
+    object-fit:contain;
 }
 
 .shortcut-name{
@@ -379,56 +400,45 @@ body{
 
 <body>
 
-<!-- =====================================================
-     MAIN APP (القسم الرئيسي)
-===================================================== -->
 <div id="home-view" class="app">
 
-    <!-- TOP BAR -->
     <div class="topbar">
         <button class="top-button" type="button" onclick="openMenu()">☰</button>
         <div class="top-title">Alislamiah AI</div>
     </div>
 
-    <!-- BRAND -->
     <div class="brand">
         <div class="brand-name">Alislamiah-AI</div>
         <div class="brand-line"></div>
     </div>
 
-    <!-- AI LOGO -->
-    <div class="ai-logo">
+    <div class="ai-logo" id="mainAiLogo">
         <span>AI</span>
     </div>
 
-    <!-- HERO -->
     <div class="hero">
         <h1>Alislamiah AI Browser</h1>
         <div class="hero-line"></div>
         <p>الذكاء الاصطناعي • البحث • السرعة • الخصوصية</p>
     </div>
 
-    <!-- SEARCH -->
     <div class="search-area">
         <div class="search-box">
-            <button class="search-button" type="button" onclick="performSearch()">🔍</button>
+            <button class="search-button" id="mainSearchBtn" type="button" onclick="performSearch()">🔍</button>
             <input id="searchInput" class="search-input" type="text" autocomplete="off" placeholder="ابحث في الويب أو اطرح سؤالاً..." onkeydown="handleSearchKey(event)">
         </div>
     </div>
 
-    <!-- SHORTCUT TITLE -->
     <div class="shortcuts-title">الوصول السريع</div>
 
-    <!-- SHORTCUTS -->
     <div class="shortcuts">
         <div class="shortcut" onclick="goToShortcut('youtube')">
             <div class="shortcut-icon">▶️</div>
             <div class="shortcut-name">YouTube</div>
         </div>
 
-        <!-- زر الـ AI تم ربطه بواجهة التشات مباشرة -->
         <div class="shortcut" onclick="goToShortcut('ai')">
-            <div class="shortcut-icon">🤖</div>
+            <div class="shortcut-icon" id="shortcutAiIcon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
 
@@ -454,7 +464,6 @@ body{
         </div>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
         <strong>Alislamiah AI Browser</strong><br>2026 ©
     </div>
@@ -462,18 +471,13 @@ body{
 </div>
 
 
-<!-- =====================================================
-     AI CHAT VIEW (واجهة التشات - مخفية افتراضياً وتظهر عند الضغط على AI)
-===================================================== -->
 <div id="chat-view" class="hidden app flex flex-col h-[90vh]">
-    <!-- زر العودة للرئيسية -->
     <div class="p-2 flex items-center justify-between border-b bg-gray-900 text-white rounded-t-2xl">
         <button onclick="backToHome()" class="bg-gray-800 px-4 py-1 rounded-xl text-sm font-bold">🏠 الرئيسية</button>
         <span class="font-bold">Alislamiah AI Chat</span>
         <span>🤖</span>
     </div>
 
-    <!-- سجل المحادثة -->
     <div id="chat-history" class="flex-grow p-4 overflow-y-auto flex flex-col bg-slate-900">
         <div class="flex justify-start mb-2">
             <div class="chat-bubble insta-border bg-white text-gray-800">
@@ -482,7 +486,6 @@ body{
         </div>
     </div>
 
-    <!-- شريط الإدخال -->
     <div class="p-3 bg-slate-900 border-t border-gray-800 rounded-b-2xl">
         <div class="flex items-center insta-border rounded-full p-1 bg-white">
             <input type="text" id="ai-input" class="flex-grow px-4 py-2 outline-none rounded-full text-black bg-transparent" placeholder="اكتب سؤالك هنا...">
@@ -492,9 +495,6 @@ body{
 </div>
 
 
-<!-- =====================================================
-     SIDE MENU
-===================================================== -->
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu(event)">
     <div class="side-menu" onclick="event.stopPropagation()">
         <div class="menu-header">
@@ -513,11 +513,44 @@ body{
 </div>
 
 
-<!-- ربط Tailwind للتنسيقات السريعة للتشات -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
 const RESULTS_PAGE = "results.html";
+
+/* دالة لتحديث أيقونات محرك البحث والـ AI بناءً على الإعدادات المخزنة */
+function updateSearchEngineElements() {
+    const engine = localStorage.getItem("searchEngine") || "Alislamiah";
+    const searchBtn = document.getElementById("mainSearchBtn");
+    const mainAiLogo = document.getElementById("mainAiLogo");
+    const shortcutAiIcon = document.getElementById("shortcutAiIcon");
+
+    if (engine === "Alislamiah") {
+        if (searchBtn) searchBtn.innerHTML = '<img src="icon.png" alt="Alislamiah">';
+        if (mainAiLogo) mainAiLogo.innerHTML = '<img src="icon.png" alt="Alislamiah">';
+        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '<img src="icon.png" alt="Alislamiah">';
+    } else if (engine === "Google") {
+        if (searchBtn) searchBtn.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google">';
+        if (mainAiLogo) mainAiLogo.innerHTML = '<span>AI</span>';
+        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '🤖';
+    } else if (engine === "Microsoft Bing") {
+        if (searchBtn) searchBtn.innerHTML = '<img src="https://www.bing.com/sa/simg/favicon-2x.ico" alt="Microsoft Bing">';
+        if (mainAiLogo) mainAiLogo.innerHTML = '<span>AI</span>';
+        if (shortcutAiIcon) shortcutAiIcon.innerHTML = '🤖';
+    }
+}
+
+// تشغيل التحديث فور تحميل الصفحة
+window.addEventListener("load", function() {
+    updateSearchEngineElements();
+});
+
+// الاستماع لتغيرات التخزين لتحديث الواجهة فوراً عند تعديل الإعدادات
+window.addEventListener("storage", function(event) {
+    if (event.key === "searchEngine") {
+        updateSearchEngineElements();
+    }
+});
 
 /* تعديل دالة الاختصارات لفتح التشات محلياً إذا كان الاختصار هو AI */
 function goToShortcut(shortcut){
@@ -576,7 +609,6 @@ document.addEventListener("keydown", function(event){
 });
 </script>
 
-<!-- ربط ملف الـ JavaScript الخاص بمنطق التشات الذي أنشأناه سابقاً -->
 <script src="logic.js"></script>
 
 </body>
