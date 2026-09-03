@@ -1,846 +1,446 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="theme-color" content="#ffffff">
-
-<title>Alislamiah-AI</title>
+<title>Alislamiah AI</title>
 
 <style>
-
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Tahoma, sans-serif;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
 }
 
 body {
-    background: #ffffff;
-    color: #111111;
-    overflow-x: hidden;
-}
-
-/* =====================================
-   منطقة التشات
-===================================== */
-
-.chat-container {
-
-    width: 100%;
-
-    max-width: 850px;
-
-    margin: 0 auto;
-
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+    color: #222;
     min-height: 100vh;
-
-    padding: 20px 12px 105px 12px;
-
 }
 
-
-/* =====================================
-   صندوق الرسائل
-===================================== */
-
-.chat-box {
-
-    width: 100%;
-
+/* HEADER */
+header {
+    height: 65px;
+    background: white;
+    border-bottom: 1px solid #ddd;
     display: flex;
-
-    flex-direction: column;
-
-    gap: 18px;
-
-}
-
-
-/* =====================================
-   رسالة المستخدم
-===================================== */
-
-.user-message {
-
-    align-self: flex-start;
-
-    max-width: 78%;
-
-    padding: 13px 20px;
-
-    color: #ffffff;
-
-    font-size: 17px;
-
-    line-height: 1.7;
-
-    word-break: break-word;
-
-    background:
-        linear-gradient(
-            100deg,
-            #ff9500 0%,
-            #ff3b30 30%,
-            #d9008f 65%,
-            #145ee8 100%
-        );
-
-    border-radius:
-        28px
-        28px
-        8px
-        28px;
-
-    box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.10);
-
-}
-
-
-/* =====================================
-   رسالة المساعد
-===================================== */
-
-.assistant-message {
-
-    align-self: flex-end;
-
-    width: 100%;
-
-    max-width: 790px;
-
-    padding: 18px 20px;
-
-    font-size: 17px;
-
-    line-height: 1.9;
-
-    color: #111111;
-
-    word-break: break-word;
-
-    background:
-        linear-gradient(#ffffff, #ffffff)
-        padding-box,
-
-        linear-gradient(
-            100deg,
-            #ff9500,
-            #ff3b30,
-            #d9008f,
-            #145ee8
-        )
-        border-box;
-
-    border: 3px solid transparent;
-
-    border-radius:
-        8px
-        28px
-        28px
-        28px;
-
-}
-
-
-/* =====================================
-   مؤشر انتظار المساعد
-===================================== */
-
-.typing {
-
-    display: flex;
-
     align-items: center;
-
-    gap: 6px;
-
-    height: 25px;
-
-}
-
-
-.typing span {
-
-    width: 8px;
-
-    height: 8px;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff9500,
-            #d9008f,
-            #145ee8
-        );
-
-    animation:
-        typingAnimation
-        1.2s
-        infinite
-        ease-in-out;
-
-}
-
-
-.typing span:nth-child(2) {
-
-    animation-delay: 0.15s;
-
-}
-
-
-.typing span:nth-child(3) {
-
-    animation-delay: 0.30s;
-
-}
-
-
-@keyframes typingAnimation {
-
-    0%,
-    60%,
-    100% {
-
-        transform: translateY(0);
-
-        opacity: 0.35;
-
-    }
-
-    30% {
-
-        transform: translateY(-6px);
-
-        opacity: 1;
-
-    }
-
-}
-
-
-/* =====================================
-   منطقة الكتابة
-===================================== */
-
-.input-area {
-
+    justify-content: space-between;
+    padding: 0 18px;
     position: fixed;
-
-    left: 50%;
-
-    bottom: 12px;
-
-    transform: translateX(-50%);
-
-    width: calc(100% - 20px);
-
-    max-width: 850px;
-
-    min-height: 68px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 6px;
-
-    background:
-        linear-gradient(#ffffff, #ffffff)
-        padding-box,
-
-        linear-gradient(
-            100deg,
-            #ff9500,
-            #ff3b30,
-            #d9008f,
-            #145ee8
-        )
-        border-box;
-
-    border: 3px solid transparent;
-
-    border-radius: 35px;
-
-    box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.12);
-
-    z-index: 9999;
-
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
 }
 
+.logo {
+    font-size: 22px;
+    font-weight: bold;
 
-/* =====================================
-   حقل الكتابة
-===================================== */
+    /* Instagram-like gradient */
+    background: linear-gradient(
+        45deg,
+        #feda75,
+        #fa7e1e,
+        #d62976,
+        #962fbf,
+        #4f5bd5
+    );
 
-.message-input {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
+.status {
+    font-size: 13px;
+    color: #777;
+}
+
+/* CHAT */
+#chat {
+    padding: 90px 15px 100px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* BUBBLES */
+.message {
+    max-width: 78%;
+    padding: 13px 16px;
+    margin: 12px 0;
+    border-radius: 20px;
+    line-height: 1.7;
+    font-size: 16px;
+
+    /* منع أي حركة */
+    animation: none !important;
+    transition: none !important;
+}
+
+.user {
+    margin-right: auto;
+
+    background: linear-gradient(
+        135deg,
+        #833ab4,
+        #e1306c,
+        #f77737
+    );
+
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.ai {
+    margin-left: auto;
+
+    background: white;
+    color: #222;
+
+    border: 1px solid #e5e5e5;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+
+    border-bottom-left-radius: 5px;
+}
+
+/* INPUT AREA */
+.input-area {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    background: white;
+    border-top: 1px solid #ddd;
+
+    padding: 12px;
+}
+
+.input-box {
+    max-width: 900px;
+    margin: auto;
+
+    display: flex;
+    gap: 8px;
+}
+
+textarea {
     flex: 1;
 
-    width: 100%;
+    resize: none;
 
-    min-width: 0;
+    height: 50px;
 
-    height: 55px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
 
-    border: none;
+    padding: 13px 18px;
 
+    font-size: 16px;
     outline: none;
 
-    background: transparent;
-
-    padding:
-        8px
-        16px;
-
-    font-size: 17px;
-
-    color: #111111;
-
-    text-align: right;
-
+    font-family: inherit;
 }
 
-
-.message-input::placeholder {
-
-    color: #999999;
-
+textarea:focus {
+    border-color: #c13584;
 }
 
-
-/* =====================================
-   زر الإرسال
-===================================== */
-
-.send-button {
-
-    flex-shrink: 0;
-
-    width: 78px;
-
-    height: 52px;
+button {
+    width: 50px;
+    height: 50px;
 
     border: none;
+    border-radius: 50%;
 
-    border-radius: 28px;
+    background: linear-gradient(
+        135deg,
+        #833ab4,
+        #e1306c,
+        #f77737
+    );
 
-    background:
-        linear-gradient(
-            100deg,
-            #ff9500,
-            #ff3b30,
-            #d9008f,
-            #145ee8
-        );
+    color: white;
 
-    color: #ffffff;
-
-    font-size: 17px;
+    font-size: 20px;
 
     cursor: pointer;
 
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-
+    /* لا توجد حركة */
+    animation: none !important;
+    transition: none !important;
 }
 
-
-.send-button:active {
-
-    transform: scale(0.94);
-
+button:hover {
+    opacity: 0.9;
 }
 
-
-.send-button:disabled {
-
+button:disabled {
     opacity: 0.5;
-
-    cursor: default;
-
+    cursor: not-allowed;
 }
 
-
-/* =====================================
-   شاشة البداية
-===================================== */
-
+/* WELCOME */
 .welcome {
-
-    min-height: 70vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
     text-align: center;
-
-    padding: 25px;
-
+    margin-top: 100px;
+    color: #777;
 }
 
+.welcome h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
 
-.welcome-title {
-
-    font-size: 32px;
-
-    font-weight: bold;
-
-    margin-bottom: 12px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ff9500,
-            #d9008f,
-            #145ee8
-        );
+    background: linear-gradient(
+        45deg,
+        #833ab4,
+        #e1306c,
+        #f77737
+    );
 
     -webkit-background-clip: text;
-
-    background-clip: text;
-
     -webkit-text-fill-color: transparent;
-
 }
 
-
-.welcome-text {
-
-    font-size: 17px;
-
-    color: #777777;
-
+.welcome p {
+    font-size: 15px;
 }
-
-
-/* =====================================
-   الهاتف
-===================================== */
-
-@media (max-width: 600px) {
-
-    .chat-container {
-
-        padding:
-            12px
-            8px
-            100px
-            8px;
-
-    }
-
-
-    .user-message {
-
-        max-width: 88%;
-
-        font-size: 16px;
-
-        padding:
-            11px
-            16px;
-
-    }
-
-
-    .assistant-message {
-
-        font-size: 16px;
-
-        padding:
-            14px
-            16px;
-
-        border-width: 3px;
-
-    }
-
-
-    .input-area {
-
-        width:
-            calc(100% - 14px);
-
-        bottom: 7px;
-
-        min-height: 63px;
-
-        border-radius: 32px;
-
-    }
-
-
-    .message-input {
-
-        height: 50px;
-
-        font-size: 16px;
-
-        padding:
-            7px
-            12px;
-
-    }
-
-
-    .send-button {
-
-        width: 70px;
-
-        height: 48px;
-
-        font-size: 16px;
-
-    }
-
-
-    .welcome-title {
-
-        font-size: 27px;
-
-    }
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<header>
+    <div class="logo">Alislamiah AI</div>
+    <div class="status" id="status">متصل</div>
+</header>
 
-<!-- =====================================
-     منطقة المحادثة
-===================================== -->
+<div id="chat">
 
-<div class="chat-container">
+    <div class="welcome" id="welcome">
+        <h1>Alislamiah AI</h1>
+        <p>مرحبًا بك، كيف يمكنني مساعدتك؟</p>
+    </div>
 
-    <div
-        class="chat-box"
-        id="chatBox"
-    >
+</div>
 
-        <div
-            class="welcome"
-            id="welcome"
-        >
+<div class="input-area">
 
-            <div class="welcome-title">
-                Alislamiah-AI
-            </div>
+    <div class="input-box">
 
-            <div class="welcome-text">
-                اطرح سؤالك وسأساعدك
-            </div>
+        <textarea
+            id="message"
+            placeholder="اكتب رسالتك..."
+            onkeydown="handleKey(event)"
+        ></textarea>
 
-        </div>
+        <button id="sendButton" onclick="sendMessage()">
+            ➤
+        </button>
 
     </div>
 
 </div>
 
-
-
-<!-- =====================================
-     منطقة الإدخال
-===================================== -->
-
-<div class="input-area">
-
-    <input
-        type="text"
-        id="messageInput"
-        class="message-input"
-        placeholder="اكتب سؤالك..."
-        autocomplete="off"
-    >
-
-    <button
-        id="sendButton"
-        class="send-button"
-        type="button"
-    >
-        إرسال
-    </button>
-
-</div>
-
-
-
 <script>
 
-/* =====================================
-   العناصر
-===================================== */
+/* ==================================================
+   إعدادات Alislamiah AI API
+   ================================================== */
 
-const chatBox =
-    document.getElementById("chatBox");
+/* رابط API الخاص بك */
+const API_URL = "YOUR_API_URL_HERE";
 
-const messageInput =
-    document.getElementById("messageInput");
+/* مفتاح API الخاص بك */
+const API_KEY = "YOUR_API_KEY_HERE";
 
-const sendButton =
-    document.getElementById("sendButton");
-
-
-/* =====================================
-   إرسال عند الضغط على الزر
-===================================== */
-
-sendButton.addEventListener(
-    "click",
-    sendMessage
-);
+/* اسم النموذج */
+const MODEL = "YOUR_MODEL_NAME";
 
 
-/* =====================================
-   إرسال عند الضغط على Enter
-===================================== */
+/* ==================================================
+   إرسال الرسالة
+   ================================================== */
 
-messageInput.addEventListener(
-    "keydown",
-    function(event) {
+async function sendMessage() {
 
-        if (event.key === "Enter") {
+    const input = document.getElementById("message");
+    const button = document.getElementById("sendButton");
+    const status = document.getElementById("status");
 
-            event.preventDefault();
+    const message = input.value.trim();
 
-            sendMessage();
+    if (!message) return;
+
+    /* إزالة الترحيب */
+    const welcome = document.getElementById("welcome");
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+    /* عرض رسالة المستخدم */
+    addMessage(message, "user");
+
+    input.value = "";
+
+    button.disabled = true;
+    status.textContent = "يفكر...";
+
+    try {
+
+        /*
+        إرسال الطلب إلى API الخاص بك
+        */
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+
+                /*
+                إذا كان API الخاص بك يستخدم API Key
+                */
+
+                "Authorization": "Bearer " + API_KEY
+            },
+
+            body: JSON.stringify({
+
+                model: MODEL,
+
+                message: message
+
+            })
+
+        });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "API Error: " + response.status
+            );
 
         }
 
-    }
-);
+
+        const data = await response.json();
 
 
-/* =====================================
-   إرسال الرسالة
-===================================== */
+        /*
+        هنا نقرأ إجابة الذكاء الاصطناعي
 
-function sendMessage() {
+        غيّر اسم الخاصية إذا كان API الخاص بك
+        يرجع الإجابة باسم مختلف.
+        */
 
-    const message =
-        messageInput.value.trim();
-
-
-    if (message === "") {
-
-        return;
-
-    }
+        const answer =
+            data.answer ||
+            data.response ||
+            data.message ||
+            data.content;
 
 
-    /* إزالة شاشة البداية */
+        if (!answer) {
 
-    const welcome =
-        document.getElementById("welcome");
-
-
-    if (welcome) {
-
-        welcome.remove();
-
-    }
-
-
-    /* إنشاء رسالة المستخدم */
-
-    const userMessage =
-        document.createElement("div");
-
-
-    userMessage.className =
-        "user-message";
-
-
-    userMessage.textContent =
-        message;
-
-
-    chatBox.appendChild(
-        userMessage
-    );
-
-
-    /* تنظيف مربع الكتابة */
-
-    messageInput.value = "";
-
-
-    /* إظهار مؤشر الكتابة */
-
-    showTyping();
-
-
-    /* =================================
-       مؤقت فقط لاختبار الواجهة
-
-       سيتم حذف هذا الجزء عندما
-       نربط Gemini API
-    ================================= */
-
-    setTimeout(
-        function() {
-
-            removeTyping();
-
-            addAssistantMessage(
-                "هذه واجهة Alislamiah-AI الأساسية. سيتم ربطها بالذكاء الاصطناعي الحقيقي في الخطوة التالية."
+            throw new Error(
+                "لم يتم العثور على إجابة من API"
             );
 
-        },
-        900
-    );
+        }
 
 
-    scrollToBottom();
+        /* عرض الإجابة */
 
-}
+        addMessage(answer, "ai");
 
-
-/* =====================================
-   إظهار مؤشر الكتابة
-===================================== */
-
-function showTyping() {
-
-    const typing =
-        document.createElement("div");
+        status.textContent = "متصل";
 
 
-    typing.id =
-        "typingMessage";
+    } catch (error) {
 
+        console.error(error);
 
-    typing.className =
-        "assistant-message";
-
-
-    typing.innerHTML = `
-
-        <div class="typing">
-
-            <span></span>
-
-            <span></span>
-
-            <span></span>
-
-        </div>
-
-    `;
-
-
-    chatBox.appendChild(
-        typing
-    );
-
-
-    scrollToBottom();
-
-}
-
-
-/* =====================================
-   حذف مؤشر الكتابة
-===================================== */
-
-function removeTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingMessage"
+        addMessage(
+            "حدث خطأ أثناء الاتصال بـ Alislamiah AI. تأكد من إعدادات API.",
+            "ai"
         );
 
-
-    if (typing) {
-
-        typing.remove();
+        status.textContent = "خطأ في الاتصال";
 
     }
 
-}
 
-
-/* =====================================
-   إضافة رسالة المساعد
-===================================== */
-
-function addAssistantMessage(text) {
-
-    const message =
-        document.createElement("div");
-
-
-    message.className =
-        "assistant-message";
-
-
-    message.textContent =
-        text;
-
-
-    chatBox.appendChild(
-        message
-    );
-
-
-    scrollToBottom();
+    button.disabled = false;
 
 }
 
 
-/* =====================================
-   النزول إلى آخر رسالة
-===================================== */
+/* ==================================================
+   إنشاء الفقاعات
+   ================================================== */
 
-function scrollToBottom() {
+function addMessage(text, type) {
 
-    setTimeout(
-        function() {
+    const chat = document.getElementById("chat");
 
-            window.scrollTo({
+    const bubble = document.createElement("div");
 
-                top:
-                    document.body.scrollHeight,
+    bubble.className =
+        "message " + type;
 
-                behavior:
-                    "smooth"
+    /*
+    textContent لحماية الصفحة من HTML
+    */
 
-            });
+    bubble.textContent = text;
 
-        },
-        50
+    chat.appendChild(bubble);
+
+    /*
+    النزول إلى آخر رسالة
+    */
+
+    window.scrollTo(
+        0,
+        document.body.scrollHeight
     );
+
+}
+
+
+/* ==================================================
+   إرسال بواسطة Enter
+   ================================================== */
+
+function handleKey(event) {
+
+    /*
+    Enter = إرسال
+    Shift + Enter = سطر جديد
+    */
+
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
 
 }
 
 </script>
 
-
 </body>
-
 </html>
