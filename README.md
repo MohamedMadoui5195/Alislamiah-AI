@@ -418,22 +418,22 @@ body{
 
     <!-- SHORTCUTS -->
     <div class="shortcuts">
-        <div class="shortcut" onclick="goToShortcut('youtube', 'YouTube', 'https://www.youtube.com', 'https://www.youtube.com/favicon.ico')">
+        <div class="shortcut" onclick="searchShortcut('YouTube', 'https://www.youtube.com/favicon.ico')">
             <div class="shortcut-icon">▶️</div>
             <div class="shortcut-name">YouTube</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('ai', 'AI Assistant', 'results.html?shortcut=ai', '')">
+        <div class="shortcut" onclick="searchShortcut('AI Assistant', '')">
             <div class="shortcut-icon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('alislamiah', 'Alislamiah', 'https://www.alislamiah.com', 'icon.png')">
+        <div class="shortcut" onclick="searchShortcut('Alislamiah', 'icon.png')">
             <div class="shortcut-icon">🌐</div>
             <div class="shortcut-name">Alislamiah</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('favorites', 'Favorites', 'favorites.html', '')">
+        <div class="shortcut" onclick="searchShortcut('Favorites', '')">
             <div class="shortcut-icon">⭐</div>
             <div class="shortcut-name">Favorites</div>
         </div>
@@ -443,7 +443,7 @@ body{
             <div class="shortcut-name">Settings</div>
         </div>
 
-        <div class="shortcut" onclick="goToShortcut('quran', 'Quran', 'quran.html', '')">
+        <div class="shortcut" onclick="searchShortcut('Quran', '')">
             <div class="shortcut-icon">📖</div>
             <div class="shortcut-name">Quran</div>
         </div>
@@ -467,13 +467,12 @@ body{
         </div>
 
         <button class="menu-item" type="button" onclick="window.location.href='index.html'; closeMenu();">🏠 الرئيسية</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('quran', 'Quran', 'quran.html', '')">📖 Quran</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('favorites', 'Favorites', 'favorites.html', '')">⭐ Favorites</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('ai', 'AI Assistant', 'results.html?shortcut=ai', ''); closeMenu();">🤖 AI</button>
+        <button class="menu-item" type="button" onclick="searchShortcut('Quran', ''); closeMenu();">📖 Quran</button>
+        <button class="menu-item" type="button" onclick="searchShortcut('Favorites', ''); closeMenu();">⭐ Favorites</button>
+        <button class="menu-item" type="button" onclick="searchShortcut('AI Assistant', ''); closeMenu();">🤖 AI</button>
         <button class="menu-item" type="button" onclick="window.location.href='Settings.html'">⚙️ Settings</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('alislamiah', 'Alislamiah', 'https://www.alislamiah.com', 'icon.png')">🌐 Alislamiah</button>
-        <button class="menu-item" type="button" onclick="goToShortcut('youtube', 'YouTube', 'https://www.youtube.com', 'https://www.youtube.com/favicon.ico')">▶️ YouTube</button>
-        <!-- رابط السجل المضاف هنا -->
+        <button class="menu-item" type="button" onclick="searchShortcut('Alislamiah', 'icon.png'); closeMenu();">🌐 Alislamiah</button>
+        <button class="menu-item" type="button" onclick="searchShortcut('YouTube', 'https://www.youtube.com/favicon.ico'); closeMenu();">▶️ YouTube</button>
         <button class="menu-item" type="button" onclick="window.location.href='history.html'; closeMenu();">🕒 History</button>
     </div>
 </div>
@@ -482,18 +481,16 @@ body{
 const RESULTS_PAGE = "results.html";
 const HISTORY_KEY = "alislamiah_history";
 
-/* دالة لحفظ السجل في LocalStorage */
+/* حفظ السجل */
 function addToHistory(title, url, icon) {
     try {
         let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-        // إضافة العنصر الجديد في البداية
         history.unshift({
             title: title,
             url: url,
             icon: icon || "",
             time: Date.now()
         });
-        // الاحتفاظ بآخر 100 عنصر فقط لمنع الامتلأ
         if (history.length > 100) {
             history = history.slice(0, 100);
         }
@@ -503,7 +500,7 @@ function addToHistory(title, url, icon) {
     }
 }
 
-/* تحديث أيقونة AI الكبرى حسب محرك البحث */
+/* تحديث أيقونة AI حسب محرك البحث */
 function updateMainAiLogo() {
     const engine = localStorage.getItem("searchEngine") || "Alislamiah";
     const logoContainer = document.getElementById("mainAiLogo");
@@ -529,27 +526,25 @@ window.addEventListener("storage", function(event) {
     }
 });
 
-function goToShortcut(shortcut, title, targetUrl, icon){
-    addToHistory(title || shortcut, targetUrl || (RESULTS_PAGE + "?shortcut=" + shortcut), icon);
-    const url = RESULTS_PAGE + "?shortcut=" + encodeURIComponent(shortcut);
-    window.location.href = url;
+/* وظيفة لتوجيه الاختصارات للبحث باسم الاختصار في النتائج */
+function searchShortcut(name, icon){
+    const targetUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(name);
+    addToHistory(name, targetUrl, icon);
+    window.location.href = targetUrl;
 }
 
+/* وظيفة البحث المعتادة عبر شريط البحث */
 function performSearch(){
     const input = document.getElementById("searchInput");
     const query = input.value.trim();
     if(query === ""){ input.focus(); return; }
-    
-    // تسجيل عملية البحث في السجل
+
+    const targetUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
     const engine = localStorage.getItem("searchEngine") || "Alislamiah";
-    let searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(query);
-    if(engine === "Alislamiah") searchUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
-    else if(engine === "Microsoft Bing") searchUrl = "https://www.bing.com/search?q=" + encodeURIComponent(query);
+    
+    addToHistory(query, targetUrl, engine === "Google" ? "https://www.google.com/favicon.ico" : (engine === "Microsoft Bing" ? "https://www.bing.com/favicon.ico" : "icon.png"));
 
-    addToHistory(query, searchUrl, engine === "Google" ? "https://www.google.com/favicon.ico" : (engine === "Microsoft Bing" ? "https://www.bing.com/favicon.ico" : "icon.png"));
-
-    const url = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
-    window.location.href = url;
+    window.location.href = targetUrl;
 }
 
 function handleSearchKey(event){
