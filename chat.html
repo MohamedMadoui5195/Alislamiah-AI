@@ -61,10 +61,10 @@ const p1 = "AQ.Ab8RN6Jwl4";
 const p2 = "5ktI8q1FhJosf";
 const p3 = "TqKkgYki0jmgs";
 const p4 = "DsTbmJ5bDZFKJw";
-const TOKEN = p1 + p2 + p3 + p4;
+const API_KEY = p1 + p2 + p3 + p4;
 
 const MODEL = "gemini-2.5-flash";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
 async function sendMessage(){
     const input = document.getElementById("message");
@@ -83,8 +83,7 @@ async function sendMessage(){
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${TOKEN}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: text }] }]
