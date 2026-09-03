@@ -423,7 +423,8 @@ body{
             <div class="shortcut-name">YouTube</div>
         </div>
 
-        <div class="shortcut" onclick="searchShortcut('AI Assistant', '')">
+        <div class="shortcut"
+onclick="window.location.href='chat.html'">
             <div class="shortcut-icon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
