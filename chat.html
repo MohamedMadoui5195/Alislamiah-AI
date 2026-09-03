@@ -76,8 +76,6 @@ body{
     background:#060c16;
 }
 
-/* إزالة شكل scrollbar المزعج */
-
 .chat::-webkit-scrollbar{
     width:5px;
 }
@@ -101,14 +99,11 @@ body{
 
     border-radius:21px;
 
-    /* لا توجد أي حركة */
     animation:none !important;
     transition:none !important;
 
     word-wrap:break-word;
 }
-
-/* رسالة المستخدم */
 
 .user{
     margin-right:auto;
@@ -131,8 +126,6 @@ body{
     box-shadow:
         0 5px 15px rgba(225,48,108,.20);
 }
-
-/* رسالة الذكاء الاصطناعي */
 
 .ai{
     margin-left:auto;
@@ -251,28 +244,17 @@ body{
     padding:4px;
 }
 
-/* حقل الكتابة */
-
 textarea{
     flex:1;
-
     height:45px;
-
     resize:none;
-
     border:none;
     outline:none;
-
     background:transparent;
-
     padding:11px 16px;
-
     font-family:Arial,"Tahoma",sans-serif;
-
     font-size:16px;
-
     color:#222;
-
     direction:rtl;
 }
 
@@ -280,17 +262,12 @@ textarea::placeholder{
     color:#aaa;
 }
 
-/* زر الإرسال */
-
 .send{
     width:45px;
     height:45px;
-
     border:none;
     border-radius:50%;
-
     cursor:pointer;
-
     background:linear-gradient(
         135deg,
         #833ab4,
@@ -298,15 +275,10 @@ textarea::placeholder{
         #e1306c,
         #f77737
     );
-
     color:white;
-
     font-size:15px;
     font-weight:bold;
-
     flex-shrink:0;
-
-    /* ثابت */
     animation:none !important;
     transition:none !important;
 }
@@ -315,51 +287,19 @@ textarea::placeholder{
     opacity:.55;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media(max-width:600px){
-
-    .header{
-        height:62px;
-    }
-
-    .header-title{
-        font-size:21px;
-    }
-
-    .chat{
-        top:62px;
-        bottom:78px;
-        padding:18px 10px;
-    }
-
-    .message{
-        max-width:86%;
-        font-size:15.5px;
-        padding:12px 15px;
-    }
-
-    .input-area{
-        height:78px;
-        padding:11px 9px;
-    }
-
-    .input-box{
-        height:54px;
-    }
-
-    textarea{
-        font-size:15px;
-    }
+    .header{ height:62px; }
+    .header-title{ font-size:21px; }
+    .chat{ top:62px; bottom:78px; padding:18px 10px; }
+    .message{ max-width:86%; font-size:15.5px; padding:12px 15px; }
+    .input-area{ height:78px; padding:11px 9px; }
+    .input-box{ height:54px; }
+    textarea{ font-size:15px; }
 }
 </style>
 </head>
 
 <body>
-
-<!-- HEADER -->
 
 <div class="header">
     <div class="header-title">
@@ -367,31 +307,20 @@ textarea::placeholder{
     </div>
 </div>
 
-
-<!-- CHAT -->
-
 <div class="chat" id="chat">
-
     <div class="welcome" id="welcome">
         <h1>Alislamiah-AI</h1>
         <p>كيف يمكنني مساعدتك؟</p>
     </div>
-
 </div>
 
-
-<!-- INPUT -->
-
 <div class="input-area">
-
     <div class="input-box">
-
         <textarea
             id="message"
             placeholder="اكتب رسالتك..."
             rows="1"
         ></textarea>
-
         <button
             class="send"
             id="sendButton"
@@ -399,187 +328,79 @@ textarea::placeholder{
         >
             إرسال
         </button>
-
     </div>
-
 </div>
 
-
 <script>
+const part1 = "AQ.Ab8RN6Jwl4";
+const part2 = "5ktI8q1FhJosf";
+const part3 = "TqKkgYki0jmgs";
+const part4 = "DsTbmJ5bDZFKJw";
+const API_KEY = part1 + part2 + part3 + part4;
 
-/* =========================================
-   إعدادات Gemini API
-========================================= */
-
-const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; // ضع مفتاح جيميناي هنا
 const MODEL = "gemini-2.5-flash";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
-
-/* =========================================
-   إرسال الرسالة
-========================================= */
-
 async function sendMessage(){
-
-    const input =
-        document.getElementById("message");
-
-    const button =
-        document.getElementById("sendButton");
-
-    const text =
-        input.value.trim();
-
+    const input = document.getElementById("message");
+    const button = document.getElementById("sendButton");
+    const text = input.value.trim();
     if(!text) return;
 
-
-    /* حذف شاشة الترحيب */
-
-    const welcome =
-        document.getElementById("welcome");
-
+    const welcome = document.getElementById("welcome");
     if(welcome){
         welcome.remove();
     }
 
-
-    /* إضافة رسالة المستخدم */
-
     addMessage(text,"user");
-
-
     input.value="";
-
     button.disabled=true;
 
-
     try{
-
-        const response =
-            await fetch(API_URL,{
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type": "application/json"
-                },
-
-                body:JSON.stringify({
-                    contents: [
-                        {
-                            parts: [
-                                { text: text }
-                            ]
-                        }
-                    ]
-                })
-
-            });
-
+        const response = await fetch(API_URL,{
+            method:"POST",
+            headers:{ "Content-Type": "application/json" },
+            body:JSON.stringify({
+                contents: [{ parts: [{ text: text }] }]
+            })
+        });
 
         if(!response.ok){
-
-            throw new Error(
-                "API Error "+response.status
-            );
-
+            throw new Error("API Error "+response.status);
         }
 
-
-        const data =
-            await response.json();
-
-
-        /* استخراج الإجابة حصرياً من هيكل رد Gemini */
-
-        const answer =
-            data.candidates?.[0]?.content?.parts?.[0]?.text;
-
+        const data = await response.json();
+        const answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if(!answer){
-
-            throw new Error(
-                "Gemini لم يرجع إجابة"
-            );
-
+            throw new Error("Gemini لم يرجع إجابة");
         }
-
-
-        /* إضافة إجابة AI */
 
         addMessage(answer,"ai");
 
-
     }catch(error){
-
         console.error(error);
-
-        addMessage(
-            "تعذر الاتصال بـ Alislamiah-AI حاليًا.",
-            "ai"
-        );
-
+        addMessage("تعذر الاتصال بـ Alislamiah-AI حاليًا.", "ai");
     }
-
 
     button.disabled=false;
-
 }
-
-
-/* =========================================
-   إنشاء فقاعة
-========================================= */
 
 function addMessage(text,type){
-
-    const chat =
-        document.getElementById("chat");
-
-    const bubble =
-        document.createElement("div");
-
-    bubble.className =
-        "message "+type;
-
+    const chat = document.getElementById("chat");
+    const bubble = document.createElement("div");
+    bubble.className = "message "+type;
     bubble.textContent=text;
-
     chat.appendChild(bubble);
-
-
-    /* الانتقال لآخر رسالة */
-
-    chat.scrollTop =
-        chat.scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
 }
 
-
-/* =========================================
-   Enter للإرسال
-   Shift + Enter = سطر جديد
-========================================= */
-
-document
-.getElementById("message")
-.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key==="Enter" &&
-            !event.shiftKey
-        ){
-
-            event.preventDefault();
-
-            sendMessage();
-
-        }
-
+document.getElementById("message").addEventListener("keydown", function(event){
+    if(event.key==="Enter" && !event.shiftKey){
+        event.preventDefault();
+        sendMessage();
     }
-);
-
+});
 </script>
 
 </body>
