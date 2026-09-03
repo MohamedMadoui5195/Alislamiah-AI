@@ -7,102 +7,69 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding-top: 140px; background-color: #f8fafc; font-family: sans-serif; }
+        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
+        .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
+        .result-card:hover { border-color: #214f8f; background: #0f1e31; }
     </style>
 </head>
 <body>
 
-    <header id="app-header" class="bg-emerald-700 p-4 rounded-b-3xl shadow-lg">
-        <div class="flex items-center justify-between mb-3 text-white">
+    <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
+        <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
             <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
             <h1 class="font-bold text-lg">Alislamiah Search Engine</h1>
             <div class="w-8"></div>
         </div>
-        <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
-               class="w-full py-2 px-4 rounded-xl focus:outline-none shadow-inner">
+        <div class="max-w-2xl mx-auto">
+            <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
+                   class="w-full py-3 px-4 rounded-xl bg-white text-slate-900 focus:outline-none shadow-inner text-sm">
+        </div>
     </header>
 
-    <main id="container" class="p-4 max-w-lg mx-auto"></main>
+    <main id="container" class="p-4 max-w-2xl mx-auto space-y-3"></main>
 
     <script>
         const library = [
-            { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/" },
-            { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/" },
-            { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.dz/" },
-            { title: "قناة الشيخ فركوس", type: "منصة", url: "https://youtube.com/channel/UC1UuPsSzEOhxUamwLt86IiQ?si=tUGE9H6rfKrbD3F3" },
-            { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net" },
-            { title: "موقع الإسلام سؤال وجواب", type: "موقع", url: "https://islamqa.info" },
-    
-    { title: "قناة الإسلامية انجليزي", type: "منصة", url: "https://www.youtube.com/@AlislamiahEnglish" } ,
-
-{ title: "قناة الإسلامية", type: "منصة", url: "https://youtube.com/@alislamiah5195" },
-
-{ title: "قناة Eisen", type: "منصة", url: "https://youtube.com/@eisen-e1a?si=Pb9WtA9ImTYtOfe1" },
-
-{ title: "الجزيرة نت", type: "منصة", url: "https://www.aljazeera.net" },
-
-{ title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net" },
-
-{ title: "قناة الشيخ العفاسي", type: "منصة", url: "https://youtube.com/@alafasy?si=jBz3cGMAkjx3jMQI" },
-
-{ title: "Mr bahmed Instagram", type: "منصة", url: "https://www.instagram.com/mr_bahmed" },
-
-{ title: "قناة Chiraz activities", type: "منصة", url: "https://youtube.com/@chirazactivities?si=g8w4AvfEisOYA7Ha" },
-
-{ title: "قناة Bahmed Hadj Brahim", type: "منصة", url: "https://youtube.com/@bahmedhadjbrahim?si=kJTUNbw6r2w_9smW" },
-
-{ title: "Chiraz activities Instagram", type: "منصة", url: "https://www.instagram.com/chirazactivities?igsi=MTAyZWN2YTZtcGwwMQ==" },
-
-{ title: "Mr Bahmed موقع", type: "منصة", url: "https://mrbahmed.com" },
-
-{ title: "Chiraz Activities ", type: "منصة", url: "https://Chirazactivities.com" },
-
-{ title: "Firebase", type: "منصة", url: "https://firebase.google.com" },
-
-{ title: "MIT App Inventor", type: "منصة", url: "https://appinventor.mit.edu" },
-
-{ title: "dz.exams", type: "منصة", url: "https://www.dzexams.com" },
-
-{ title: "CNAS", type: "منصة", url: "https://cnas.dz/" },
-
-{ title: "GitHub", type: "منصة", url: "https://github.com" },
-
-{ title: "SNTF", type: "منصة", url: "https://sntf.dz" },
-
-{ title: "Alafasy", type: "منصة", url: "https://alfan.link/Alafasy" },
-
-{ title: "قناة إسلام صبحي", type: "منصة", url: "https://youtube.com/@islam_sobhi?si=rXne1e-ujW_VwUPT" },
-
-{ title: "قناة Quran dz", type: "منصة", url: "https://youtube.com/@dz-quran?si=--qmv3vg-rfU_jls" },
-
-{ title: "Instagram خالد سليماني", type: "منصة", url: "https://www.instagram.com/khaled_juridiq?igsi=cTUwcjcxcm12MWht" },
-
-{ title: "Ali Ben maghar Instagram", type: "منصة", url: "https://www.instagram.com/ali_bnm03?igsi=MW0wbXJsbXQ0b3VrMw==" },
-
-{ title: "Etusa Instagram", type: "منصة", url: "https://www.instagram.com/etusa.dz?igsi=dWtkbDN3dmZwZGJw" },
-
-{ title: "Etusa", type: "منصة", url: "https://www.etusa.dz" },
-
-{ title: "دار المعرفة", type: "منصة", url: "https://easyquran.com" },
-
-{ title: "Alislamiah Instagram", type: "منصة", url: "https://www.instagram.com/alislamiah5195?igsi=MWprbTEzdWQ2bzh0bQ==" },
-
-{ title: "قناة Mohamed Anes kalache", type: "منصة", url: "https://youtube.com/@anes__kal?si=X3xcqwW62W2oI8fY" },
-
-{ title: "Ma maitresse de français", type: "منصة", url: "https://mamaitressedefrançais.com" },
-
-{ title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c" },
-
-{ title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK" },
-
-{ title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA" },
-
-
-
-];
-
-
+            { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية للإسلامية نت، تتيح لك الوصول للخدمات والمحتوى المميز." },
+            { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات ومنتجات الإسلامية الرقمية المتنوعة." },
+            { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.dz/", desc: "فضاء أولياء التلاميذ للتعرف على نتائج ومستسيات الأبناء الدراسية في الجزائر." },
+            { title: "قناة الشيخ فركوس", type: "منصة", url: "https://youtube.com/channel/UC1UuPsSzEOhxUamwLt86IiQ?si=tUGE9H6rfKrbD3F3", desc: "القناة الرسمية لفضيلة الشيخ الدكتور محمد علي فركوس للحطبا والدروس العلمية." },
+            { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net", desc: "موقع إسلامي شامل يقدم فتاوى، استشارات، ومقالات دعوية وعلمية موثوقة." },
+            { title: "موقع الإسلام سؤال وجواب", type: "موقع", url: "https://islamqa.info", desc: "موقع إسلامي يشرف عليه الشيخ محمد صالح المنجد للإجابة عن الأسئلة الشرعية." },
+            { title: "قناة الإسلامية انجليزي", type: "منصة", url: "https://www.youtube.com/@AlislamiahEnglish", desc: "القناة المخصصة للمحتوى الإسلامي باللغة الإنجليزية." },
+            { title: "قناة الإسلامية", type: "منصة", url: "https://youtube.com/@alislamiah5195", desc: "القناة الرئيسية لمنصة الإسلامية على يوتيوب." },
+            { title: "قناة Eisen", type: "منصة", url: "https://youtube.com/@eisen-e1a?si=Pb9WtA9ImTYtOfe1", desc: "قناة تقنية وتوعوية مميزة." },
+            { title: "الجزيرة نت", type: "منصة", url: "https://www.aljazeera.net", desc: "شبكة الجزيرة الإخبارية لمتابعة آخر الأحداث والأنباء العربية والعالمية." },
+            { title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net", desc: "بوابة إخبارية عربية شاملة لآخر الأخبار السياسية والاقتصادية والرياضية." },
+            { title: "قناة الشيخ العفاسي", type: "منصة", url: "https://youtube.com/@alafasy?si=jBz3cGMAkjx3jMQI", desc: "القناة الرسمية للقارئ والمنشد الشيخ مشاري بن راشد العفاسي." },
+            { title: "Mr bahmed Instagram", type: "منصة", url: "https://www.instagram.com/mr_bahmed", desc: "الحساب الرسمي على إنستغرام." },
+            { title: "قناة Chiraz activities", type: "منصة", url: "https://youtube.com/@chirazactivities?si=g8w4AvfEisOYA7Ha", desc: "قناة تعليمية وأنشطة متنوعة." },
+            { title: "قناة Bahmed Hadj Brahim", type: "منصة", url: "https://youtube.com/@bahmedhadjbrahim?si=kJTUNbw6r2w_9smW", desc: "قناة الأستاذ باحمد حاج إبراهيم." },
+            { title: "Chiraz activities Instagram", type: "منصة", url: "https://www.instagram.com/chirazactivities?igsi=MTAyZWN2YTZtcGwwMQ==", desc: "صفحة إنستغرام لـ Chiraz activities." },
+            { title: "Mr Bahmed موقع", type: "منصة", url: "https://mrbahmed.com", desc: "الموقع الإلكتروني الرسمي لـ Mr Bahmed." },
+            { title: "Chiraz Activities", type: "منصة", url: "https://Chirazactivities.com", desc: "الموقع الإلكتروني الرسمي." },
+            { title: "Firebase", type: "منصة", url: "https://firebase.google.com", desc: "منصة تطوير تطبيقات الويب والهواتف من جوجل." },
+            { title: "MIT App Inventor", type: "منصة", url: "https://appinventor.mit.edu", desc: "منصة مرئية لإنشاء تطبيقات أندرويد بسهولة وبدون تعقيد." },
+            { title: "dz.exams", type: "منصة", url: "https://www.dzexams.com", desc: "موقع الفرائض والاختبارات والامتحانات التعليمية في الجزائر." },
+            { title: "CNAS", type: "منصة", url: "https://cnas.dz/", desc: "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجناء بالجزائر." },
+            { title: "GitHub", type: "منصة", url: "https://github.com", desc: "منصة استضافة المشاريع البرمجية وتطوير البرمجيات مفتوحة المصدر." },
+            { title: "SNTF", type: "منصة", url: "https://sntf.dz", desc: "الشركة الوطنية للنقل بالسكك الحديدية في الجزائر." },
+            { title: "Alafasy", type: "منصة", url: "https://alfan.link/Alafasy", desc: "روابط منصات ومنتجات الشيخ مشاري العفاسي." },
+            { title: "قناة إسلام صبحي", type: "منصة", url: "https://youtube.com/@islam_sobhi?si=rXne1e-ujW_VwUPT", desc: "تلاوات عطرة بصوت القارئ إسلام صبحي." },
+            { title: "قناة Quran dz", type: "منصة", url: "https://youtube.com/@dz-quran?si=--qmv3vg-rfU_jls", desc: "قناة لتعلم وتلاوة القرآن الكريم." },
+            { title: "Instagram خالد سليماني", type: "منصة", url: "https://www.instagram.com/khaled_juridiq?igsi=cTUwcjcxcm12MWht", desc: "الحساب الرسمي." },
+            { title: "Ali Ben maghar Instagram", type: "منصة", url: "https://www.instagram.com/ali_bnm03?igsi=MW0wbXJsbXQ0b3VrMw==", desc: "الحساب الرسمي." },
+            { title: "Etusa Instagram", type: "منصة", url: "https://www.instagram.com/etusa.dz?igsi=dWtkbDN3dmZwZGJw", desc: "صفحة إنستغرام لمؤسسة النقل الحضري والشبه حضري للجزائر." },
+            { title: "Etusa", type: "منصة", url: "https://www.etusa.dz", desc: "الموقع الرسمي لمؤسسة النقل الحضري." },
+            { title: "دار المعرفة", type: "منصة", url: "https://easyquran.com", desc: "موقع سهل القرآن الكريم ومصادر دار المعرفة." },
+            { title: "Alislamiah Instagram", type: "منصة", url: "https://www.instagram.com/alislamiah5195?igsi=MWprbTEzdWQ2bzh0bQ==", desc: "الحساب الرسمي لمنصة الإسلامية على إنستغرام." },
+            { title: "قناة Mohamed Anes kalache", type: "منصة", url: "https://youtube.com/@anes__kal?si=X3xcqwW62W2oI8fY", desc: "القناة الرسمية." },
+            { title: "Ma maitresse de français", type: "منصة", url: "https://mamaitressedefrançais.com", desc: "موقع تعليم اللغة الفرنسية." },
+            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
+            { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
+            { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." }
+        ];
 
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -111,31 +78,25 @@
 
             if (query === '') return;
 
-            const filtered = library.filter(i => i.title.toLowerCase().includes(query));
+            const filtered = library.filter(i => i.title.toLowerCase().includes(query) || i.desc.toLowerCase().includes(query));
 
-            // تحقق من وجود نتائج
-            if (filtered.length === 0) return;
-
-            // تحديد النوع بناءً على أول نتيجة مطابقة
-            const type = filtered[0].type;
-
-            if (type === "منصة") {
-                // عرض المنصات فقط (صفحة داكنة)
-                container.innerHTML = `<div class="bg-slate-800 p-5 rounded-3xl shadow-2xl">
-                    <h2 class="text-white font-bold mb-4">المنصات (تطبيقات وقنوات)</h2>` +
-                    filtered.map(i => `<div class="bg-slate-700 p-4 rounded-xl mb-2 flex justify-between items-center text-white font-bold">
-                        <span>${i.title}</span>
-                        <button onclick="window.location.href='${i.url}'" class="bg-blue-600 px-4 py-2 rounded-lg text-xs">فتح</button>
-                    </div>`).join('') + `</div>`;
-            } else {
-                // عرض المواقع الدينية فقط (صفحة خضراء)
-                container.innerHTML = `<div class="bg-emerald-800 p-5 rounded-3xl shadow-xl">
-                    <h2 class="text-white font-bold mb-4">المواقع الدينية</h2>` +
-                    filtered.map(i => `<div class="bg-white p-4 rounded-xl mb-2 flex justify-between items-center text-emerald-900 font-bold">
-                        <span>${i.title}</span>
-                        <button onclick="window.location.href='${i.url}'" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs">زيارة</button>
-                    </div>`).join('') + `</div>`;
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-400 py-10">لا توجد نتائج مطابقة لـ "${query}"</div>`;
+                return;
             }
+
+            container.innerHTML = filtered.map(i => `
+                <div class="result-card p-4 rounded-2xl cursor-pointer flex items-start gap-3.5" onclick="window.location.href='${i.url}'">
+                    <div class="w-10 h-10 rounded-xl bg-[#12243b] text-[#6fa4ed] flex items-center justify-center shrink-0 text-lg">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-[11px] text-[#71829a] truncate mb-0.5" dir="ltr">${i.url}</div>
+                        <div class="text-[16px] text-[#6fa4ed] font-semibold mb-1">${i.title}</div>
+                        <div class="text-[13px] text-[#b9c8e2] leading-relaxed">${i.desc || 'منصة وموقع إلكتروني موثوق ضمن شبكة الإسلامية.'}</div>
+                    </div>
+                </div>
+            `).join('');
         }
     </script>
 </body>
