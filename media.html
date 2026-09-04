@@ -1,0 +1,21 @@
+// media.html - قاعدة بيانات ردود المنصات والروابط التقنية
+
+const mediaDatabase = [
+    { 
+        roots: ["فاير بايز", "فايربايز", "firebase"], 
+        reply: "يمكنك زيارة رابط منصة فايربايز عبر النتائج المباشرة:\n<a href='http://results.html?q=Firebase' target='_blank'>http://results.html?q=Firebase</a>" 
+    },
+    { 
+        roots: ["جيت هاب", "غيت هاب", "github"], 
+        reply: "يمكنك زيارة رابط منصة جيت هاب عبر النتائج المباشرة:\n<a href='http://results.html?q=GitHub' target='_blank'>http://results.html?q=GitHub</a>" 
+    },
+    { 
+        roots: ["المنصات التقنية", "الروابط", "منصات"], 
+        reply: "إليك المنصات المتاحة:\n\n• <a href='http://results.html?q=Firebase' target='_blank'>Firebase</a>\n• <a href='http://results.html?q=GitHub' target='_blank'>GitHub</a>" 
+    }
+];
+
+// إتاحة البيانات لملف الدردشة الرئيسي عبر المتغير العام
+if (typeof window !== 'undefined') {
+    window.mediaDatabase = mediaDatabase;
+}
