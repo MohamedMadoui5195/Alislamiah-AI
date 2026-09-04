@@ -38,6 +38,80 @@ textarea::placeholder{color:#aaa;}
 </head>
 <body>
 
+<div id="alislamiah-chat-box" style="font-family:Arial,sans-serif;background:#060c16;color:#fff;padding:20px;border-radius:12px;max-width:450px;margin:auto;box-shadow:0 4px 15px rgba(0,0,0,0.5);">
+    <h3 style="text-align:center;color:#f77737;margin-bottom:15px;">Alislamiah-AI</h3>
+    <div id="chat-messages" style="height:320px;overflow-y:auto;background:#111;padding:12px;margin-bottom:12px;border-radius:8px;display:flex;flex-direction:column;gap:8px;"></div>
+    <div style="display:flex;gap:8px;">
+        <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا..." style="flex:1;padding:10px 14px;border-radius:8px;border:none;outline:none;font-size:14px;direction:rtl;" onkeydown="if(event.key==='Enter')sendUserMessage()">
+        <button onclick="sendUserMessage()" style="padding:10px 16px;background:linear-gradient(135deg,#833ab4,#e1306c);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">إرسال</button>
+    </div>
+</div>
+
+
+
+<script>
+// قاعدة بيانات موسعة جداً لتغطية جميع المواضيع والطلبات
+const siteDatabase = [
+    // التحيات والترحيب
+    {q: ["سلام", "مرحباً", "السلام", "اهلا", "حيّاك", "صباح", "مساء", "السلاَم"], a: "وعليكم السلام ورحمة الله وبركاته! أهلاً بك في منصة Alislamiah-AI."},
+    {q: ["من أنت", "اسمك", "ما هو أنت", "تعريف"], a: "أنا مساعد Alislamiah-AI الذكي المدمج في موقعك لخدمة الزوار."},
+    {q: ["كيف حالك", "شلونك", "أخبارك"], a: "الحمد لله بخير ونعمة، كيف يمكنني مساعدتك اليوم؟"},
+    
+    // القرآن الكريم وعلومه
+    {q: ["قرآن", "آية", "سورة", "تلاوة", "مصصحف", "القرآن"], a: "قال الله تعالى في محكم تنزيله: (وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ وَرَحْمَةٌ لِلْمُؤْمِنِينَ)."},
+    {q: ["سورة البقرة", "البقرة"], a: "سورة البقرة سنام القرآن وذروته، أخذها بركة وتركها حسرة."},
+    {q: ["آية الكرسي", "الكرسي"], a: "قال الله تعالى: (اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...) وهي أعظم آية في كتاب الله."},
+    {q: ["سورة الكهف", "الكهف"], a: "قراءة سورة الكهف يوم الجمعة تنور ما بين الجمعتين."},
+    
+    // الصلاة والعبادات
+    {q: ["صلاة", "اوقات", "الصلوات", "فرض", "الصلاة"], a: "الصلاة عماد الدين، من أقامها فقد أقام الدين ومن هدمها فقد هدم الدين."},
+    {q: ["صيام", "رمضان", "صوم"], a: "الصيام جُنة، وهو عبادة عظيمة تربي النفس على الصبر وتقوى الله عز وجل."},
+    {q: ["زكاة", "صدقة", "فقراء"], a: "الصدقة تطفئ غضب الرب وتدفع ميتة السوء وتطهر الأموال."},
+    {q: ["حج", "عمرة", "طواف"], a: "الحج المبرور ليس له جزاء إلا الجنة."},
+    
+    // الأذكار والاستغفار
+    {q: ["استغفار", "استغفر", "ذنب", "معصية"], a: "أستغفر الله العظيم واتوب إليه. أكثر من الاستغفار ليجعل الله لك من كل هم فرجاً."},
+    {q: ["دعاء", "ادعية", "ذكر", "تسبيح"], a: "أفضل الدعاء هو ما وافق خشوع القلب وحضوره. أكثر من قول: (رَبنا آتنا في الدنيا حسنة وفي الآخرة حسنة)."},
+    {q: ["صبر", "ابتلاء", "هم", "حزن"], a: "اعلم أن مع العسر يسراً، وأن الصبر مفتاح الفرج."},
+    {q: ["توبة", "رجوع"], a: "باب التوبة مفتوح دائماً لا يغلق حتى غروب الشمس من مغربها."},
+    
+    // البرمجة والتقنية
+    {q: ["برمجة", "كود", "تطوير", "موقع"], a: "البرمجة عالم ممتع يتطلب الصبر واستخدام حلول هيكلية ذكية ومحلية."},
+    {q: ["ذكاء اصطناعي", "تقنية", "تكنولوجيا"], a: "التقنية تهدف لتسهيل حياة الإنسان وحل مشاكله المعقدة."},
+    {q: ["جيميناي", "gemini", "api"], a: "النماذج الذكية توفر حلولاً مذهلة عند دمجها بشكل صحيح في الواجهات."},
+    
+    // ردود إضافية عامة ومتنوعة
+    {q: ["شكرا", "جزاك الله", "بارك الله", "مشكور"], a: "وجزاك خيراً وبارك فيك! يسعدني جداً تقديم المساعدة لك."},
+    {q: ["مع السلامة", "وداعا", "إلى اللقاء"], a: "في أمان الله ورعايته! ننتظر زيارتك القادمة بشغف."}
+];
+
+function sendUserMessage(){
+    const input = document.getElementById('chat-input');
+    const box = document.getElementById('chat-messages');
+    const text = input.value.trim();
+    if(!text) return;
+
+    box.innerHTML += '<div style="background:#1f2937;padding:8px 12px;border-radius:8px;max-width:80%;margin-right:auto;text-align:right;">أنت: ' + text + '</div>';
+    input.value = '';
+    
+    setTimeout(() => {
+        let reply = "عذراً، لم أجد مطابقة دقيقة، لكن النظام يعمل بكفاءة تامة ضمن قاعدة البيانات المحلية.";
+        for(let item of siteDatabase){
+            for(let word of item.q){
+                if(text.includes(word)){
+                    reply = item.a;
+                    break;
+                }
+            }
+        }
+        box.innerHTML += '<div style="background:#374151;padding:8px 12px;border-radius:8px;max-width:80%;margin-left:auto;text-align:right;color:#feda75;">المساعد: ' + reply + '</div>';
+        box.scrollTop = box.scrollHeight;
+    }, 200);
+}
+</script>
+
+
+
 <div class="header">
     <div class="header-title">Alislamiah-AI</div>
 </div>
