@@ -281,6 +281,126 @@ body{
     font-weight:600;
 }
 
+/* =====================================================
+   PROMO CARDS STYLES (تنسيقات البطاقات الإعلانية)
+===================================================== */
+.promo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 24px;
+  direction: rtl;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  margin-top: 32px;
+}
+
+.promo-card {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.promo-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 28px 50px rgba(0, 0, 0, 0.35);
+}
+
+.promo-card.arabiya {
+  background: #0f1c2e;
+}
+
+.promo-card.islamiya {
+  background: #0c4a5c;
+}
+
+.card-image {
+  height: 190px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 24px 26px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-content::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  top: -40px;
+  left: -40px;
+}
+
+.card-content::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  bottom: -30px;
+  right: -30px;
+}
+
+.card-label {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 18px;
+}
+
+.card-title {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.4px;
+}
+
+.card-desc {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14.5px;
+  line-height: 1.7;
+  margin: 0 0 24px 0;
+}
+
+.card-btn {
+  display: inline-block;
+  background: #ffffff;
+  color: #0f1c2e !important;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.islamiya .card-btn {
+  color: #0c4a5c !important;
+}
+
+.card-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
 .footer{
     text-align:center;
     margin-top:30px;
@@ -450,6 +570,43 @@ onclick="window.location.href='chat.html'">
         </div>
     </div>
 
+    <!-- =====================================================
+         PROMO CARDS (البطاقات الإعلانية المضافة)
+    ===================================================== -->
+    <div class="promo-cards">
+
+      <!-- بطاقة العربية -->
+      <div class="promo-card arabiya">
+        <div class="card-image">
+          <img src="Screenshot_20260905-180328.jpg" alt="العربية">
+        </div>
+        <div class="card-content">
+          <span class="card-label">مادة إعلانية</span>
+          <h3 class="card-title">Alarabiya.net</h3>
+          <p class="card-desc">تابعوا جميع الأخبار العربية والعالمية في منصة العربية.نت</p>
+          <a href="results.html?q=%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9.%D9%86%D8%AA" class="card-btn">
+            ← عرض النتائج
+          </a>
+        </div>
+      </div>
+
+      <!-- بطاقة الإسلامية -->
+      <div class="promo-card islamiya">
+        <div class="card-image">
+          <img src="Screenshot_20260905-180622.jpg" alt="الإسلامية">
+        </div>
+        <div class="card-content">
+          <span class="card-label">مادة إعلانية</span>
+          <h3 class="card-title">Alislamiah.net</h3>
+          <p class="card-desc">حيث تجدون برامج ومنصات إسلامية على Alislamiah.net، دروس الدعم في مادة الإسلامية وجميع الخدمات المدمجة.</p>
+          <a href="results.html?q=%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%20%D9%86%D8%AA" class="card-btn">
+            ← عرض النتائج
+          </a>
+        </div>
+      </div>
+
+    </div>
+
     <!-- FOOTER -->
     <div class="footer">
         <strong>Alislamiah AI Browser</strong><br>2026 ©
@@ -542,7 +699,7 @@ function performSearch(){
 
     const targetUrl = RESULTS_PAGE + "?q=" + encodeURIComponent(query);
     const engine = localStorage.getItem("searchEngine") || "Alislamiah";
-    
+
     addToHistory(query, targetUrl, engine === "Google" ? "https://www.google.com/favicon.ico" : (engine === "Microsoft Bing" ? "https://www.bing.com/favicon.ico" : "icon.png"));
 
     window.location.href = targetUrl;
