@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#08142b">
 <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Alislamiah AI">
+<link rel="stylesheet" href="style.css">
 
 <title>Alislamiah-AI Browser</title>
 
