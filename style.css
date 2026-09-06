@@ -1,4 +1,4 @@
-/* خلفية عامة */
+ /* خلفية عامة */
 body {
   font-family: Tahoma, sans-serif;
   background:#121212;
@@ -19,7 +19,7 @@ body {
   transition: box-shadow 0.3s ease;
 }
 #searchBox:focus {
-  box-shadow: 0 0 10px #0078d7;
+  box-shadow: 0 0 10px #0078d7; /* ظل أزرق أنيق حول الشريط */
 }
 
 /* الأزرار */
@@ -54,79 +54,47 @@ body {
 }
 
 /* =====================================================
-   تنسيق صندوق رد الذكاء الاصطناعي (بنفس تدرج إنستغرام المطلوب تماماً)
+   تنسيق صندوق رد الذكاء الاصطناعي (الوضع الداكن)
 ===================================================== */
 .ai-answer-box {
-    background: #1e1e1e;
-    border: 2px solid transparent;
-    background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
+    background: linear-gradient(145deg, rgba(0, 120, 215, 0.15), rgba(0, 190, 255, 0.05));
+    border: 1px solid rgba(0, 120, 215, 0.35);
     border-radius: 16px;
     padding: 20px;
     margin: 20px auto;
     width: 70%;
     direction: rtl;
     text-align: right;
-    box-shadow: 0 10px 30px rgba(131, 58, 180, 0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.4s ease-in-out;
 }
 
 .ai-answer-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
     gap: 10px;
-}
-
-.ai-header-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-bottom: 10px;
     font-weight: bold;
-    color: #ffc2d1;
+    color: #00bef3;
     font-size: 16px;
 }
 
-.ai-header-title span {
-    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+.ai-answer-header span {
+    background: #0078d7;
     color: white;
     font-size: 11px;
     padding: 3px 10px;
     border-radius: 15px;
 }
 
-/* زر الانتقال إلى AI mode بنفس تدرج إنستغرام النقي */
-.ai-mode-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
-    color: white;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 6px 14px;
-    border-radius: 20px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    box-shadow: 0 4px 12px rgba(253, 29, 29, 0.3);
-}
-
-.ai-mode-btn:hover {
-    transform: scale(1.05);
-    opacity: 0.95;
-}
-
 .ai-answer-content {
-    color: #ffffff;
+    color: #e0e0e0;
     font-size: 14.5px;
     line-height: 1.8;
 }
 
 .ai-loading {
-    color: #ffd1dc;
+    color: #888;
     font-style: italic;
 }
 
