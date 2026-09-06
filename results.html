@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -6,54 +6,85 @@
     <title>نتائج البحث - Alislamiah Search Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- ربط ملف الستايل الخارجي إن وجد -->
     <style>
-        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: sans-serif; }
+        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: Tahoma, sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
 
         /* =====================================================
-           تنسيق صندوق إجابة الذكاء الاصطناعي (الوضع الداكن)
+           تنسيق صندوق إجابة الذكاء الاصطناعي (ألوان إنستغرام حيوية)
         ===================================================== */
         .ai-answer-box {
-            background: linear-gradient(145deg, rgba(8, 127, 255, 0.12), rgba(8, 185, 239, 0.05));
-            border: 1px solid rgba(8, 127, 255, 0.3);
+            background: linear-gradient(135deg, rgba(131, 58, 180, 0.35), rgba(253, 29, 29, 0.35), rgba(252, 176, 69, 0.35));
+            border: 2px solid rgba(225, 48, 108, 0.8);
             border-radius: 20px;
-            padding: 20px 22px;
+            padding: 22px;
             margin-bottom: 16px;
             direction: rtl;
             text-align: right;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 10px 35px rgba(225, 48, 108, 0.25);
             animation: fadeIn 0.4s ease-in-out;
         }
 
         .ai-answer-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 10px;
+        }
+
+        .ai-header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-weight: 700;
-            color: #08b9ef;
+            color: #ffc2d1;
             font-size: 16px;
         }
 
-        .ai-answer-header span {
-            background: #087fff;
+        .ai-header-title span {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             color: #ffffff;
             font-size: 11px;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-weight: 600;
+            font-weight: bold;
+        }
+
+        /* زر الانتقال إلى AI mode الحيوي */
+        .ai-mode-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: bold;
+            padding: 7px 16px;
+            border-radius: 25px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 15px rgba(253, 29, 29, 0.4);
+        }
+
+        .ai-mode-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.95;
         }
 
         .ai-answer-content {
-            color: #e2e8f0;
-            font-size: 14.5px;
+            color: #ffffff;
+            font-size: 15px;
             line-height: 1.8;
+            font-weight: 500;
         }
 
         .ai-loading {
-            color: #94a3b8;
+            color: #ffd1dc;
             font-style: italic;
         }
 
@@ -78,11 +109,17 @@
     </header>
 
     <main id="container" class="p-4 max-w-2xl mx-auto space-y-3">
-        <!-- صندوق رد الذكاء الاصطناعي (يظهر تلقائياً عند البحث) -->
+        <!-- صندوق رد الذكاء الاصطناعي بألوان إنستغرام الحيوية -->
         <div id="aiAnswerContainer" class="ai-answer-box" style="display: none;">
             <div class="ai-answer-header">
-                <i class="fas fa-robot"></i> رد الذكاء الاصطناعي
-                <span>Alislamiah AI</span>
+                <div class="ai-header-title">
+                    <i class="fas fa-robot text-pink-400"></i> رد الذكاء الاصطناعي
+                    <span>Alislamiah AI</span>
+                </div>
+                <!-- زر الانتقال إلى صفحة التشات (AI Mode) -->
+                <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html" class="ai-mode-btn">
+                    AI Mode <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
             <div id="aiAnswerText" class="ai-answer-content ai-loading">
                 جاري توليد الإجابة...
@@ -94,7 +131,6 @@
     </main>
 
     <script>
-        // قاعدة البيانات الشاملة للمواقع والمنصات
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات الإسلامية " },
@@ -137,7 +173,6 @@
             { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
         ];
 
-        // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
         function getFavicon(url) {
             try {
                 const domain = new URL(url).hostname;
@@ -147,7 +182,6 @@
             }
         }
 
-        // قراءة الاستعلام (Query) من الرابط عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('q');
@@ -157,7 +191,6 @@
             render();
         });
 
-        // دالة توليد رد الذكاء الاصطناعي
         function updateAiAnswer(query) {
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
@@ -169,9 +202,8 @@
 
             aiContainer.style.display = 'block';
             aiText.classList.add('ai-loading');
-            aiText.innerHTML = 'جاري توليد الإجابة...';
+            aiText.innerHTML = 'جاري توليد الإجابة الحية...';
 
-            // محاكاة وقت معالجة الذكاء الاصطناعي (مثل جوجل وبنغ)
             setTimeout(() => {
                 aiText.classList.remove('ai-loading');
 
@@ -180,11 +212,11 @@
                 } else if (query.includes('العربية')) {
                     aiText.innerHTML = `موقع <strong>العربية.نت</strong> هو بوابة إخبارية رائدة لتغطية الأخبار العربية، العالمية، السياسية، والرياضية لحظة بلحظة.`;
                 } else if (query.includes('الجزائر') || query.includes('أولياء')) {
-                    aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> وواقع منصات الدعم التعليمي.`;
+                    aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> ومواقع الدعم التعليمي.`;
                 } else {
-                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
+                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه أو الانتقال إلى <strong>AI Mode</strong> للحصول على محادثة ذكية تفصيلية.`;
                 }
-            }, 700);
+            }, 600);
         }
 
         function render() {
@@ -192,7 +224,6 @@
             const resultsList = document.getElementById('resultsList');
             resultsList.innerHTML = '';
 
-            // تحديث رد الذكاء الاصطناعي بناءً على البحث
             updateAiAnswer(query);
 
             if (query === '') {
@@ -200,7 +231,6 @@
                 return;
             }
 
-            // تصفية النتائج بناءً على العنوان أو الوصف
             const filtered = library.filter(i => i.title.toLowerCase().includes(query) || (i.desc && i.desc.toLowerCase().includes(query)));
 
             if (filtered.length === 0) {
@@ -208,7 +238,6 @@
                 return;
             }
 
-            // عرض النتائج بتصميم احترافي مع الأيقونة الحقيقية للموقع أمام العنوان والوصف
             resultsList.innerHTML = filtered.map(i => {
                 const iconUrl = getFavicon(i.url);
                 return `
