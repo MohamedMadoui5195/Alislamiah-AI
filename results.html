@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,56 @@
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
+
+        /* =====================================================
+           تنسيق صندوق إجابة الذكاء الاصطناعي (الوضع الداكن)
+        ===================================================== */
+        .ai-answer-box {
+            background: linear-gradient(145deg, rgba(8, 127, 255, 0.12), rgba(8, 185, 239, 0.05));
+            border: 1px solid rgba(8, 127, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            direction: rtl;
+            text-align: right;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .ai-answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #08b9ef;
+            font-size: 16px;
+        }
+
+        .ai-answer-header span {
+            background: #087fff;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .ai-answer-content {
+            color: #e2e8f0;
+            font-size: 14.5px;
+            line-height: 1.8;
+        }
+
+        .ai-loading {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -27,15 +77,27 @@
         </div>
     </header>
 
-    <main id="container" class="p-4 max-w-2xl mx-auto space-y-3"></main>
+    <main id="container" class="p-4 max-w-2xl mx-auto space-y-3">
+        <!-- صندوق رد الذكاء الاصطناعي (يظهر تلقائياً عند البحث) -->
+        <div id="aiAnswerContainer" class="ai-answer-box" style="display: none;">
+            <div class="ai-answer-header">
+                <i class="fas fa-robot"></i> رد الذكاء الاصطناعي
+                <span>Alislamiah AI</span>
+            </div>
+            <div id="aiAnswerText" class="ai-answer-content ai-loading">
+                جاري توليد الإجابة...
+            </div>
+        </div>
+
+        <!-- نتائج البحث ستظهر هنا -->
+        <div id="resultsList" class="space-y-3"></div>
+    </main>
 
     <script>
         // قاعدة البيانات الشاملة للمواقع والمنصات
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
-
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات الإسلامية " },
-
             { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.dz/", desc: "فضاء أولياء التلاميذ للتعرف على نتائج ومستويات الأبناء الدراسية في الجزائر." },
             { title: "قناة الشيخ فركوس", type: "منصة", url: "https://youtube.com/channel/UC1UuPsSzEOhxUamwLt86IiQ?si=tUGE9H6rfKrbD3F3", desc: "القناة الرسمية لفضيلة الشيخ الدكتور محمد علي فركوس للخطب والدروس العلمية." },
             { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net", desc: "موقع إسلامي شامل يقدم فتاوى، استشارات، ومقالات دعوية وعلمية موثوقة." },
@@ -72,8 +134,7 @@
             { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
             { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
             { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
-
-{ title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
+            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
         ];
 
         // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
@@ -96,13 +157,46 @@
             render();
         });
 
+        // دالة توليد رد الذكاء الاصطناعي
+        function updateAiAnswer(query) {
+            const aiContainer = document.getElementById('aiAnswerContainer');
+            const aiText = document.getElementById('aiAnswerText');
+
+            if (!query || query.trim() === '') {
+                aiContainer.style.display = 'none';
+                return;
+            }
+
+            aiContainer.style.display = 'block';
+            aiText.classList.add('ai-loading');
+            aiText.innerHTML = 'جاري توليد الإجابة...';
+
+            // محاكاة وقت معالجة الذكاء الاصطناعي (مثل جوجل وبنغ)
+            setTimeout(() => {
+                aiText.classList.remove('ai-loading');
+
+                if (query.includes('الإسلامية') || query.includes('alislamiah')) {
+                    aiText.innerHTML = `تعتبر منصة <strong>الإسلامية</strong> شبكة رقمية متكاملة تقدم خدمات متنوعة تشمل المنصات التعليمية، المتاجر الرقمية، ومساعد الذكاء الاصطناعي لتسهيل الوصول للمحتوى الهادف.`;
+                } else if (query.includes('العربية')) {
+                    aiText.innerHTML = `موقع <strong>العربية.نت</strong> هو بوابة إخبارية رائدة لتغطية الأخبار العربية، العالمية، السياسية، والرياضية لحظة بلحظة.`;
+                } else if (query.includes('الجزائر') || query.includes('أولياء')) {
+                    aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> وواقع منصات الدعم التعليمي.`;
+                } else {
+                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
+                }
+            }, 700);
+        }
+
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const container = document.getElementById('container');
-            container.innerHTML = '';
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+
+            // تحديث رد الذكاء الاصطناعي بناءً على البحث
+            updateAiAnswer(query);
 
             if (query === '') {
-                container.innerHTML = `<div class="text-center text-slate-400 py-10">الرجاء إدخال كلمة للبحث...</div>`;
+                resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">الرجاء إدخال كلمة للبحث...</div>`;
                 return;
             }
 
@@ -110,12 +204,12 @@
             const filtered = library.filter(i => i.title.toLowerCase().includes(query) || (i.desc && i.desc.toLowerCase().includes(query)));
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center text-slate-400 py-10">لا توجد نتائج مطابقة لـ "${query}"</div>`;
+                resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">لا توجد نتائج مطابقة لـ "${query}"</div>`;
                 return;
             }
 
             // عرض النتائج بتصميم احترافي مع الأيقونة الحقيقية للموقع أمام العنوان والوصف
-            container.innerHTML = filtered.map(i => {
+            resultsList.innerHTML = filtered.map(i => {
                 const iconUrl = getFavicon(i.url);
                 return `
                     <div class="result-card p-4 rounded-2xl cursor-pointer flex items-start gap-3.5" onclick="window.location.href='${i.url}'">
