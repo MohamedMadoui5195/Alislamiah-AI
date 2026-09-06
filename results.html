@@ -6,99 +6,19 @@
     <title>نتائج البحث - Alislamiah Search Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- ربط ملف الستايل الخارجي إن وجد -->
+    <link rel="stylesheet" href="style.css"> <!-- ربط ملف الستايل الخارجي -->
     <style>
         body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: Tahoma, sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
-
-        /* =====================================================
-           تنسيق صندوق إجابة الذكاء الاصطناعي (ألوان إنستغرام حيوية)
-        ===================================================== */
-        .ai-answer-box {
-            background: linear-gradient(135deg, rgba(131, 58, 180, 0.35), rgba(253, 29, 29, 0.35), rgba(252, 176, 69, 0.35));
-            border: 2px solid rgba(225, 48, 108, 0.8);
-            border-radius: 20px;
-            padding: 22px;
-            margin-bottom: 16px;
-            direction: rtl;
-            text-align: right;
-            box-shadow: 0 10px 35px rgba(225, 48, 108, 0.25);
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .ai-answer-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .ai-header-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: #ffc2d1;
-            font-size: 16px;
-        }
-
-        .ai-header-title span {
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: #ffffff;
-            font-size: 11px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        /* زر الانتقال إلى AI mode الحيوي */
-        .ai-mode-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
-            color: white;
-            text-decoration: none;
-            font-size: 12.5px;
-            font-weight: bold;
-            padding: 7px 16px;
-            border-radius: 25px;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            box-shadow: 0 4px 15px rgba(253, 29, 29, 0.4);
-        }
-
-        .ai-mode-btn:hover {
-            transform: scale(1.05);
-            opacity: 0.95;
-        }
-
-        .ai-answer-content {
-            color: #ffffff;
-            font-size: 15px;
-            line-height: 1.8;
-            font-weight: 500;
-        }
-
-        .ai-loading {
-            color: #ffd1dc;
-            font-style: italic;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
 
     <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
-            <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
+            <button onclick="window.history.back()" class="p-2 cursor-pointer"><i class="fas fa-arrow-right text-xl"></i></button>
             <h1 class="font-bold text-lg">Alislamiah Search Engine</h1>
             <div class="w-8"></div>
         </div>
@@ -142,7 +62,7 @@
             { title: "قناة الإسلامية", type: "منصة", url: "https://youtube.com/@alislamiah5195", desc: "القناة الرئيسية لمنصة الإسلامية على يوتيوب." },
             { title: "قناة Eisen", type: "منصة", url: "https://youtube.com/@eisen-e1a?si=Pb9WtA9ImTYtOfe1", desc: "قناة تقنية وتوعوية مميزة." },
             { title: "الجزيرة نت", type: "منصة", url: "https://www.aljazeera.net", desc: "شبكة الجزيرة الإخبارية لمتابعة آخر الأحداث والأنباء العربية والعالمية." },
-            { title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net", desc: "بوابة إخبارية عربية شاملة لآخر الأخبار السياسية والاقتصادية والرياضية." },
+            { title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net", desc: "بوابة إخبارية عربية شاملة لآخر الأخبار السياسية الاقتصادية والرياضية." },
             { title: "قناة الشيخ العفاسي", type: "منصة", url: "https://youtube.com/@alafasy?si=jBz3cGMAkjx3jMQI", desc: "القناة الرسمية للقارئ والمنشد الشيخ مشاري بن راشد العفاسي." },
             { title: "Mr bahmed Instagram", type: "منصة", url: "https://www.instagram.com/mr_bahmed", desc: "الحساب الرسمي على إنستغرام." },
             { title: "قناة Chiraz activities", type: "منصة", url: "https://youtube.com/@chirazactivities?si=g8w4AvfEisOYA7Ha", desc: "قناة تعليمية وأنشطة متنوعة." },
@@ -152,7 +72,7 @@
             { title: "Chiraz Activities", type: "منصة", url: "https://Chirazactivities.com", desc: "الموقع الإلكتروني الرسمي." },
             { title: "Firebase", type: "منصة", url: "https://firebase.google.com", desc: "منصة تطوير تطبيقات الويب والهواتف من جوجل." },
             { title: "MIT App Inventor", type: "منصة", url: "https://appinventor.mit.edu", desc: "منصة مرئية لإنشاء تطبيقات أندرويد بسهولة وبدون تعقيد." },
-            { title: "dz.exams", type: "منصة", url: "https://www.dzexams.com", desc: "موقع الفرائض والاختبارات والامتحانات التعليمية في الجزائر." },
+            { title: "dz.exams", type: "منصة", url: "https://www.dzexams.com", desc: "موقع الفرائض الاختبارات والامتحانات التعليمية في الجزائر." },
             { title: "CNAS", type: "منصة", url: "https://cnas.dz/", desc: "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجناء بالجزائر." },
             { title: "GitHub", type: "منصة", url: "https://github.com", desc: "منصة استضافة المشاريع البرمجية وتطوير البرمجيات مفتوحة المصدر." },
             { title: "SNTF", type: "منصة", url: "https://sntf.dz", desc: "الشركة الوطنية للنقل بالسكك الحديدية في الجزائر." },
@@ -191,7 +111,7 @@
             render();
         });
 
-        function updateAiAnswer(query) {
+        function updateAiAnswer(query, hasResults) {
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
 
@@ -201,10 +121,19 @@
             }
 
             aiContainer.style.display = 'block';
+
+            // الشرط الجديد في حالة عدم وجود المنصة المطلوبة
+            if (!hasResults) {
+                aiText.classList.remove('ai-loading');
+                aiText.innerHTML = `عذرا هذه المنصة التي تبحث عنها غير موجودة لدينا<br>نعتذر لعدم تلبية طلبك جرب البحث عن منصات أخرى`;
+                return;
+            }
+
             aiText.classList.add('ai-loading');
             aiText.innerHTML = 'جاري توليد الإجابة الحية...';
 
             setTimeout(() => {
+                if (!hasResults) return;
                 aiText.classList.remove('ai-loading');
 
                 if (query.includes('الإسلامية') || query.includes('alislamiah')) {
@@ -224,16 +153,18 @@
             const resultsList = document.getElementById('resultsList');
             resultsList.innerHTML = '';
 
-            updateAiAnswer(query);
-
             if (query === '') {
+                document.getElementById('aiAnswerContainer').style.display = 'none';
                 resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">الرجاء إدخال كلمة للبحث...</div>`;
                 return;
             }
 
             const filtered = library.filter(i => i.title.toLowerCase().includes(query) || (i.desc && i.desc.toLowerCase().includes(query)));
+            const hasResults = filtered.length > 0;
 
-            if (filtered.length === 0) {
+            updateAiAnswer(query, hasResults);
+
+            if (!hasResults) {
                 resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">لا توجد نتائج مطابقة لـ "${query}"</div>`;
                 return;
             }
