@@ -1,0 +1,60 @@
+/* خلفية عامة */
+body {
+  font-family: Tahoma, sans-serif;
+  background:#121212;
+  color:white;
+  margin:0;
+  text-align:center;
+}
+
+/* شريط البحث */
+#searchBox {
+  width:60%;
+  padding:12px;
+  margin-top:40px;
+  border:1px solid #333;
+  border-radius:25px;
+  background:#1e1e1e;
+  color:white;
+  transition: box-shadow 0.3s ease;
+}
+#searchBox:focus {
+  box-shadow: 0 0 10px #0078d7; /* ظل أزرق أنيق حول الشريط */
+}
+
+/* الأزرار */
+.buttons input {
+  padding:10px 20px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  background:#0078d7;
+  color:white;
+  cursor:pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.buttons input:hover {
+  background:#005a9e;
+  transform: scale(1.05);
+}
+
+/* البطاقات */
+.card {
+  background:#1e1e1e;
+  border-radius:10px;
+  padding:15px;
+  margin:15px auto;
+  width:70%;
+  opacity:0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.card:hover {
+  opacity:1;
+  transform: translateY(-5px);
+}
+
+/* الفوتر */
+footer {
+  margin-top:50px;
+  color:#777;
+}
