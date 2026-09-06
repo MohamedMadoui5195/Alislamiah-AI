@@ -53,6 +53,56 @@ body {
   transform: translateY(-5px);
 }
 
+/* =====================================================
+   تنسيق صندوق رد الذكاء الاصطناعي (الوضع الداكن)
+===================================================== */
+.ai-answer-box {
+    background: linear-gradient(145deg, rgba(0, 120, 215, 0.15), rgba(0, 190, 255, 0.05));
+    border: 1px solid rgba(0, 120, 215, 0.35);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 70%;
+    direction: rtl;
+    text-align: right;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.ai-answer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #00bef3;
+    font-size: 16px;
+}
+
+.ai-answer-header span {
+    background: #0078d7;
+    color: white;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 15px;
+}
+
+.ai-answer-content {
+    color: #e0e0e0;
+    font-size: 14.5px;
+    line-height: 1.8;
+}
+
+.ai-loading {
+    color: #888;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* الفوتر */
 footer {
   margin-top:50px;
