@@ -6,49 +6,95 @@
     <title>نتائج البحث - Alislamiah Search Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
-        body { margin: 0; padding-top: 130px; background-color: #121212; color: #fff; font-family: Tahoma, sans-serif; }
+        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
-        .result-card { background: #1e1e1e; border: 1px solid #333; transition: .2s; }
-        .result-card:hover { border-color: #833ab4; background: #242424; }
+        .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
+        .result-card:hover { border-color: #214f8f; background: #0f1e31; }
+
+        /* =====================================================
+           تنسيق صندوق إجابة الذكاء الاصطناعي (الوضع الداكن)
+        ===================================================== */
+        .ai-answer-box {
+            background: linear-gradient(145deg, rgba(8, 127, 255, 0.12), rgba(8, 185, 239, 0.05));
+            border: 1px solid rgba(8, 127, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            direction: rtl;
+            text-align: right;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .ai-answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #08b9ef;
+            font-size: 16px;
+        }
+
+        .ai-answer-header span {
+            background: #087fff;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .ai-answer-content {
+            color: #e2e8f0;
+            font-size: 14.5px;
+            line-height: 1.8;
+        }
+
+        .ai-loading {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
-    <header id="app-header" class="bg-[#181818] border-b border-[#282828] p-4 shadow-lg">
+    <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
-            <button onclick="window.history.back()" class="p-2 cursor-pointer"><i class="fas fa-arrow-right text-xl"></i></button>
+            <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
             <h1 class="font-bold text-lg">Alislamiah Search Engine</h1>
             <div class="w-8"></div>
         </div>
         <div class="max-w-2xl mx-auto">
             <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
-                   class="w-full py-3 px-4 rounded-xl bg-[#1e1e1e] border border-[#333] text-white focus:outline-none focus:border-[#833ab4] shadow-inner text-sm">
+                   class="w-full py-3 px-4 rounded-xl bg-white text-slate-900 focus:outline-none shadow-inner text-sm">
         </div>
     </header>
 
     <main id="container" class="p-4 max-w-2xl mx-auto space-y-3">
-        <!-- صندوق رد الذكاء الاصطناعي -->
+        <!-- صندوق رد الذكاء الاصطناعي (يظهر تلقائياً عند البحث) -->
         <div id="aiAnswerContainer" class="ai-answer-box" style="display: none;">
             <div class="ai-answer-header">
-                <div class="ai-header-title">
-                    <i class="fas fa-robot" style="color: #fd1d1d;"></i> رد الذكاء الاصطناعي
-                    <span>Alislamiah AI</span>
-                </div>
-                <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html" class="ai-mode-btn">
-                    AI Mode <i class="fas fa-arrow-left"></i>
-                </a>
+                <i class="fas fa-robot"></i> رد الذكاء الاصطناعي
+                <span>Alislamiah AI</span>
             </div>
             <div id="aiAnswerText" class="ai-answer-content ai-loading">
                 جاري توليد الإجابة...
             </div>
         </div>
 
+        <!-- نتائج البحث ستظهر هنا -->
         <div id="resultsList" class="space-y-3"></div>
     </main>
 
     <script>
+        // قاعدة البيانات الشاملة للمواقع والمنصات
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات الإسلامية " },
@@ -60,7 +106,7 @@
             { title: "قناة الإسلامية", type: "منصة", url: "https://youtube.com/@alislamiah5195", desc: "القناة الرئيسية لمنصة الإسلامية على يوتيوب." },
             { title: "قناة Eisen", type: "منصة", url: "https://youtube.com/@eisen-e1a?si=Pb9WtA9ImTYtOfe1", desc: "قناة تقنية وتوعوية مميزة." },
             { title: "الجزيرة نت", type: "منصة", url: "https://www.aljazeera.net", desc: "شبكة الجزيرة الإخبارية لمتابعة آخر الأحداث والأنباء العربية والعالمية." },
-            { title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net", desc: "بوابة إخبارية عربية شاملة لآخر الأخبار السياسية الاقتصادية والرياضية." },
+            { title: "العربية.نت", type: "منصة", url: "https://www.alarabiya.net", desc: "بوابة إخبارية عربية شاملة لآخر الأخبار السياسية والاقتصادية والرياضية." },
             { title: "قناة الشيخ العفاسي", type: "منصة", url: "https://youtube.com/@alafasy?si=jBz3cGMAkjx3jMQI", desc: "القناة الرسمية للقارئ والمنشد الشيخ مشاري بن راشد العفاسي." },
             { title: "Mr bahmed Instagram", type: "منصة", url: "https://www.instagram.com/mr_bahmed", desc: "الحساب الرسمي على إنستغرام." },
             { title: "قناة Chiraz activities", type: "منصة", url: "https://youtube.com/@chirazactivities?si=g8w4AvfEisOYA7Ha", desc: "قناة تعليمية وأنشطة متنوعة." },
@@ -70,7 +116,7 @@
             { title: "Chiraz Activities", type: "منصة", url: "https://Chirazactivities.com", desc: "الموقع الإلكتروني الرسمي." },
             { title: "Firebase", type: "منصة", url: "https://firebase.google.com", desc: "منصة تطوير تطبيقات الويب والهواتف من جوجل." },
             { title: "MIT App Inventor", type: "منصة", url: "https://appinventor.mit.edu", desc: "منصة مرئية لإنشاء تطبيقات أندرويد بسهولة وبدون تعقيد." },
-            { title: "dz.exams", type: "منصة", url: "https://www.dzexams.com", desc: "موقع الفرائض الاختبارات والامتحانات التعليمية في الجزائر." },
+            { title: "dz.exams", type: "منصة", url: "https://www.dzexams.com", desc: "موقع الفرائض والاختبارات والامتحانات التعليمية في الجزائر." },
             { title: "CNAS", type: "منصة", url: "https://cnas.dz/", desc: "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجناء بالجزائر." },
             { title: "GitHub", type: "منصة", url: "https://github.com", desc: "منصة استضافة المشاريع البرمجية وتطوير البرمجيات مفتوحة المصدر." },
             { title: "SNTF", type: "منصة", url: "https://sntf.dz", desc: "الشركة الوطنية للنقل بالسكك الحديدية في الجزائر." },
@@ -85,12 +131,13 @@
             { title: "Alislamiah Instagram", type: "منصة", url: "https://www.instagram.com/alislamiah5195?igsi=MWprbTEzdWQ2bzh0bQ==", desc: "الحساب الرسمي لمنصة الإسلامية على إنستغرام." },
             { title: "قناة Mohamed Anes kalache", type: "منصة", url: "https://youtube.com/@anes__kal?si=X3xcqwW62W2oI8fY", desc: "القناة الرسمية." },
             { title: "Ma maitresse de français", type: "منصة", url: "https://mamaitressedefrançais.com", desc: "موقع تعليم اللغة الفرنسية." },
-            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليمية." },
-            { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط." },
-            { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في الفيزياء." },
-            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي." }
+            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
+            { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
+            { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
+            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
         ];
 
+        // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
         function getFavicon(url) {
             try {
                 const domain = new URL(url).hostname;
@@ -100,6 +147,7 @@
             }
         }
 
+        // قراءة الاستعلام (Query) من الرابط عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('q');
@@ -109,7 +157,8 @@
             render();
         });
 
-        function updateAiAnswer(query, hasResults) {
+        // دالة توليد رد الذكاء الاصطناعي
+        function updateAiAnswer(query) {
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
 
@@ -119,18 +168,11 @@
             }
 
             aiContainer.style.display = 'block';
-
-            if (!hasResults) {
-                aiText.classList.remove('ai-loading');
-                aiText.innerHTML = `عذرا هذه المنصة التي تبحث عنها غير موجودة لدينا<br>نعتذر لعدم تلبية طلبك جرب البحث عن منصات أخرى`;
-                return;
-            }
-
             aiText.classList.add('ai-loading');
-            aiText.innerHTML = 'جاري توليد الإجابة الحية...';
+            aiText.innerHTML = 'جاري توليد الإجابة...';
 
+            // محاكاة وقت معالجة الذكاء الاصطناعي (مثل جوجل وبنغ)
             setTimeout(() => {
-                if (!hasResults) return;
                 aiText.classList.remove('ai-loading');
 
                 if (query.includes('الإسلامية') || query.includes('alislamiah')) {
@@ -138,11 +180,11 @@
                 } else if (query.includes('العربية')) {
                     aiText.innerHTML = `موقع <strong>العربية.نت</strong> هو بوابة إخبارية رائدة لتغطية الأخبار العربية، العالمية، السياسية، والرياضية لحظة بلحظة.`;
                 } else if (query.includes('الجزائر') || query.includes('أولياء')) {
-                    aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> ومواقع الدعم التعليمي.`;
+                    aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> وواقع منصات الدعم التعليمي.`;
                 } else {
-                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه أو الانتقال إلى <strong>AI Mode</strong> للحصول على محادثة ذكية تفصيلية.`;
+                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
                 }
-            }, 600);
+            }, 700);
         }
 
         function render() {
@@ -150,33 +192,34 @@
             const resultsList = document.getElementById('resultsList');
             resultsList.innerHTML = '';
 
+            // تحديث رد الذكاء الاصطناعي بناءً على البحث
+            updateAiAnswer(query);
+
             if (query === '') {
-                document.getElementById('aiAnswerContainer').style.display = 'none';
                 resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">الرجاء إدخال كلمة للبحث...</div>`;
                 return;
             }
 
+            // تصفية النتائج بناءً على العنوان أو الوصف
             const filtered = library.filter(i => i.title.toLowerCase().includes(query) || (i.desc && i.desc.toLowerCase().includes(query)));
-            const hasResults = filtered.length > 0;
 
-            updateAiAnswer(query, hasResults);
-
-            if (!hasResults) {
+            if (filtered.length === 0) {
                 resultsList.innerHTML = `<div class="text-center text-slate-400 py-10">لا توجد نتائج مطابقة لـ "${query}"</div>`;
                 return;
             }
 
+            // عرض النتائج بتصميم احترافي مع الأيقونة الحقيقية للموقع أمام العنوان والوصف
             resultsList.innerHTML = filtered.map(i => {
                 const iconUrl = getFavicon(i.url);
                 return `
                     <div class="result-card p-4 rounded-2xl cursor-pointer flex items-start gap-3.5" onclick="window.location.href='${i.url}'">
-                        <div class="w-10 h-10 rounded-xl bg-[#252525] flex items-center justify-center shrink-0 overflow-hidden border border-[#333]">
+                        <div class="w-10 h-10 rounded-xl bg-[#12243b] flex items-center justify-center shrink-0 overflow-hidden border border-[#1f3555]">
                             <img src="${iconUrl}" alt="" class="w-6 h-6 object-contain" onerror="this.src='https://www.google.com/favicon.ico'">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-[11px] text-[#888] truncate mb-0.5" dir="ltr">${i.url}</div>
-                            <div class="text-[16px] text-[#fff] font-semibold mb-1">${i.title}</div>
-                            <div class="text-[13px] text-[#bbb] leading-relaxed">${i.desc || 'منصة وموقع إلكتروني موثوق ضمن شبكة الإسلامية.'}</div>
+                            <div class="text-[11px] text-[#71829a] truncate mb-0.5" dir="ltr">${i.url}</div>
+                            <div class="text-[16px] text-[#6fa4ed] font-semibold mb-1">${i.title}</div>
+                            <div class="text-[13px] text-[#b9c8e2] leading-relaxed">${i.desc || 'منصة وموقع إلكتروني موثوق ضمن شبكة الإسلامية.'}</div>
                         </div>
                     </div>
                 `;
