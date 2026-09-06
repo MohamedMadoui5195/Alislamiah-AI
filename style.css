@@ -54,47 +54,78 @@ body {
 }
 
 /* =====================================================
-   تنسيق صندوق رد الذكاء الاصطناعي (الوضع الداكن)
+   تنسيق صندوق رد الذكاء الاصطناعي (ألوان إنستغرام حيوية وساطعة)
 ===================================================== */
 .ai-answer-box {
-    background: linear-gradient(145deg, rgba(0, 120, 215, 0.15), rgba(0, 190, 255, 0.05));
-    border: 1px solid rgba(0, 120, 215, 0.35);
-    border-radius: 16px;
-    padding: 20px;
+    background: linear-gradient(135deg, rgba(131, 58, 180, 0.4), rgba(253, 29, 29, 0.4), rgba(252, 176, 69, 0.4));
+    border: 2px solid rgba(225, 48, 108, 0.9);
+    border-radius: 20px;
+    padding: 22px;
     margin: 20px auto;
     width: 70%;
     direction: rtl;
     text-align: right;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 35px rgba(225, 48, 108, 0.3);
     animation: fadeIn 0.4s ease-in-out;
 }
 
 .ai-answer-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #00bef3;
+}
+
+.ai-header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #ffc2d1;
     font-size: 16px;
 }
 
-.ai-answer-header span {
-    background: #0078d7;
-    color: white;
+.ai-header-title span {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: #ffffff;
     font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 15px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* زر الانتقال إلى AI mode الحيوي */
+.ai-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+    color: white;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 7px 16px;
+    border-radius: 25px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 15px rgba(253, 29, 29, 0.4);
+}
+
+.ai-mode-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.95;
 }
 
 .ai-answer-content {
-    color: #e0e0e0;
-    font-size: 14.5px;
+    color: #ffffff;
+    font-size: 15px;
     line-height: 1.8;
+    font-weight: 500;
 }
 
 .ai-loading {
-    color: #888;
+    color: #ffd1dc;
     font-style: italic;
 }
 
