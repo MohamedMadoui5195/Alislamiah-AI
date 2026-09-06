@@ -6,17 +6,17 @@
     <title>نتائج البحث - Alislamiah Search Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- ربط ملف الستايل الخارجي -->
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: Tahoma, sans-serif; }
+        body { margin: 0; padding-top: 130px; background-color: #121212; color: #fff; font-family: Tahoma, sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
-        .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
-        .result-card:hover { border-color: #214f8f; background: #0f1e31; }
+        .result-card { background: #1e1e1e; border: 1px solid #333; transition: .2s; }
+        .result-card:hover { border-color: #833ab4; background: #242424; }
     </style>
 </head>
 <body>
 
-    <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
+    <header id="app-header" class="bg-[#181818] border-b border-[#282828] p-4 shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
             <button onclick="window.history.back()" class="p-2 cursor-pointer"><i class="fas fa-arrow-right text-xl"></i></button>
             <h1 class="font-bold text-lg">Alislamiah Search Engine</h1>
@@ -24,19 +24,18 @@
         </div>
         <div class="max-w-2xl mx-auto">
             <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
-                   class="w-full py-3 px-4 rounded-xl bg-white text-slate-900 focus:outline-none shadow-inner text-sm">
+                   class="w-full py-3 px-4 rounded-xl bg-[#1e1e1e] border border-[#333] text-white focus:outline-none focus:border-[#833ab4] shadow-inner text-sm">
         </div>
     </header>
 
     <main id="container" class="p-4 max-w-2xl mx-auto space-y-3">
-        <!-- صندوق رد الذكاء الاصطناعي بألوان إنستغرام الحيوية -->
+        <!-- صندوق رد الذكاء الاصطناعي -->
         <div id="aiAnswerContainer" class="ai-answer-box" style="display: none;">
             <div class="ai-answer-header">
                 <div class="ai-header-title">
-                    <i class="fas fa-robot text-pink-400"></i> رد الذكاء الاصطناعي
+                    <i class="fas fa-robot" style="color: #fd1d1d;"></i> رد الذكاء الاصطناعي
                     <span>Alislamiah AI</span>
                 </div>
-                <!-- زر الانتقال إلى صفحة التشات (AI Mode) -->
                 <a href="https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html" class="ai-mode-btn">
                     AI Mode <i class="fas fa-arrow-left"></i>
                 </a>
@@ -46,7 +45,6 @@
             </div>
         </div>
 
-        <!-- نتائج البحث ستظهر هنا -->
         <div id="resultsList" class="space-y-3"></div>
     </main>
 
@@ -87,10 +85,10 @@
             { title: "Alislamiah Instagram", type: "منصة", url: "https://www.instagram.com/alislamiah5195?igsi=MWprbTEzdWQ2bzh0bQ==", desc: "الحساب الرسمي لمنصة الإسلامية على إنستغرام." },
             { title: "قناة Mohamed Anes kalache", type: "منصة", url: "https://youtube.com/@anes__kal?si=X3xcqwW62W2oI8fY", desc: "القناة الرسمية." },
             { title: "Ma maitresse de français", type: "منصة", url: "https://mamaitressedefrançais.com", desc: "موقع تعليم اللغة الفرنسية." },
-            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
-            { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
-            { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
-            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
+            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليمية." },
+            { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط." },
+            { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في الفيزياء." },
+            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي." }
         ];
 
         function getFavicon(url) {
@@ -122,7 +120,6 @@
 
             aiContainer.style.display = 'block';
 
-            // الشرط الجديد في حالة عدم وجود المنصة المطلوبة
             if (!hasResults) {
                 aiText.classList.remove('ai-loading');
                 aiText.innerHTML = `عذرا هذه المنصة التي تبحث عنها غير موجودة لدينا<br>نعتذر لعدم تلبية طلبك جرب البحث عن منصات أخرى`;
@@ -173,13 +170,13 @@
                 const iconUrl = getFavicon(i.url);
                 return `
                     <div class="result-card p-4 rounded-2xl cursor-pointer flex items-start gap-3.5" onclick="window.location.href='${i.url}'">
-                        <div class="w-10 h-10 rounded-xl bg-[#12243b] flex items-center justify-center shrink-0 overflow-hidden border border-[#1f3555]">
+                        <div class="w-10 h-10 rounded-xl bg-[#252525] flex items-center justify-center shrink-0 overflow-hidden border border-[#333]">
                             <img src="${iconUrl}" alt="" class="w-6 h-6 object-contain" onerror="this.src='https://www.google.com/favicon.ico'">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-[11px] text-[#71829a] truncate mb-0.5" dir="ltr">${i.url}</div>
-                            <div class="text-[16px] text-[#6fa4ed] font-semibold mb-1">${i.title}</div>
-                            <div class="text-[13px] text-[#b9c8e2] leading-relaxed">${i.desc || 'منصة وموقع إلكتروني موثوق ضمن شبكة الإسلامية.'}</div>
+                            <div class="text-[11px] text-[#888] truncate mb-0.5" dir="ltr">${i.url}</div>
+                            <div class="text-[16px] text-[#fff] font-semibold mb-1">${i.title}</div>
+                            <div class="text-[13px] text-[#bbb] leading-relaxed">${i.desc || 'منصة وموقع إلكتروني موثوق ضمن شبكة الإسلامية.'}</div>
                         </div>
                     </div>
                 `;
