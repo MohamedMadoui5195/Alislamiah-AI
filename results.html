@@ -98,6 +98,7 @@
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات الإسلامية " },
+            { title: "قناة الشيخ أحمد النفيس", type: "منصة", url: "https://youtube.com/@ahmad_alnufais?si=_u9f-SVVxpAOmy0D", desc: "القناة الرسمية للشيخ أحمد النفيس تلاوات عطرة وخاشعة." },
             { title: "فضاء الأولياء", type: "منصة", url: "https://awlya.education.dz/", desc: "فضاء أولياء التلاميذ للتعرف على نتائج ومستويات الأبناء الدراسية في الجزائر." },
             { title: "قناة الشيخ فركوس", type: "منصة", url: "https://youtube.com/channel/UC1UuPsSzEOhxUamwLt86IiQ?si=tUGE9H6rfKrbD3F3", desc: "القناة الرسمية لفضيلة الشيخ الدكتور محمد علي فركوس للخطب والدروس العلمية." },
             { title: "إسلام ويب", type: "موقع", url: "https://www.islamweb.net", desc: "موقع إسلامي شامل يقدم فتاوى، استشارات، ومقالات دعوية وعلمية موثوقة." },
@@ -134,13 +135,7 @@
             { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
             { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
             { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
-            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن
-
-{ title: "قناة الشيخ أحمد النفيس", type: "منصة", url: "https://youtube.com/@ahmad_alnufais?si=_u9f-SVVxpAOmy0D", desc: "القناة الرسمية للشيخ أحمد النفيس تلاوات عطرة وخاشعة." }
-
-
-
- الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
+            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
         ];
 
         // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
@@ -163,7 +158,7 @@
             render();
         });
 
-        // دالة توليد رد الذكاء الاصطناعي
+        // دالة توليد رد الذكاء الاصطناعي مع الأوصاف الكاملة للمواقع
         function updateAiAnswer(query) {
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
@@ -177,7 +172,6 @@
             aiText.classList.add('ai-loading');
             aiText.innerHTML = 'جاري توليد الإجابة...';
 
-            // محاكاة وقت معالجة الذكاء الاصطناعي (مثل جوجل وبنغ)
             setTimeout(() => {
                 aiText.classList.remove('ai-loading');
 
@@ -187,7 +181,28 @@
                     aiText.innerHTML = `موقع <strong>العربية.نت</strong> هو بوابة إخبارية رائدة لتغطية الأخبار العربية، العالمية، السياسية، والرياضية لحظة بلحظة.`;
                 } else if (query.includes('الجزائر') || query.includes('أولياء')) {
                     aiText.innerHTML = `يمكنك متابعة النتائج والمستويات الدراسية عبر المنصات الرسمية المعتمدة في الجزائر مثل <strong>فضاء الأولياء</strong> وواقع منصات الدعم التعليمي.`;
-
+                } else if (query.includes('أحمد النفيس') || query.includes('النفيس') || query.includes('ahmad alnufais')) {
+                    aiText.innerHTML = `تعتبر <strong>قناة الشيخ أحمد النفيس</strong> منارة قرآنية مباركة تقدم تلاوات عطرة، خاشعة، ومؤثرة لآي الذكر الحكيم بصوت الشيخ أحمد النفيس.`;
+                } else if (query.includes('فركوس')) {
+                    aiText.innerHTML = `<strong>قناة الشيخ فركوس</strong> هي القناة الرسمية لفضيلة الشيخ الدكتور محمد علي فركوس، وتضم العديد من الخطب والدروس العلمية القيمة.`;
+                } else if (query.includes('إسلام ويب')) {
+                    aiText.innerHTML = `موقع <strong>إسلام ويب</strong> هو موقع إسلامي شامل يقدم فتاوى دقيقة، استشارات متنوعة، ومقالات دعوية وعلمية موثوقة.`;
+                } else if (query.includes('السؤال وجواب') || query.includes('islamqa')) {
+                    aiText.innerHTML = `موقع <strong>الإسلام سؤال وجواب</strong> يشرف عليه الشيخ محمد صالح المنجد للإجابة عن الأسئلة الشرعية والفقهية بدقة وتأصيل.`;
+                } else if (query.includes('الجزيرة')) {
+                    aiText.innerHTML = `شبكة <strong>الجزيرة نت</strong> الإخبارية توفر لك متابعة شاملة ومستمرة لآخر الأحداث والأنباء العربية والعالمية.`;
+                } else if (query.includes('العفاسي')) {
+                    aiText.innerHTML = `قناة وصَفحات القارئ والمنشد الشيخ <strong>مشاري بن راشد العفاسي</strong> تقدم أروع التلاوات والأناشيد الإسلامية المميزة.`;
+                } else if (query.includes('إسلام صبحي')) {
+                    aiText.innerHTML = `قناة القارئ <strong>إسلام صبحي</strong> تعرض تلاوات عطرة وندية بصوته الخاشع والمميز للقرآن الكريم.`;
+                } else if (query.includes('dzexams') || query.includes('الامتحانات')) {
+                    aiText.innerHTML = `موقع <strong>dz.exams</strong> يعتبر مرجعاً أساسياً للفرائض، الاختبارات، والامتحانات التعليمية بمختلف أطوارها في الجزائر.`;
+                } else if (query.includes('cnas')) {
+                    aiText.innerHTML = `منصة <strong>CNAS</strong> تتبع الصندوق الوطني للتأمينات الاجتماعية للعمال الأجناء بالجزائر لتسهيل الخدمات الإدارية.`;
+                } else if (query.includes('sntf')) {
+                    aiText.innerHTML = `موقع <strong>SNTF</strong> يخص الشركة الوطنية للنقل بالسكك الحديدية في الجزائر لمتابعة المواقيت والرحلات.`;
+                } else if (query.includes('etusa')) {
+                    aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مؤشّرة للنقل الحضري والشبه حضري لتقديم خدمات التنقل في الجزائر.`;
                 } else {
                     aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
                 }
