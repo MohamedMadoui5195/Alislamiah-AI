@@ -21,7 +21,6 @@
             direction: rtl;
             text-align: right;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            animation: fadeIn 0.4s ease-in-out;
         }
 
         .ai-answer-header {
@@ -48,16 +47,6 @@
             font-size: 14.5px;
             line-height: 1.8;
         }
-
-        .ai-loading {
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -80,9 +69,7 @@
                 <i class="fas fa-robot"></i> رد الذكاء الاصطناعي
                 <span>Alislamiah AI</span>
             </div>
-            <div id="aiAnswerText" class="ai-answer-content ai-loading">
-                جاري توليد الإجابة...
-            </div>
+            <div id="aiAnswerText" class="ai-answer-content"></div>
         </div>
 
         <div id="resultsList" class="space-y-3"></div>
@@ -151,7 +138,7 @@
             { title: "الإذاعة الجزائرية", type: "موقع", url: "https://www.radioalgerie.dz", desc: "الموقع الرسمي للإذاعة الجزائرية لمتابعة البرامج الثقافية والأخبار الرسمية." },
             { title: "موقع الباحث القرآني", type: "موقع", url: "https://www.altafsir.com", desc: "منصة متخصصة لعرض تفاسير القرآن الكريم بمختلف المدارس التفسيرية المعتمدة." },
             { title: "موقع EEWeb التقني", type: "موقع", url: "https://www.eeweb.com", desc: "منصة تعليمية وهندسية متخصصة في تطوير البرمجيات وتقنيات الويب." },
-            { title: "موقع الإسلام حصوصي", type: "موقع", url: "https://islamqa.org", desc: "موقع إسلامي معتمد للإجابة عن الأسئلة الفقهية والعقائدية وفق منهج أهل السنة والجماعة." },
+            { title: "موقع الإسلام خصوصي", type: "موقع", url: "https://islamqa.org", desc: "موقع إسلامي معتمد للإجابة عن الأسئلة الفقهية والعقائدية وفق منهج أهل السنة والجماعة." },
             { title: "موسوعة الحديث الشريف", type: "موقع", url: "https://dorar.net/hadith/search", desc: "أداة بحث متقدمة للتحقق من صحة الأحاديث النبوية مباشرة من منصة الدرر السنية." },
             { title: "موقع الشيخ محمد بن عثيمين - الكتب الصوتية", type: "موقع", url: "https://binothaimeen.net/category/audio", desc: "مكتبة صوتية شاملة تضم شروح الأربعين النووية، بلوغ المرام، وكفاية الأفهام." },
             { title: "شبكة التفسير الدراسات القرآنية", type: "موقع", url: "https://www.tafsir.net", desc: "منصة أكاديمية متخصصة في علوم القرآن الكريم، أصول التفسير، والدراسات القرآنية المحكمة." },
@@ -181,21 +168,18 @@
             render();
         });
 
-        function updateAiAnswer(query) {
+        function render() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            const resultsList = document.getElementById('resultsList');
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
 
-            if (!query || query.trim() === '') {
+            // التحكم في صندوق الذكاء الاصطناعي
+            if (!query) {
                 aiContainer.style.display = 'none';
-                return;
-            }
-
-            aiContainer.style.display = 'block';
-            aiText.classList.add('ai-loading');
-            aiText.innerHTML = 'جاري توليد الإجابة...';
-
-            setTimeout(() => {
-                aiText.classList.remove('ai-loading');
+            } else {
+                aiContainer.style.display = 'block';
                 const q = query.toLowerCase();
 
                 if (q.includes('الإسلامية') || q.includes('alislamiah')) {
@@ -227,3 +211,6 @@
                 } else if (q.includes('sntf')) {
                     aiText.innerHTML = `موقع <strong>SNTF</strong> يخص الشركة الوطنية للنقل بالسكك الحديدية في الجزائر لمتابعة المواقيت والرحلات.`;
                 } else if (q.includes('etusa')) {
+                    aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مخصصة للنقل الحضري وشبه الحضري لتقديم خدمات التنقل في الجزائر.`;
+                } else if (q.includes('ويكيبيديا') || q.includes('wikipedia')) {
+                    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتواتها متطوع
