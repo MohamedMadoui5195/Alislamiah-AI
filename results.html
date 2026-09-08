@@ -136,6 +136,10 @@
             { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
             { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
             { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
+
+{ title: "ويكيبيديا", type: "موقع", url: "https://ar.wikipedia.org", desc: "الموسوعة الحرة التي يستطيع الجميع تحريرها، وتحوي مئات الآلاف من المقالات بمختلف اللغات." },
+{ title: "CNN News", type: "موقع", url: "https://edition.cnn.com", desc: "شبكة إخبارية عالمية لتغطية آخر الأخبار السياسية، الاقتصادية، والعاجلة حول العالم." },
+
         ];
 
         // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
@@ -205,7 +209,11 @@
                     aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مؤشّرة للنقل الحضري والشبه حضري لتقديم خدمات التنقل في الجزائر.`;
                 } else {
                     aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
-                }
+else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
+    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتوائها متطوعون من مختلف أنحاء العالم.`;
+} else if (query.includes('cnn') || query.includes('سي إن إن')) {
+    aiText.innerHTML = `شبكة <strong>CNN News</strong> الإخبارية العالمية توفر تغطية شاملة ولحظية لآخر المستجدات والأحداث السياسية والاقتصادية العالمية.`;
+}
             }, 700);
         }
 
