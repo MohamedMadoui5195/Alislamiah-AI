@@ -12,9 +12,6 @@
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
 
-        /* =====================================================
-           تنسيق صندوق إجابة الذكاء الاصطناعي (الوضع الداكن)
-        ===================================================== */
         .ai-answer-box {
             background: linear-gradient(145deg, rgba(8, 127, 255, 0.12), rgba(8, 185, 239, 0.05));
             border: 1px solid rgba(8, 127, 255, 0.3);
@@ -78,7 +75,6 @@
     </header>
 
     <main id="container" class="p-4 max-w-2xl mx-auto space-y-3">
-        <!-- صندوق رد الذكاء الاصطناعي (يظهر تلقائياً عند البحث) -->
         <div id="aiAnswerContainer" class="ai-answer-box" style="display: none;">
             <div class="ai-answer-header">
                 <i class="fas fa-robot"></i> رد الذكاء الاصطناعي
@@ -89,12 +85,10 @@
             </div>
         </div>
 
-        <!-- نتائج البحث ستظهر هنا -->
         <div id="resultsList" class="space-y-3"></div>
     </main>
 
     <script>
-        // قاعدة البيانات الشاملة للمواقع والمنصات
         const library = [
             { title: "الإسلامية نت", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net/", desc: "المنصة الرسمية لشبكة الإسلامية " },
             { title: "متجر الإسلامية", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-_net.-store/", desc: "متجر تطبيقات الإسلامية " },
@@ -132,17 +126,14 @@
             { title: "Alislamiah Instagram", type: "منصة", url: "https://www.instagram.com/alislamiah5195?igsi=MWprbTEzdWQ2bzh0bQ==", desc: "الحساب الرسمي لمنصة الإسلامية على إنستغرام." },
             { title: "قناة Mohamed Anes kalache", type: "منصة", url: "https://youtube.com/@anes__kal?si=X3xcqwW62W2oI8fY", desc: "القناة الرسمية." },
             { title: "Ma maitresse de français", type: "منصة", url: "https://mamaitressedefrançais.com", desc: "موقع تعليم اللغة الفرنسية." },
-            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليم اللغة الفرنسية." },
+            { title: "قناة Ma maîtresse de français", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais3429?si=KZGBYcwi8ZaOLU-c", desc: "قناة تعليمية لتعلم اللغة الفرنسية." },
             { title: "قناة Ma maîtresse de français BEM ET Lycée", type: "منصة", url: "https://youtube.com/@mamaitressedefrancais4amlycee?si=J-Pd8iC8rxtqUIkK", desc: "دروس تخص شهادة التعليم المتوسط والثانوي في الفرنسية." },
             { title: "قناة الأستاذ حمياني للفيزياء", type: "منصة", url: "https://youtube.com/@hamianiphysique?si=KILJ1imYO_j1ppYA", desc: "دروس في مادة الفيزياء للأستاذ حمياني." },
-            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." }
-
-{ title: "ويكيبيديا", type: "موقع", url: "https://ar.wikipedia.org", desc: "الموسوعة الحرة التي يستطيع الجميع تحريرها، وتحوي مئات الآلاف من المقالات بمختلف اللغات." },
-{ title: "CNN News", type: "موقع", url: "https://edition.cnn.com", desc: "شبكة إخبارية عالمية لتغطية آخر الأخبار السياسية، الاقتصادية، والعاجلة حول العالم." },
-
+            { title: "AI Assistant", type: "منصة", url: "https://mohamedmadoui5195.github.io/Alislamiah-AI/chat.html", desc: "مساعد الإسلامية الذكي للإجابة عن الأسئلة والاستفسارات عبر الذكاء الاصطناعي." },
+            { title: "ويكيبيديا", type: "موقع", url: "https://ar.wikipedia.org", desc: "الموسوعة الحرة التي يستطيع الجميع تحريرها، وتحوي مئات الآلاف من المقالات بمختلف اللغات." },
+            { title: "CNN News", type: "موقع", url: "https://edition.cnn.com", desc: "شبكة إخبارية عالمية لتغطية آخر الأخبار السياسية، الاقتصادية، والعاجلة حول العالم." }
         ];
 
-        // دالة جلب الأيقونة الحقيقية تلقائياً من الرابط
         function getFavicon(url) {
             try {
                 const domain = new URL(url).hostname;
@@ -152,7 +143,6 @@
             }
         }
 
-        // قراءة الاستعلام (Query) من الرابط عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('q');
@@ -162,7 +152,6 @@
             render();
         });
 
-        // دالة توليد رد الذكاء الاصطناعي مع الأوصاف الكاملة للمواقع
         function updateAiAnswer(query) {
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
@@ -181,6 +170,8 @@
 
                 if (query.includes('الإسلامية') || query.includes('alislamiah')) {
                     aiText.innerHTML = `تعتبر منصة <strong>الإسلامية</strong> شبكة رقمية متكاملة تقدم خدمات متنوعة تشمل المنصات التعليمية، المتاجر الرقمية، ومساعد الذكاء الاصطناعي لتسهيل الوصول للمحتوى الهادف.`;
+                } else if (query.includes('متجر')) {
+                    aiText.innerHTML = `موقع <strong>متجر الإسلامية</strong> يوفر لك أحدث التطبيقات والمنصات الرقمية الخاصة بشبكة الإسلامية للتحميل والاستخدام المباشر.`;
                 } else if (query.includes('العربية')) {
                     aiText.innerHTML = `موقع <strong>العربية.نت</strong> هو بوابة إخبارية رائدة لتغطية الأخبار العربية، العالمية، السياسية، والرياضية لحظة بلحظة.`;
                 } else if (query.includes('الجزائر') || query.includes('أولياء')) {
@@ -206,14 +197,30 @@
                 } else if (query.includes('sntf')) {
                     aiText.innerHTML = `موقع <strong>SNTF</strong> يخص الشركة الوطنية للنقل بالسكك الحديدية في الجزائر لمتابعة المواقيت والرحلات.`;
                 } else if (query.includes('etusa')) {
-                    aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مؤشّرة للنقل الحضري والشبه حضري لتقديم خدمات التنقل في الجزائر.`;
+                    aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مخصصة للنقل الحضري وشبه الحضري لتقديم خدمات التنقل في الجزائر.`;
+                } else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
+                    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتواتها متطوعون من مختلف أنحاء العالم.`;
+                } else if (query.includes('cnn') || query.includes('سي إن إن')) {
+                    aiText.innerHTML = `شبكة <strong>CNN News</strong> الإخبارية العالمية توفر تغطية شاملة ولحظية لآخر المستجدات والأحداث السياسية والاقتصادية العالمية.`;
+                } else if (query.includes('eisen')) {
+                    aiText.innerHTML = `قناة <strong>Eisen</strong> هي قناة تقنية وتوعوية مميزة تقدم محتوى رقمياً مفيداً للمشاهدين.`;
+                } else if (query.includes('firebase')) {
+                    aiText.innerHTML = `منصة <strong>Firebase</strong> المقدمة من جوجل تساعد المطورين على بناء تطبيقات الويب والهواتف بكفاءة عالية.`;
+                } else if (query.includes('app inventor')) {
+                    aiText.innerHTML = `منصة <strong>MIT App Inventor</strong> تتيح للمستخدمين تصميم وتطوير تطبيقات أندرويد بسهولة وبدون تعقيد عبر البرمجة المرئية.`;
+                } else if (query.includes('github')) {
+                    aiText.innerHTML = `منصة <strong>GitHub</strong> هي المرجع العالمي الأول لاستضافة المشاريع البرمجية وتطوير الأنظمة مفتوحة المصدر.`;
+                } else if (query.includes('bahmed') || query.includes('باحمد')) {
+                    aiText.innerHTML = `منصات وقنوات الأستاذ <strong>باحمد حاج إبراهيم</strong> تقدم محتوى تعليمياً وتوجيهياً مميزاً.`;
+                } else if (query.includes('chiraz')) {
+                    aiText.innerHTML = `منصات <strong>Chiraz Activities</strong> تقدم محتوى تعليمياً وأنشطة متنوعة وهادفة.`;
+                } else if (query.includes('حمياني')) {
+                    aiText.innerHTML = `قناة الأستاذ <strong>حمياني للفيزياء</strong> توفر دروساً مبسطة وشاملة في مادة الفيزياء لترسيخ الفهم لدى الطلاب.`;
+                } else if (query.includes('maitresse') || query.includes('الفرنسية')) {
+                    aiText.innerHTML = `منصات وقنوات تعليم <strong>اللغة الفرنسية</strong> تقدم دروساً متخصصة ومساعدة لجميع الأطوار التعليمية.`;
                 } else {
                     aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، يمكنك تصفح النتائج أدناه للوصول المباشر للمواقع والمنصات ذات الصلة، أو الانتقال إلى قسم <strong>AI Assistant</strong> لطرح استفسارات تفصيلية أكثر.`;
-else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
-    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتوائها متطوعون من مختلف أنحاء العالم.`;
-} else if (query.includes('cnn') || query.includes('سي إن إن')) {
-    aiText.innerHTML = `شبكة <strong>CNN News</strong> الإخبارية العالمية توفر تغطية شاملة ولحظية لآخر المستجدات والأحداث السياسية والاقتصادية العالمية.`;
-}
+                }
             }, 700);
         }
 
@@ -222,7 +229,6 @@ else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
             const resultsList = document.getElementById('resultsList');
             resultsList.innerHTML = '';
 
-            // تحديث رد الذكاء الاصطناعي بناءً على البحث
             updateAiAnswer(query);
 
             if (query === '') {
@@ -230,7 +236,6 @@ else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
                 return;
             }
 
-            // تصفية النتائج بناءً على العنوان أو الوصف
             const filtered = library.filter(i => i.title.toLowerCase().includes(query) || (i.desc && i.desc.toLowerCase().includes(query)));
 
             if (filtered.length === 0) {
@@ -238,7 +243,6 @@ else if (query.includes('ويكيبيديا') || query.includes('wikipedia')) {
                 return;
             }
 
-            // عرض النتائج بتصميم احترافي مع الأيقونة الحقيقية للموقع أمام العنوان والوصف
             resultsList.innerHTML = filtered.map(i => {
                 const iconUrl = getFavicon(i.url);
                 return `
