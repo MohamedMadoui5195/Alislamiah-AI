@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding-top: 130px; background-color: #060c16; color: #fff; font-family: sans-serif; }
+        body { margin: 0; padding-top: 140px; background-color: #060c16; color: #fff; font-family: sans-serif; }
         #app-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; }
         .result-card { background: #0a1525; border: 1px solid #17283e; transition: .2s; }
         .result-card:hover { border-color: #214f8f; background: #0f1e31; }
@@ -58,7 +58,7 @@
             <div class="w-8"></div>
         </div>
         <div class="max-w-2xl mx-auto">
-            <input type="text" id="searchInput" oninput="render()" placeholder="ابحث عن منصة أو موقع..." 
+            <input type="text" id="searchInput" placeholder="ابحث عن منصة أو موقع..." 
                    class="w-full py-3 px-4 rounded-xl bg-white text-slate-900 focus:outline-none shadow-inner text-sm">
         </div>
     </header>
@@ -149,7 +149,6 @@
             { title: "وكالة الأنباء الإسلامية الدولية - إينا", type: "موقع", url: "https://iinanews.org", desc: "منصة إخبارية تغطي أحداث وقضايا العالم الإسلامي بمصداقية ومهنية عالية." },
             { title: "بوابة المعرفة التقنية المفتوحة", type: "موقع", url: "https://www.geeksforgeeks.org", desc: "موقع تعليمي عالمي موثوق لتعلم لغات البرمجة، الخوارزميات، وتطوير الويب للمطورين." }
         ];
-
         function getFavicon(url) {
             try {
                 const domain = new URL(url).hostname;
@@ -159,15 +158,6 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-            if (query) {
-                document.getElementById('searchInput').value = query;
-            }
-            render();
-        });
-
         function render() {
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value.trim();
@@ -175,7 +165,6 @@
             const aiContainer = document.getElementById('aiAnswerContainer');
             const aiText = document.getElementById('aiAnswerText');
 
-            // التحكم في صندوق الذكاء الاصطناعي
             if (!query) {
                 aiContainer.style.display = 'none';
             } else {
@@ -213,4 +202,55 @@
                 } else if (q.includes('etusa')) {
                     aiText.innerHTML = `موقع ومؤسسة <strong>Etusa</strong> مخصصة للنقل الحضري وشبه الحضري لتقديم خدمات التنقل في الجزائر.`;
                 } else if (q.includes('ويكيبيديا') || q.includes('wikipedia')) {
-                    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتواتها متطوع
+                    aiText.innerHTML = `موقع <strong>ويكيبيديا</strong> هو موسوعة عالمية حرة ومتعددة اللغات يساهم في إثرائها وتعديل محتواتها متطوعون من جميع أنحاء العالم.`;
+                } else {
+                    aiText.innerHTML = `بناءً على بحثك عن "<strong>${query}</strong>"، قمنا بعرض النتائج المطابقة من المنصات والمواقع المتاحة في قاعدة بيانات شبكة الإسلامية.`;
+                }
+            }
+
+            const filtered = library.filter(item => {
+                const q = query.toLowerCase();
+                return item.title.toLowerCase().includes(q) || 
+                       item.desc.toLowerCase().includes(q) || 
+                       item.url.toLowerCase().includes(q);
+            });
+
+            if (filtered.length === 0) {
+                resultsList.innerHTML = `
+                    <div class="result-card p-6 rounded-2xl text-center text-slate-400">
+                        <i class="fas fa-search text-3xl mb-2 text-slate-500"></i>
+                        <p>عذراً، لم نتمكن من العثور على نتائج مطابقة لبحثك.</p>
+                    </div>`;
+                return;
+            }
+
+            resultsList.innerHTML = filtered.map(item => `
+                <a href="${item.url}" target="_blank" class="result-card p-4 rounded-2xl flex items-start gap-4 block">
+                    <img src="${getFavicon(item.url)}" class="w-10 h-10 rounded-xl bg-white/5 p-1 flex-shrink-0 object-contain" onerror="this.src='https://www.google.com/favicon.ico'">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-xs bg-[#17283e] text-[#08b9ef] px-2 py-0.5 rounded-md font-medium">${item.type || 'موقع'}</span>
+                            <span class="text-xs text-slate-400 truncate">${item.url}</span>
+                        </div>
+                        <h2 class="font-bold text-base text-white mb-1 truncate">${item.title}</h2>
+                        <p class="text-sm text-slate-300 line-clamp-2">${item.desc}</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (query) {
+                searchInput.value = query;
+            }
+            
+            searchInput.addEventListener('input', render);
+            render();
+        });
+    </script>
+</body>
+</html>
