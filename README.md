@@ -576,21 +576,17 @@ onclick="window.location.href='chat.html'">
     ===================================================== -->
     <div class="promo-cards">
 
-<!-- بطاقة Today's weather -->
+<!-- Today's weather -->
 <div class="promo-card todays-weather">
 
-  <!-- الفقاعات -->
-  <div class="weather-bubble top-bubble"></div>
-  <div class="weather-bubble bottom-bubble"></div>
+  <div class="weather-bubble weather-bubble-top"></div>
+  <div class="weather-bubble weather-bubble-bottom"></div>
 
-  <!-- الصورة -->
   <div class="card-image">
     <img src="IMG_20260909_135226_892.jpg" alt="Today's weather">
   </div>
 
-  <!-- المحتوى -->
   <div class="card-content">
-
     <span class="card-label">خدمة الطقس</span>
 
     <h3 class="card-title">Today's weather</h3>
@@ -599,83 +595,53 @@ onclick="window.location.href='chat.html'">
       تابعوا أحوال الطقس اليومية ودرجات الحرارة
       وتوقعات الطقس لمختلف المناطق.
     </p>
-
   </div>
 
 </div>
 
 <style>
-/* =========================
-   Today's weather
-   ========================= */
-
 .promo-card.todays-weather {
   position: relative;
   overflow: hidden;
-
   width: 100%;
   min-height: 500px;
-
-  background: linear-gradient(
-    135deg,
-    #f3e7a3,
-    #e8d98a
-  );
-
   border-radius: 32px;
-  border: 1px solid rgba(180, 160, 70, 0.25);
-
-  box-shadow:
-    0 12px 30px rgba(130, 110, 40, 0.15);
-
-  animation: none !important;
-  transition: none !important;
+  background: linear-gradient(135deg, #f3e7a3, #e8d98a);
+  border: 1px solid rgba(180,160,70,.25);
+  box-shadow: 0 12px 30px rgba(130,110,40,.15);
 }
 
-/* =========================
-   الفقاعات
-   ========================= */
-
+/* الفقاعات خلف كل شيء */
 .todays-weather .weather-bubble {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
-.todays-weather .top-bubble {
+.weather-bubble-top {
   width: 270px;
   height: 270px;
-
-  top: -125px;
-  right: -75px;
-
-  background: rgba(255, 255, 225, 0.35);
+  top: -120px;
+  right: -70px;
+  background: rgba(255,255,225,.35);
 }
 
-.todays-weather .bottom-bubble {
+.weather-bubble-bottom {
   width: 230px;
   height: 230px;
-
-  bottom: -125px;
-  left: -85px;
-
-  background: rgba(150, 130, 50, 0.10);
+  bottom: -120px;
+  left: -80px;
+  background: rgba(150,130,50,.10);
 }
 
-/* =========================
-   الصورة
-   ========================= */
-
+/* الصورة ظاهرة بالكامل */
 .todays-weather .card-image {
   position: relative;
-  z-index: 2;
-
+  z-index: 5;
   width: calc(100% - 50px);
   height: 230px;
-
   margin: 25px auto 0;
-
   overflow: hidden;
   border-radius: 24px;
 }
@@ -683,76 +649,49 @@ onclick="window.location.href='chat.html'">
 .todays-weather .card-image img {
   width: 100%;
   height: 100%;
-
   display: block;
-
   object-fit: cover;
-
-  animation: none !important;
-  transition: none !important;
 }
 
-/* =========================
-   المحتوى
-   ========================= */
-
+/* المحتوى */
 .todays-weather .card-content {
   position: relative;
-  z-index: 3;
-
+  z-index: 5;
   padding: 25px 50px 45px;
 }
 
-/* التصنيف */
-
 .todays-weather .card-label {
   display: inline-block;
-
   padding: 10px 22px;
-
   border-radius: 30px;
-
-  background: rgba(255, 255, 255, 0.28);
-
-  border: 1px solid rgba(255, 255, 255, 0.35);
-
+  background: rgba(255,255,255,.30);
+  border: 1px solid rgba(255,255,255,.4);
   color: #625a32;
-
   font-size: 16px;
   font-weight: bold;
 }
 
-/* العنوان */
-
 .todays-weather .card-title {
   margin: 25px 0 15px;
-
   color: #403b20;
-
   font-size: 38px;
   font-weight: 800;
 }
 
-/* الوصف */
-
 .todays-weather .card-desc {
   margin: 0;
-
   color: #5d5734;
-
   font-size: 20px;
   line-height: 1.8;
 }
 
-/* منع أي حركة */
-
+/* ثابت بدون حركات */
 .todays-weather,
 .todays-weather * {
   animation: none !important;
   transition: none !important;
 }
-</style>
-
+</style> 
       <!-- بطاقة العربية -->
       <div class="promo-card arabiya">
         <div class="card-image">
