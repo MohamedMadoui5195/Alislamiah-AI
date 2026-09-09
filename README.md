@@ -576,6 +576,124 @@ onclick="window.location.href='chat.html'">
     ===================================================== -->
     <div class="promo-cards">
 
+<!-- Today's weather -->
+<div class="promo-card todays-weather">
+
+  <div class="weather-bubble top-bubble"></div>
+  <div class="weather-bubble bottom-bubble"></div>
+
+  <div class="card-image">
+    <img src="IMG_20260909_135226_892.jpg" alt="Today's weather">
+  </div>
+
+  <div class="card-content">
+    <span class="card-label">خدمة الطقس</span>
+
+    <h3 class="card-title">Today's weather</h3>
+
+    <p class="card-desc">
+      تابعوا أحوال الطقس اليومية ودرجات الحرارة
+      وتوقعات الطقس لمختلف المناطق.
+    </p>
+  </div>
+
+</div>
+
+<style>
+.todays-weather {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffd900, #f4b900);
+  border-radius: 32px;
+  padding: 0;
+  min-height: 500px;
+  box-shadow: 0 12px 30px rgba(180, 130, 0, 0.25);
+  animation: none !important;
+  transition: none !important;
+}
+
+/* الفقاعات */
+.todays-weather .weather-bubble {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.todays-weather .top-bubble {
+  width: 270px;
+  height: 270px;
+  top: -125px;
+  right: -75px;
+  background: rgba(255, 240, 120, 0.38);
+}
+
+.todays-weather .bottom-bubble {
+  width: 230px;
+  height: 230px;
+  bottom: -125px;
+  left: -85px;
+  background: rgba(190, 135, 0, 0.16);
+}
+
+/* الصورة */
+.todays-weather .card-image {
+  position: relative;
+  z-index: 2;
+  width: calc(100% - 50px);
+  height: 230px;
+  margin: 25px auto 0;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.todays-weather .card-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* المحتوى */
+.todays-weather .card-content {
+  position: relative;
+  z-index: 3;
+  padding: 25px 50px 45px;
+}
+
+.todays-weather .card-label {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #5b4500;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.todays-weather .card-title {
+  margin: 25px 0 15px;
+  color: #241c00;
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.todays-weather .card-desc {
+  margin: 0;
+  color: #4d3b00;
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+.todays-weather * {
+  animation: none !important;
+  transition: none !important;
+}
+</style>
+
       <!-- بطاقة العربية -->
       <div class="promo-card arabiya">
         <div class="card-image">
