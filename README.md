@@ -576,122 +576,822 @@ onclick="window.location.href='chat.html'">
     ===================================================== -->
     <div class="promo-cards">
 
-<!-- Today's weather -->
+<!-- =========================
+     Today's Weather
+========================= -->
+
 <div class="promo-card todays-weather">
 
-  <div class="weather-bubble weather-bubble-top"></div>
-  <div class="weather-bubble weather-bubble-bottom"></div>
+  <!-- الفقاعات -->
+  <div class="weather-bubble bubble-1"></div>
+  <div class="weather-bubble bubble-2"></div>
+  <div class="weather-bubble bubble-3"></div>
 
-  <div class="card-image">
-    <img src="IMG_20260909_135226_892.jpg" alt="Today's weather">
+  <div class="weather-content">
+
+    <span class="weather-label">LIVE WEATHER</span>
+
+    <h3 class="weather-title">Today's weather</h3>
+
+    <!-- اختيار المنطقة -->
+    <div class="weather-selector">
+
+      <div class="selector-title">
+        📍 اختر منطقتك
+      </div>
+
+      <div class="selector-row">
+        <input
+          type="text"
+          id="cityInput"
+          placeholder="اكتب اسم المدينة..."
+          autocomplete="off"
+        >
+
+        <button id="searchWeatherBtn" type="button">
+          بحث
+        </button>
+      </div>
+
+      <div id="searchStatus" class="search-status"></div>
+
+      <!-- نتائج المدن -->
+      <div id="cityResults" class="city-results"></div>
+
+    </div>
+
+    <!-- معلومات الموقع -->
+    <div class="weather-location" id="weatherLocation">
+      📍 لم يتم اختيار منطقة
+    </div>
+
+    <!-- درجة الحرارة -->
+    <div class="weather-main">
+
+      <div id="weatherIcon" class="weather-icon">
+        🌤️
+      </div>
+
+      <div id="weatherTemp" class="weather-temp">
+        --°C
+      </div>
+
+    </div>
+
+    <div id="weatherDescription" class="weather-description">
+      اختر منطقتك لعرض حالة الطقس الحقيقية.
+    </div>
+
+    <!-- التفاصيل -->
+    <div class="weather-details">
+
+      <div class="weather-detail">
+        <span>💧</span>
+        <strong id="weatherHumidity">--%</strong>
+        <small>الرطوبة</small>
+      </div>
+
+      <div class="weather-detail">
+        <span>💨</span>
+        <strong id="weatherWind">-- km/h</strong>
+        <small>الرياح</small>
+      </div>
+
+    </div>
+
   </div>
-
-  <div class="card-content">
-    <span class="card-label">خدمة الطقس</span>
-
-    <h3 class="card-title">Today's weather</h3>
-
-    <p class="card-desc">
-      تابعوا أحوال الطقس اليومية ودرجات الحرارة
-      وتوقعات الطقس لمختلف المناطق.
-    </p>
-  </div>
-
 </div>
 
+
 <style>
-.promo-card.todays-weather {
+
+/* =========================
+   البطاقة
+========================= */
+
+.todays-weather {
   position: relative;
   overflow: hidden;
+
   width: 100%;
-  min-height: 500px;
-  border-radius: 32px;
-  background: linear-gradient(135deg, #f3e7a3, #e8d98a);
-  border: 1px solid rgba(180,160,70,.25);
-  box-shadow: 0 12px 30px rgba(130,110,40,.15);
+
+  border-radius: 30px;
+
+  background: linear-gradient(
+    135deg,
+    #f3e7a3,
+    #e8d98a
+  );
+
+  border: 1px solid rgba(160,140,55,.25);
+
+  box-shadow:
+    0 12px 30px rgba(120,100,30,.15);
+
+  animation: none !important;
+  transition: none !important;
 }
 
-/* الفقاعات خلف كل شيء */
-.todays-weather .weather-bubble {
+
+/* =========================
+   الفقاعات
+========================= */
+
+.weather-bubble {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 0;
 }
 
-.weather-bubble-top {
-  width: 270px;
-  height: 270px;
-  top: -120px;
-  right: -70px;
-  background: rgba(255,255,225,.35);
-}
-
-.weather-bubble-bottom {
+.bubble-1 {
   width: 230px;
   height: 230px;
-  bottom: -120px;
-  left: -80px;
-  background: rgba(150,130,50,.10);
+
+  top: -110px;
+  right: -70px;
+
+  background: rgba(255,255,255,.25);
 }
 
-/* الصورة ظاهرة بالكامل */
-.todays-weather .card-image {
+.bubble-2 {
+  width: 170px;
+  height: 170px;
+
+  bottom: -90px;
+  left: -65px;
+
+  background: rgba(140,120,40,.08);
+}
+
+.bubble-3 {
+  width: 65px;
+  height: 65px;
+
+  top: 55px;
+  left: 30px;
+
+  border: 2px solid rgba(255,255,255,.28);
+}
+
+
+/* =========================
+   المحتوى
+========================= */
+
+.weather-content {
   position: relative;
   z-index: 5;
-  width: calc(100% - 50px);
-  height: 230px;
-  margin: 25px auto 0;
-  overflow: hidden;
-  border-radius: 24px;
+
+  padding: 30px;
 }
 
-.todays-weather .card-image img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
 
-/* المحتوى */
-.todays-weather .card-content {
-  position: relative;
-  z-index: 5;
-  padding: 25px 50px 45px;
-}
+/* =========================
+   العنوان
+========================= */
 
-.todays-weather .card-label {
+.weather-label {
   display: inline-block;
-  padding: 10px 22px;
-  border-radius: 30px;
+
+  padding: 7px 15px;
+
+  border-radius: 20px;
+
   background: rgba(255,255,255,.30);
-  border: 1px solid rgba(255,255,255,.4);
-  color: #625a32;
-  font-size: 16px;
-  font-weight: bold;
+
+  color: #62582c;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
 }
 
-.todays-weather .card-title {
-  margin: 25px 0 15px;
-  color: #403b20;
-  font-size: 38px;
+.weather-title {
+  margin: 18px 0 18px;
+
+  color: #403a20;
+
+  font-size: 34px;
   font-weight: 800;
 }
 
-.todays-weather .card-desc {
-  margin: 0;
-  color: #5d5734;
-  font-size: 20px;
-  line-height: 1.8;
+
+/* =========================
+   اختيار المنطقة
+========================= */
+
+.weather-selector {
+  position: relative;
+
+  padding: 16px;
+
+  margin-bottom: 18px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,.24);
+
+  border: 1px solid rgba(255,255,255,.3);
 }
 
-/* ثابت بدون حركات */
+.selector-title {
+  color: #514a29;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  margin-bottom: 10px;
+}
+
+.selector-row {
+  display: flex;
+
+  gap: 8px;
+}
+
+.selector-row input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 12px 14px;
+
+  border: none;
+
+  outline: none;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.72);
+
+  color: #403a20;
+
+  font-size: 14px;
+}
+
+.selector-row input::placeholder {
+  color: #81784d;
+}
+
+.selector-row button {
+  padding: 12px 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #75692f;
+
+  color: white;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+
+/* حالة البحث */
+
+.search-status {
+  margin-top: 8px;
+
+  color: #665d35;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   نتائج المدن
+========================= */
+
+.city-results {
+  display: none;
+
+  margin-top: 10px;
+
+  max-height: 180px;
+
+  overflow-y: auto;
+}
+
+.city-result {
+  padding: 11px 13px;
+
+  margin-top: 6px;
+
+  border-radius: 13px;
+
+  background: rgba(255,255,255,.45);
+
+  color: #403a20;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.city-result:hover {
+  background: rgba(255,255,255,.65);
+}
+
+
+/* =========================
+   الموقع
+========================= */
+
+.weather-location {
+  color: #62582c;
+
+  font-size: 15px;
+
+  margin-top: 8px;
+}
+
+
+/* =========================
+   الحرارة
+========================= */
+
+.weather-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 20px;
+}
+
+.weather-icon {
+  font-size: 58px;
+}
+
+.weather-temp {
+  color: #403a20;
+
+  font-size: 48px;
+
+  font-weight: 800;
+}
+
+
+/* الوصف */
+
+.weather-description {
+  margin-top: 5px;
+
+  color: #5d5734;
+
+  font-size: 18px;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   التفاصيل
+========================= */
+
+.weather-details {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.weather-detail {
+  min-width: 110px;
+
+  padding: 13px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,.25);
+
+  border: 1px solid rgba(255,255,255,.25);
+}
+
+.weather-detail span {
+  display: block;
+
+  font-size: 20px;
+
+  margin-bottom: 5px;
+}
+
+.weather-detail strong {
+  display: block;
+
+  color: #403a20;
+
+  font-size: 15px;
+}
+
+.weather-detail small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #665f39;
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   بدون حركة
+========================= */
+
 .todays-weather,
 .todays-weather * {
   animation: none !important;
   transition: none !important;
 }
-</style> 
+
+
+/* الهاتف */
+@media (max-width: 500px) {
+
+  .weather-content {
+    padding: 24px;
+  }
+
+  .weather-title {
+    font-size: 29px;
+  }
+
+  .selector-row button {
+    padding: 12px 14px;
+  }
+
+  .weather-temp {
+    font-size: 42px;
+  }
+
+}
+
+</style>
+
+
+<script>
+(function () {
+
+  const cityInput =
+    document.getElementById("cityInput");
+
+  const searchButton =
+    document.getElementById("searchWeatherBtn");
+
+  const cityResults =
+    document.getElementById("cityResults");
+
+  const searchStatus =
+    document.getElementById("searchStatus");
+
+  const locationEl =
+    document.getElementById("weatherLocation");
+
+  const tempEl =
+    document.getElementById("weatherTemp");
+
+  const iconEl =
+    document.getElementById("weatherIcon");
+
+  const descriptionEl =
+    document.getElementById("weatherDescription");
+
+  const humidityEl =
+    document.getElementById("weatherHumidity");
+
+  const windEl =
+    document.getElementById("weatherWind");
+
+
+  /* =========================
+     حالة الطقس
+  ========================= */
+
+  function weatherInfo(code) {
+
+    if (code === 0)
+      return ["☀️", "سماء صافية"];
+
+    if ([1,2,3].includes(code))
+      return ["🌤️", "غائم جزئياً"];
+
+    if ([45,48].includes(code))
+      return ["🌫️", "ضباب"];
+
+    if ([51,53,55,56,57].includes(code))
+      return ["🌦️", "رذاذ"];
+
+    if ([61,63,65,66,67].includes(code))
+      return ["🌧️", "أمطار"];
+
+    if ([71,73,75,77].includes(code))
+      return ["❄️", "ثلوج"];
+
+    if ([80,81,82].includes(code))
+      return ["🌦️", "زخات مطر"];
+
+    if ([95,96,99].includes(code))
+      return ["⛈️", "عواصف رعدية"];
+
+    return ["🌤️", "حالة جوية متغيرة"];
+  }
+
+
+  /* =========================
+     جلب الطقس
+  ========================= */
+
+  async function loadWeather(latitude, longitude, name) {
+
+    try {
+
+      locationEl.textContent =
+        "📍 " + name;
+
+      descriptionEl.textContent =
+        "جاري تحديث الطقس...";
+
+      const url =
+        "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=" + encodeURIComponent(latitude) +
+        "&longitude=" + encodeURIComponent(longitude) +
+        "&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m" +
+        "&timezone=auto";
+
+
+      const response =
+        await fetch(url);
+
+
+      if (!response.ok)
+        throw new Error("Weather API error");
+
+
+      const data =
+        await response.json();
+
+      const current =
+        data.current;
+
+
+      const info =
+        weatherInfo(current.weather_code);
+
+
+      iconEl.textContent =
+        info[0];
+
+      descriptionEl.textContent =
+        info[1];
+
+      tempEl.textContent =
+        Math.round(current.temperature_2m) +
+        "°C";
+
+      humidityEl.textContent =
+        Math.round(current.relative_humidity_2m) +
+        "%";
+
+      windEl.textContent =
+        Math.round(current.wind_speed_10m) +
+        " km/h";
+
+
+      /* حفظ اختيار المستخدم */
+      localStorage.setItem(
+        "alislamiah_weather_location",
+        JSON.stringify({
+          latitude: latitude,
+          longitude: longitude,
+          name: name
+        })
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      descriptionEl.textContent =
+        "تعذر جلب بيانات الطقس حالياً.";
+
+    }
+
+  }
+
+
+  /* =========================
+     البحث عن المدينة
+  ========================= */
+
+  async function searchCity() {
+
+    const query =
+      cityInput.value.trim();
+
+
+    if (!query) {
+
+      searchStatus.textContent =
+        "اكتب اسم مدينة أولاً.";
+
+      return;
+    }
+
+
+    searchStatus.textContent =
+      "جاري البحث...";
+
+    cityResults.innerHTML = "";
+
+    cityResults.style.display =
+      "none";
+
+
+    try {
+
+      const url =
+        "https://geocoding-api.open-meteo.com/v1/search" +
+        "?name=" + encodeURIComponent(query) +
+        "&count=8" +
+        "&language=ar" +
+        "&format=json";
+
+
+      const response =
+        await fetch(url);
+
+
+      if (!response.ok)
+        throw new Error("Geocoding error");
+
+
+      const data =
+        await response.json();
+
+
+      if (!data.results ||
+          data.results.length === 0) {
+
+        searchStatus.textContent =
+          "لم يتم العثور على المنطقة.";
+
+        return;
+      }
+
+
+      searchStatus.textContent =
+        "اختر المنطقة:";
+
+
+      cityResults.style.display =
+        "block";
+
+
+      data.results.forEach(function (city) {
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "city-result";
+
+
+        const country =
+          city.country || "";
+
+        const admin =
+          city.admin1 || "";
+
+
+        item.textContent =
+          city.name +
+          (admin ? "، " + admin : "") +
+          (country ? "، " + country : "");
+
+
+        item.addEventListener(
+          "click",
+          function () {
+
+            const fullName =
+              city.name +
+              (country ? "، " + country : "");
+
+
+            cityInput.value =
+              city.name;
+
+
+            cityResults.style.display =
+              "none";
+
+
+            searchStatus.textContent =
+              "تم اختيار المنطقة";
+
+
+            loadWeather(
+              city.latitude,
+              city.longitude,
+              fullName
+            );
+
+          }
+        );
+
+
+        cityResults.appendChild(item);
+
+      });
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      searchStatus.textContent =
+        "حدث خطأ أثناء البحث.";
+
+    }
+
+  }
+
+
+  /* زر البحث */
+
+  searchButton.addEventListener(
+    "click",
+    searchCity
+  );
+
+
+  /* Enter */
+
+  cityInput.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (event.key === "Enter") {
+        searchCity();
+      }
+
+    }
+  );
+
+
+  /* =========================
+     استرجاع المنطقة المختارة
+  ========================= */
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "alislamiah_weather_location"
+      );
+
+
+    if (saved) {
+
+      const location =
+        JSON.parse(saved);
+
+
+      cityInput.value =
+        location.name.split("،")[0];
+
+
+      loadWeather(
+        location.latitude,
+        location.longitude,
+        location.name
+      );
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+  }
+
+})();
+</script>
       <!-- بطاقة العربية -->
       <div class="promo-card arabiya">
         <div class="card-image">
