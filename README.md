@@ -555,9 +555,9 @@ onclick="window.location.href='chat.html'">
             <div class="shortcut-name">Alislamiah</div>
         </div>
 
-        <div class="shortcut" onclick="searchShortcut('Favorites', '')">
-            <div class="shortcut-icon">⭐</div>
-            <div class="shortcut-name">Favorites</div>
+        <div class="shortcut" onclick="window.location.href='browsing.html'">
+            <div class="shortcut-icon">📱</div>
+            <div class="shortcut-name">Explore</div>
         </div>
 
         <div class="shortcut" onclick="window.location.href='Settings.html'">
