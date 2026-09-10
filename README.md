@@ -545,7 +545,7 @@ body{
         </div>
 
         <div class="shortcut"
-onclick="window.location.href='https://gemini.google.com/'">
+onclick="window.location.href='chat.html'">
             <div class="shortcut-icon">🤖</div>
             <div class="shortcut-name">AI</div>
         </div>
