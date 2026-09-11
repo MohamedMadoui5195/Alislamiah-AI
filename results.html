@@ -692,6 +692,51 @@
             searchInput.addEventListener('input', render);
             render();
         });
+document.addEventListener('DOMContentLoaded', () => {
+    // الكود القديم الخاص بك هنا...
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    const searchInput = document.getElementById('searchInput');
+
+    if (query) {
+        searchInput.value = query;
+    }
+
+    searchInput.addEventListener('input', render);
+    render();
+
+    // === أضف كود الفيديوهات هنا مباشرة ===
+    if (typeof videoResultsDatabase !== 'undefined' && query) {
+        const matchedVideos = videoResultsDatabase.filter(video => 
+            video.title.toLowerCase().includes(query.toLowerCase().trim()) || 
+            video.desc.toLowerCase().includes(query.toLowerCase().trim())
+        );
+
+        const container = document.getElementById('results-container'); 
+        if (container) {
+            matchedVideos.forEach(video => {
+                const videoCardHTML = `
+                <div class="result-card video-card" style="display: flex; gap: 15px; background: #0a1525; border: 1px solid #17283e; padding: 12px; margin-bottom: 12px; border-radius: 8px;">
+                    <div class="video-thumbnail-container" style="position: relative; width: 160px; height: 90px; flex-shrink: 0; background: #000; border-radius: 6px; overflow: hidden;">
+                        <a href="${video.url}" target="_blank">
+                            <img src="${video.thumbnail}" alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <span class="video-duration" style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.75); color: #fff; font-size: 11px; padding: 2px 4px; border-radius: 4px;">${video.duration}</span>
+                            <div class="play-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">▶</div>
+                        </a>
+                    </div>
+                    <div class="video-content" style="display: flex; flex-direction: column; justify-content: center;">
+                        <span class="result-type" style="font-size: 11px; color: #38bdf8; font-weight: bold; margin-bottom: 4px;">فيديو</span>
+                        <h3 class="result-title" style="margin: 0 0 4px 0;">
+                            <a href="${video.url}" target="_blank" style="font-size: 16px; color: #60a5fa; text-decoration: none;">${video.title}</a>
+                        </h3>
+                        <p class="result-desc" style="margin: 0; font-size: 13px; color: #94a3b8;">${video.desc}</p>
+                    </div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', videoCardHTML);
+            });
+        }
+    }
+});
     </script>
 </body>
 </html>
