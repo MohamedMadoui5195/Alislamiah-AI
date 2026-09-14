@@ -10,6 +10,18 @@
 <link rel="stylesheet" href="style.css">
 
 <title>Alislamiah-AI Browser</title>
+<script>
+    // تطبيق وضع سطح المكتب تلقائياً إذا كان مفَعّلاً في الإعدادات
+    if (localStorage.getItem("desktopSite") === "true") {
+        let viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (!viewportMeta) {
+            viewportMeta = document.createElement('meta');
+            viewportMeta.name = 'viewport';
+            document.head.appendChild(viewportMeta);
+        }
+        viewportMeta.content = 'width=1024';
+    }
+</script>
 
 <style>
 /* =====================================================
