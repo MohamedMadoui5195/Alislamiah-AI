@@ -899,7 +899,7 @@ function openHistory(){
 
 
 /* =========================================
-   DESKTOP SITE
+   DESKTOP SITE (تم التعديل هنا لتفعيل الزر وتطبيق الشاشة)
 ========================================= */
 
 function saveDesktopSite(){
@@ -914,6 +914,23 @@ function saveDesktopSite(){
         enabled ? "true" : "false"
     );
 
+    applyDesktopSiteMode(enabled);
+
+}
+
+function applyDesktopSiteMode(enabled) {
+    let viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (!viewportMeta) {
+        viewportMeta = document.createElement('meta');
+        viewportMeta.name = 'viewport';
+        document.head.appendChild(viewportMeta);
+    }
+
+    if (enabled) {
+        viewportMeta.content = 'width=1024';
+    } else {
+        viewportMeta.content = 'width=device-width, initial-scale=1.0';
+    }
 }
 
 
@@ -1179,6 +1196,8 @@ window.addEventListener(
             "desktopSite"
         ).checked = desktop;
 
+        applyDesktopSiteMode(desktop);
+
 
         updateCurrentEngine();
 
@@ -1212,6 +1231,17 @@ window.addEventListener(
 
             updateCurrentEngine();
 
+        }
+
+        if(
+            event.key === "desktopSite"
+        ){
+            const isDesktop = event.newValue === "true";
+            const desktopToggle = document.getElementById("desktopSite");
+            if(desktopToggle){
+                desktopToggle.checked = isDesktop;
+            }
+            applyDesktopSiteMode(isDesktop);
         }
 
     }
