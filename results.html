@@ -58,59 +58,34 @@
         const engine = localStorage.getItem("searchEngine") || "Alislamiah";
         if (!query) return;
 
-        // الشريط العلوي الثابت والواسع (يحوي العودة، الرئيسية، وشريط البحث الحقيقي)
-        const topBarHTML = `
-            <div style="display:flex; align-items:center; gap:16px; padding:14px 20px; background:#202124; width:100%; flex-shrink:0; box-sizing:border-box; z-index:99999; border-bottom:1px solid #3c4043; box-shadow: 0 3px 8px rgba(0,0,0,0.4);">
-                <!-- زر العودة -->
-                <button onclick="history.back()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="العودة">⬅️</button>
-                <!-- زر الرئيسية -->
-                <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="الرئيسية">🏠</button>
-                <!-- شريط البحث الحقيقي الواسع -->
-                <form action="results.html" method="GET" style="flex:1; display:flex; align-items:center; background:#3c4043; border-radius:28px; padding:8px 18px; margin:0; border: 1px solid #5f6368;">
-                    <input type="text" name="q" value="${query}" style="flex:1; border:none; background:transparent; color:#fff; outline:none; font-size:16px;" required>
-                    <button type="submit" style="background:none; border:none; color:#8ab4f8; cursor:pointer; font-size:16px; padding:0; display:flex; align-items:center;">🔍</button>
-                </form>
-            </div>
-        `;
+        // تنفيذ الكود فقط في حال كان المحرك هو جوجل أو مايكروسوفت بينج
+        if (engine === "Google" || engine === "Microsoft Bing") {
+            const searchUrl = engine === "Google" 
+                ? `https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}`
+                : `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
 
-        document.documentElement.style.height = "100%";
-        document.body.style.margin = "0";
-        document.body.style.padding = "0";
-        document.body.style.height = "100%";
-        document.body.style.overflow = "hidden";
-
-        if (engine === "Google") {
-            // عرض موقع جوجل الحقيقي بالكامل داخل الرفع وتحته الشريط أو فوقه
             document.body.innerHTML = `
-                <div style="display:flex; flex-direction:column; width:100%; height:100vh; overflow:hidden; font-family:Arial,sans-serif; box-sizing:border-box;">
-                    ${topBarHTML}
-                    <div style="flex:1; width:100%; height:100%; overflow:hidden;">
-                        <iframe src="https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}" style="width:100%; height:100%; border:none; display:block;"></iframe>
+                <div style="display:flex; flex-direction:column; width:100vw; height:100vh; overflow:hidden; margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif;">
+                    <!-- الشريط العلوي الثابت والواسع -->
+                    <div style="display:flex; align-items:center; gap:16px; padding:14px 20px; background:#202124; width:100%; flex-shrink:0; box-sizing:border-box; z-index:999999; border-bottom:1px solid #3c4043; box-shadow: 0 3px 8px rgba(0,0,0,0.4);">
+                        <!-- زر العودة -->
+                        <button onclick="history.back()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="العودة">⬅️</button>
+                        <!-- زر الرئيسية -->
+                        <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="الرئيسية">🏠</button>
+                        <!-- شريط البحث الواسع -->
+                        <form action="results.html" method="GET" style="flex:1; display:flex; align-items:center; background:#3c4043; border-radius:28px; padding:8px 18px; margin:0; border: 1px solid #5f6368;">
+                            <input type="text" name="q" value="${query}" style="flex:1; border:none; background:transparent; color:#fff; outline:none; font-size:16px;" required>
+                            <button type="submit" style="background:none; border:none; color:#8ab4f8; cursor:pointer; font-size:16px; padding:0; display:flex; align-items:center;">🔍</button>
+                        </form>
                     </div>
-                </div>
-            `;
-        } else if (engine === "Microsoft Bing") {
-            // عرض موقع بينج الحقيقي بالكامل
-            document.body.innerHTML = `
-                <div style="display:flex; flex-direction:column; width:100%; height:100vh; overflow:hidden; font-family:Arial,sans-serif; box-sizing:border-box;">
-                    ${topBarHTML}
+                    <!-- إطار الويب فيو (جوجل أو بينج) يملأ باقي الشاشة -->
                     <div style="flex:1; width:100%; height:100%; overflow:hidden;">
-                        <iframe src="https://www.bing.com/search?q=${encodeURIComponent(query)}" style="width:100%; height:100%; border:none; display:block;"></iframe>
-                    </div>
-                </div>
-            `;
-        } else {
-            // محركك الحقيقي (الإسلامية)
-            const localContent = document.body.innerHTML;
-            document.body.innerHTML = `
-                <div style="display:flex; flex-direction:column; width:100%; height:100vh; overflow:hidden; font-family:Arial,sans-serif; box-sizing:border-box;">
-                    ${topBarHTML}
-                    <div style="flex:1; width:100%; height:100%; overflow-y:auto; padding:20px; box-sizing:border-box; background:#fff;">
-                        ${localContent}
+                        <iframe src="${searchUrl}" style="width:100%; height:100%; border:none; display:block;"></iframe>
                     </div>
                 </div>
             `;
         }
+        // إذا كان محركك (Alislamiah)، لن يفعل هذا الكود شيئاً هنا، بانتظار نناقشه لاحقاً.
     });
 </script>
 
