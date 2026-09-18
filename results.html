@@ -54,93 +54,20 @@
 
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchQuery = urlParams.get('q') || '';
-        const selectedEngine = localStorage.getItem("searchEngine") || "Alislamiah";
+        const query = new URLSearchParams(window.location.search).get('q');
+        const engine = localStorage.getItem("searchEngine") || "Alislamiah";
+        if (!query) return;
 
-        // 1. إذا كان المحرك المختار هو جوجل
-        if (selectedEngine === "Google") {
-            document.open();
-            document.write(`
-                <!DOCTYPE html>
-                <html lang="ar" dir="rtl">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${searchQuery} - بحث Google</title>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-                </head>
-                <body style="margin:0; font-family:Arial, sans-serif; background:#fff; color:#202124;">
-                    <div style="padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid #dfe1e5;">
-                        <span style="font-size: 24px; font-weight: bold; margin-left: 30px; cursor: pointer;" onclick="localStorage.setItem('searchEngine', 'Alislamiah'); location.reload();">
-                            <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
-                        </span>
-                        <form action="results.html" method="GET" style="flex: 1; max-width: 600px; display: flex; align-items: center; background: #fff; border: 1px solid #dfe1e5; box-shadow: 0 1px 6px rgba(32,33,36,.28); border-radius: 24px; padding: 8px 20px;">
-                            <input type="text" name="q" value="${searchQuery}" style="width: 100%; border: none; outline: none; font-size: 16px;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;"><i class="fa-solid fa-search" style="color: #4285F4;"></i></button>
-                        </form>
-                    </div>
-                    <div style="display: flex; gap: 20px; padding: 0 130px; font-size: 14px; color: #5f6368; border-bottom: 1px solid #ebebeb;">
-                        <span style="padding: 10px 0; color: #1a73e8; border-bottom: 3px solid #1a73e8; font-weight: bold; cursor: pointer;">All</span>
-                        <span style="padding: 10px 0; cursor: pointer;">Images</span>
-                        <span style="padding: 10px 0; cursor: pointer;">Videos</span>
-                        <span style="padding: 10px 0; cursor: pointer;">News</span>
-                    </div>
-                    <div style="padding: 20px 130px; max-width: 800px;">
-                        <div style="border: 1px solid #dadce0; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: #f8f9fa;">
-                            <div style="color: #1a73e8; font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Overview</div>
-                            <div style="font-size: 14px; color: #3c4043;">هيكل تفاعلي حي من محرك جوجل لـ: <b>${searchQuery}</b></div>
-                        </div>
-                        <div style="margin-top: 20px;">
-                            <a href="https://github.com" target="_blank" style="color: #1a0dab; font-size: 18px; text-decoration: none; display: block; margin-bottom: 4px;">GitHub - ${searchQuery}</a>
-                            <span style="color: #006621; font-size: 14px;">https://github.com</span>
-                            <p style="color: #545454; font-size: 14px; margin-top: 4px;">نتائج حية ومترابطة تعمل بشكل كامل عبر واجهة جوجل البرمجية.</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `);
-            document.close();
-        } 
-        // 2. إذا كان المحرك المختار هو بينج
-        else if (selectedEngine === "Microsoft Bing") {
-            document.open();
-            document.write(`
-                <!DOCTYPE html>
-                <html lang="ar" dir="rtl">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${searchQuery} - Bing</title>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-                </head>
-                <body style="margin:0; font-family:Arial, sans-serif; background:#fff; color:#333;">
-                    <div style="background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 20px; display: flex; align-items: center; gap: 20px;">
-                        <span style="color: #008272; font-size: 24px; font-weight: bold; cursor: pointer;">Bing</span>
-                        <form action="results.html" method="GET" style="flex: 1; max-width: 600px; display: flex; align-items: center; background: #f3f3f3; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px;">
-                            <input type="text" name="q" value="${searchQuery}" style="width: 100%; border: none; outline: none; background: transparent; font-size: 15px;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;"><i class="fa-solid fa-search" style="color: #008272;"></i></button>
-                        </form>
-                    </div>
-                    <div style="display: flex; gap: 22px; padding: 0 20px; background: #fff; border-bottom: 1px solid #eaebed; font-size: 13px; font-weight: bold; color: #666;">
-                        <span style="padding: 10px 0; color: #000; border-bottom: 3px solid #000; cursor: pointer;">ALL</span>
-                        <span style="padding: 10px 0; cursor: pointer;">IMAGES</span>
-                        <span style="padding: 10px 0; cursor: pointer;">VIDEOS</span>
-                        <span style="padding: 10px 0; cursor: pointer;">NEWS</span>
-                        <a href="https://copilot.microsoft.com" target="_blank" style="padding: 10px 0; color: #008272; text-decoration: none;">COPILOT</a>
-                    </div>
-                    <div style="padding: 20px; max-width: 800px;">
-                        <div style="font-size: 16px; margin-bottom: 8px;">These are results for <b>${searchQuery}</b>.</div>
-                        <div style="margin-top: 20px;">
-                            <a href="https://github.com" target="_blank" style="color: #2a228a; font-size: 18px; text-decoration: none; display: block;">GitHub - Alislamiah Integration</a>
-                            <span style="color: #008000; font-size: 14px;">https://github.com</span>
-                            <p style="color: #666; font-size: 14px; margin-top: 4px;">واجهة مايكروسوفت بينج الحية والعملية متصلة بكافة التبويبات.</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `);
-            document.close();
+        if (engine === "Google") {
+            document.body.innerHTML = `<iframe src="https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}" style="width:100%; height:100vh; border:none; margin:0; padding:0; overflow:hidden;"></iframe>`;
+            document.body.style.margin = "0";
+            document.body.style.overflow = "hidden";
+        } else if (engine === "Microsoft Bing") {
+            document.body.innerHTML = `<iframe src="https://www.bing.com/search?q=${encodeURIComponent(query)}" style="width:100%; height:100vh; border:none; margin:0; padding:0; overflow:hidden;"></iframe>`;
+            document.body.style.margin = "0";
+            document.body.style.overflow = "hidden";
         }
-        // 3. إذا كان المحرك هو محركك (Alislamiah)، يترك صفحتك وهيكلك الأصلي يظهر بشكل طبيعي ودون أي تدخل.
+        // إذا كان محركك (Alislamiah)، يترك الصفحة تعرض نتائجك المحلية العادية تماماً
     });
 </script>
 
