@@ -52,13 +52,20 @@
 </head>
 <body>
 
+
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         const query = new URLSearchParams(window.location.search).get('q');
         const engine = localStorage.getItem("searchEngine") || "Alislamiah";
         if (!query) return;
 
-        // تنفيذ الكود فقط لجوجل وبينج، مع استثناء محركك مؤقتاً
+        // 1. إذا كان المحرك هو "الإسلامية" (محركك الخاص)، وجهه فوراً إلى رابط صفحتك المستقلة
+        if (engine === "Alislamiah") {
+            window.location.href = `https://mohamedmadoui5195.github.io/Alislamiah/results_full.html?q=${encodeURIComponent(query)}`;
+            return;
+        }
+
+        // 2. إذا كان المحرك جوجل أو مايكروسوفت بينج، اعرضهم بنظام الـ iframe والشريط العلوي الثابت
         if (engine === "Google" || engine === "Microsoft Bing") {
             const searchUrl = engine === "Google" 
                 ? `https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}`
@@ -98,6 +105,7 @@
         }
     });
 </script>
+
 
 
     <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
