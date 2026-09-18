@@ -13,14 +13,14 @@
         const engine = localStorage.getItem("searchEngine") || "Alislamiah";
         if (!query) return;
 
-        // تحديد رابط الـ iframe بناءً على المحرك المختار (سواء جوجل، بينج، أو محركك)
+        // تحديد رابط الـ iframe لجميع المحركات (بما فيها محركك الإسلامية) ليعملوا بنفس الطريقة تماماً
         let searchUrl = "";
         if (engine === "Google") {
             searchUrl = `https://www.google.com/search?igu=1&q=${encodeURIComponent(query)}`;
         } else if (engine === "Microsoft Bing") {
             searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
         } else {
-            // محركك الإسلامية سيتم عرضه داخل الـ iframe تماماً مثلهم وبنفس الشريط الثابت فوقه!
+            // محركك الإسلامية سيتم عرضه داخل الـ iframe تحت الشريط الثابت تماماً مثل جوجل وبينج!
             searchUrl = `https://mohamedmadoui5195.github.io/Alislamiah/results_full.html?q=${encodeURIComponent(query)}`;
         }
 
@@ -35,10 +35,10 @@
         document.body.style.height = "100%";
         document.body.style.overflow = "hidden";
 
-        // بناء الواجهة الموحدة بالكامل (شريط علوي ثابت + مساحة عرض iframe تبدأ من تحته مباشرة)
+        // بناء الواجهة الموحدة للجميع (شريط علوي ثابت + iframe في المساحة تحتها)
         document.body.innerHTML = `
             <div style="display:flex; flex-direction:column; width:100vw; height:100vh; overflow:hidden; margin:0; padding:0; box-sizing:border-box;">
-                <!-- الشريط العلوي المرتفع والعريض والثابت للجميع -->
+                <!-- الشريط العلوي الموحد والثابت في أعلى الشاشة لجميع المحركات -->
                 <div style="display:flex; align-items:center; gap:12px; padding:12px 18px; background:#202124; width:100%; flex-shrink:0; box-sizing:border-box; z-index:999999; border-bottom:1px solid #3c4043; box-shadow: 0 3px 8px rgba(0,0,0,0.4); direction:ltr;">
                     <!-- زر العودة -->
                     <button onclick="history.back()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="العودة">⬅️</button>
@@ -50,7 +50,7 @@
                         <button type="submit" style="background:none; border:none; color:#8ab4f8; cursor:pointer; font-size:16px; padding:0; display:flex; align-items:center;">🔍</button>
                     </form>
                 </div>
-                <!-- مساحة عرض المواقع والنتائج تبدأ من أسفله تماماً وتغطي باقي الشاشة -->
+                <!-- مساحة عرض المحرك والنتائج تبدأ من أسفله تماماً وتغطي باقي الشاشة -->
                 <div style="flex:1; width:100%; height:100%; overflow:hidden;">
                     <iframe src="${searchUrl}" style="width:100%; height:100%; border:none; display:block;"></iframe>
                 </div>
