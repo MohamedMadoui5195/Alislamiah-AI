@@ -51,7 +51,72 @@
     </style>
 </head>
 <body>
+<div id="dynamicHeader"></div>
 
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('q') || '';
+    const selectedEngine = localStorage.getItem("searchEngine") || "Alislamiah";
+    const headerEl = document.getElementById('dynamicHeader');
+
+    if (selectedEngine === "Google") {
+        headerEl.innerHTML = `
+            <div style="position:fixed; top:0; left:0; width:100%; background:#fff; border-bottom:1px solid #dfe1e5; z-index:100;">
+                <div style="padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:15px;">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <a href="index.html" style="color:#5f6368; text-decoration:none; font-size:22px;">‹</a>
+                        <span style="font-size:24px; font-weight:bold; letter-spacing:-1px; font-family:Arial;">
+                            <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+                        </span>
+                    </div>
+                    <form action="results.html" method="GET" style="flex:1; max-width:600px;">
+                        <div style="display:flex; align-items:center; background:#fff; border:1px solid #dfe1e5; box-shadow:0 1px 6px rgba(32,33,36,.28); border-radius:24px; padding:8px 16px;">
+                            <input type="text" name="q" value="${searchQuery}" style="width:100%; border:none; outline:none; font-size:16px; background:transparent;">
+                            <i class="fa-solid fa-microphone" style="color:#4285F4; margin:0 8px;"></i>
+                            <i class="fa-solid fa-search" style="color:#4285F4; margin-left:12px;"></i>
+                        </div>
+                    </form>
+                </div>
+                <div style="display:flex; gap:22px; padding:0 16px; overflow-x:auto; white-space:nowrap; font-size:14px; color:#5f6368; border-top:1px solid #ebebeb;">
+                    <a href="#" style="padding:10px 0; color:#1a73e8; text-decoration:none; border-bottom:3px solid #1a73e8; font-weight:bold;">All</a>
+                    <a href="#" style="padding:10px 0; color:#5f6368; text-decoration:none;">Images</a>
+                    <a href="#" style="padding:10px 0; color:#5f6368; text-decoration:none;">Videos</a>
+                </div>
+            </div>
+        `;
+    } else if (selectedEngine === "Microsoft Bing") {
+        headerEl.innerHTML = `
+            <div style="position:fixed; top:0; left:0; width:100%; background:#fff; border-bottom:1px solid #e0e0e0; z-index:100;">
+                <div style="padding:10px 15px; display:flex; align-items:center; justify-content:space-between; gap:10px; font-family:Arial;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <a href="index.html" style="color:#333; text-decoration:none; font-size:20px;">‹</a>
+                        <span style="color:#008272; font-size:22px; font-weight:bold;">Bing</span>
+                    </div>
+                    <form action="results.html" method="GET" style="flex:1; max-width:550px;">
+                        <div style="display:flex; align-items:center; background:#f3f3f3; border:1px solid #ccc; border-radius:4px; padding:6px 12px;">
+                            <input type="text" name="q" value="${searchQuery}" style="width:100%; border:none; outline:none; font-size:14px; background:transparent;">
+                            <i class="fa-solid fa-search" style="color:#008272; margin-left:6px;"></i>
+                        </div>
+                    </form>
+                </div>
+                <div style="display:flex; gap:20px; padding:0 15px; overflow-x:auto; white-space:nowrap; font-size:13px; font-weight:bold; color:#666; border-top:1px solid #eaebed;">
+                    <a href="#" style="padding:8px 0; color:#000; text-decoration:none; border-bottom:2px solid #000;">ALL</a>
+                    <a href="#" style="padding:8px 0; color:#666; text-decoration:none;">IMAGES</a>
+                    <a href="https://copilot.microsoft.com" target="_blank" style="padding:8px 0; color:#008272; text-decoration:none;">COPILOT</a>
+                </div>
+            </div>
+        `;
+    } else {
+        headerEl.innerHTML = `
+            <div style="position:fixed; top:0; left:0; width:100%; background:#081321; padding:12px 16px; display:flex; align-items:center; gap:15px; z-index:100;">
+                <a href="index.html" style="color:#fff; text-decoration:none; font-size:20px;">‹</a>
+                <form action="results.html" method="GET" style="flex:1;">
+                    <input type="text" name="q" value="${searchQuery}" style="width:100%; padding:8px 15px; background:#12243b; color:#fff; border:1px solid #223854; border-radius:20px; outline:none;">
+                </form>
+            </div>
+        `;
+    }
+</script>
     <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
             <button onclick="window.history.back()" class="p-2"><i class="fas fa-arrow-right text-xl"></i></button>
