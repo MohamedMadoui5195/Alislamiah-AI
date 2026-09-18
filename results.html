@@ -51,79 +51,92 @@
     </style>
 </head>
 <body>
-<div id="dynamicHeader"></div>
-
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('q') || '';
-    const selectedEngine = localStorage.getItem("searchEngine") || "Alislamiah";
-    const headerEl = document.getElementById('dynamicHeader');
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('q') || '';
+        const selectedEngine = localStorage.getItem("searchEngine") || "Alislamiah";
 
-    if (selectedEngine === "Google") {
-        headerEl.innerHTML = `
-            <header style="background: #fff; border-bottom: 1px solid #dfe1e5; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; gap: 20px;">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <a href="index.html" style="color: #5f6368; text-decoration: none; font-size: 22px;">‹</a>
-                        <span style="font-size: 24px; font-weight: bold; letter-spacing: -1px;">
+        if (selectedEngine === "Microsoft Bing") {
+            // تحويل الهيكل بالكامل ليطابق واجهة بينج في الصورة
+            document.body.innerHTML = `
+                <div style="background: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333;">
+                    <!-- الهيدر العلوي الكامل لبينج -->
+                    <div style="border-bottom: 1px solid #e0e0e0; padding: 12px 15px; display: flex; align-items: center; gap: 15px; background: #fff;">
+                        <span style="color: #008272; font-size: 24px; font-weight: bold;">Bing</span>
+                        <div style="flex: 1; display: flex; align-items: center; background: #f3f3f3; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px; max-width: 600px;">
+                            <span style="flex: 1; font-size: 15px; color: #333;">${searchQuery}</span>
+                            <i class="fa-solid fa-search" style="color: #008272;"></i>
+                        </div>
+                    </div>
+                    <!-- شريط التبويبات العلوية تماماً مثل الصورة -->
+                    <div style="display: flex; gap: 22px; padding: 0 15px; background: #fff; border-bottom: 1px solid #eaebed; font-size: 13px; font-weight: bold; color: #666; overflow-x: auto;">
+                        <span style="padding: 10px 0; color: #000; border-bottom: 3px solid #000;">ALL</span>
+                        <span style="padding: 10px 0; cursor: pointer;">SEARCH</span>
+                        <span style="padding: 10px 0; cursor: pointer;">IMAGES</span>
+                        <span style="padding: 10px 0; cursor: pointer;">VIDEOS</span>
+                        <span style="padding: 10px 0; cursor: pointer;">NEWS</span>
+                        <a href="https://copilot.microsoft.com" target="_blank" style="padding: 10px 0; color: #008272; text-decoration: none;">COPILOT</a>
+                    </div>
+                    <!-- هيكل النصوص والنتائج الإضافية الموجودة في صورة بينج -->
+                    <div style="padding: 15px; max-width: 800px; margin: 0 auto;">
+                        <div style="font-size: 16px; margin-bottom: 8px;">These are results for <i><b>${searchQuery}</b></i>.</div>
+                        <div style="font-size: 14px; color: #333; margin-bottom: 20px;">Search instead for <a href="#" style="color: #1a0dab;">${searchQuery}</a>?</div>
+                        
+                        <!-- هنا يتم وضع نتائج بحثك الخاصة في الأسفل ليحافظ على قاعدتك -->
+                        <div id="user-search-results">
+                            ${document.body.innerHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (selectedEngine === "Google") {
+            // تحويل الهيكل بالكامل ليطابق واجهة جوجل في الصورة
+            document.body.innerHTML = `
+                <div style="background: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; color: #202124;">
+                    <!-- الهيدر العلوي لجوجل -->
+                    <div style="padding: 15px; display: flex; align-items: center; justify-content: space-between; max-width: 900px; margin: 0 auto;">
+                        <span style="font-size: 26px; font-weight: bold; letter-spacing: -1px;">
                             <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
                         </span>
-                    </div>
-                    <form action="results.html" method="GET" style="flex: 1; max-width: 650px;">
-                        <div style="display: flex; align-items: center; background: #fff; border: 1px solid #dfe1e5; box-shadow: 0 1px 6px rgba(32,33,36,.28); border-radius: 24px; padding: 8px 16px;">
-                            <input type="text" name="q" value="${searchQuery}" style="width: 100%; border: none; outline: none; font-size: 16px; background: transparent;">
-                            <i class="fa-solid fa-microphone" style="color: #4285F4; margin: 0 8px; cursor: pointer;"></i>
-                            <i class="fa-solid fa-search" style="color: #4285F4; margin-left: 8px; cursor: pointer;"></i>
+                        <div style="flex: 1; max-width: 600px; margin: 0 20px; display: flex; align-items: center; background: #fff; border: 1px solid #dfe1e5; box-shadow: 0 1px 6px rgba(32,33,36,.28); border-radius: 24px; padding: 10px 20px;">
+                            <span style="flex: 1; font-size: 16px;">${searchQuery}</span>
+                            <i class="fa-solid fa-microphone" style="color: #4285F4; margin-left: 10px;"></i>
+                            <i class="fa-solid fa-search" style="color: #4285F4; margin-left: 10px;"></i>
                         </div>
-                    </form>
-                </div>
-                <div style="display: flex; gap: 24px; padding: 0 16px; max-width: 1200px; margin: 0 auto; overflow-x: auto; white-space: nowrap; font-size: 14px; color: #5f6368; border-top: 1px solid #ebebeb;">
-                    <a href="#" style="padding: 10px 0; color: #1a73e8; text-decoration: none; border-bottom: 3px solid #1a73e8; font-weight: bold;">AI Mode</a>
-                    <a href="#" style="padding: 10px 0; color: #1a73e8; text-decoration: none; border-bottom: 3px solid #1a73e8; font-weight: bold;">All</a>
-                    <a href="#" style="padding: 10px 0; color: #5f6368; text-decoration: none;">Images</a>
-                    <a href="#" style="padding: 10px 0; color: #5f6368; text-decoration: none;">Videos</a>
-                </div>
-            </header>
-        `;
-    } else if (selectedEngine === "Microsoft Bing") {
-        headerEl.innerHTML = `
-            <header style="background: #ffffff; border-bottom: 1px solid #e0e0e0; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; max-width: 1200px; margin: 0 auto; gap: 15px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <a href="index.html" style="color: #333; text-decoration: none; font-size: 20px;">‹</a>
-                        <span style="color: #008272; font-size: 22px; font-weight: bold;">Bing</span>
                     </div>
-                    <form action="results.html" method="GET" style="flex: 1; max-width: 600px;">
-                        <div style="display: flex; align-items: center; background: #f3f3f3; border: 1px solid #ccc; border-radius: 4px; padding: 6px 12px;">
-                            <input type="text" name="q" value="${searchQuery}" style="width: 100%; border: none; outline: none; font-size: 14px; background: transparent; color: #333;">
-                            <i class="fa-solid fa-search" style="color: #008272; margin-left: 6px; cursor: pointer;"></i>
+                    <!-- شريط التبويبات لجوجل -->
+                    <div style="display: flex; gap: 24px; padding: 0 20px; max-width: 900px; margin: 0 auto; font-size: 14px; color: #5f6368; border-bottom: 1px solid #ebebeb;">
+                        <span style="padding: 10px 0; color: #1a73e8; border-bottom: 3px solid #1a73e8; font-weight: bold;">AI Mode</span>
+                        <span style="padding: 10px 0; color: #1a73e8; font-weight: bold;">All</span>
+                        <span style="padding: 10px 0; cursor: pointer;">Images</span>
+                        <span style="padding: 10px 0; cursor: pointer;">Videos</span>
+                        <span style="padding: 10px 0; cursor: pointer;">Forums</span>
+                    </div>
+                    <!-- تفاصيل ومحتوى جوجل المطابق للصورة -->
+                    <div style="padding: 15px; max-width: 800px; margin: 0 auto;">
+                        <div style="font-size: 14px; color: #70757a; margin: 15px 0;">Did you mean: <a href="#" style="color: #1a0dab; font-style: italic;">${searchQuery.toLowerCase()}</a>?</div>
+                        
+                        <!-- صندوق AI Overview المطابق لصورة جوجل -->
+                        <div style="border: 1px solid #dadce0; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: #f8f9fa;">
+                            <div style="display: flex; align-items: center; gap: 8px; color: #1a73e8; font-weight: bold; margin-bottom: 8px;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Overview
+                            </div>
+                            <div style="font-size: 14px; line-height: 1.5; color: #3c4043;">
+                                <b>${searchQuery}</b> is a platform providing developer tools and search console management features...
+                            </div>
                         </div>
-                    </form>
+
+                        <div id="user-search-results">
+                            ${document.body.innerHTML}
+                        </div>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 20px; padding: 0 15px; max-width: 1200px; margin: 0 auto; overflow-x: auto; white-space: nowrap; font-size: 13px; font-weight: bold; color: #666; border-top: 1px solid #eaebed;">
-                    <a href="#" style="padding: 8px 0; color: #000; text-decoration: none; border-bottom: 2px solid #000;">ALL</a>
-                    <a href="#" style="padding: 8px 0; color: #666; text-decoration: none;">SEARCH</a>
-                    <a href="#" style="padding: 8px 0; color: #666; text-decoration: none;">IMAGES</a>
-                    <a href="https://copilot.microsoft.com" target="_blank" style="padding: 8px 0; color: #008272; text-decoration: none; display: flex; align-items: center; gap: 4px;">
-                        <i class="fa-solid fa-sparkles"></i> COPILOT
-                    </a>
-                </div>
-            </header>
-        `;
-    } else {
-        headerEl.innerHTML = `
-            <header style="background: #081321; border-bottom: 1px solid #17283e; margin-bottom: 20px; padding: 12px 16px;">
-                <div style="display: flex; align-items: center; gap: 15px; max-width: 1200px; margin: 0 auto;">
-                    <a href="index.html" style="color: #fff; text-decoration: none; font-size: 20px;">‹</a>
-                    <h1 class="font-bold text-xl text-white">Alislamiah Search Engine</h1>
-                    <form action="results.html" method="GET" style="flex: 1;">
-                        <input type="text" name="q" value="${searchQuery}" style="width: 100%; padding: 8px 15px; background: #12243b; color: #fff; border: 1px solid #223854; border-radius: 20px; outline: none;">
-                    </form>
-                </div>
-            </header>
-        `;
-    }
+            `;
+        }
+    });
 </script>
+
 
     <header id="app-header" class="bg-[#081321] border-b border-[#17283e] p-4 shadow-lg">
         <div class="flex items-center justify-between mb-3 text-white max-w-2xl mx-auto">
