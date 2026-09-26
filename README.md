@@ -1563,6 +1563,22 @@ document.addEventListener("keydown", function(event){
         document.body.style.overflow = "";
     }
 });
+document.addEventListener("keydown", function(event){
+    if(event.key === "Escape"){
+        document.getElementById("menuOverlay").classList.remove('show');
+        document.body.style.overflow = "";
+    }
+});
+
+// ===== كود الحماية (أضفه هنا) =====
+(function () {
+  const currentUser = localStorage.getItem("alislamiah_current_user");
+  if (!currentUser) {
+    window.location.href = "signin.html";
+  }
+})();
+
+
 </script>
 
 </body>
