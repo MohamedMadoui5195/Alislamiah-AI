@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول - Alislamiah AI</title>
+<title>إنشاء حساب - Alislamiah AI</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
 body{background:#0b1020;color:#fff;min-height:100vh;display:flex;justify-content:center;align-items:center}
@@ -22,7 +22,6 @@ h1{font-size:24px;margin-bottom:6px}
 .links{margin-top:22px;font-size:14px;color:#9fb8e0}
 .links a{color:#00c3ff;text-decoration:none;font-weight:600}
 
-/* نافذة حفظ كلمة المرور */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;z-index:100}
 .modal-overlay.show{display:flex}
 .modal{background:#12182b;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:28px;width:90%;max-width:360px;text-align:center}
@@ -39,8 +38,13 @@ h1{font-size:24px;margin-bottom:6px}
 
 <div class="container">
   <div class="logo">AI</div>
-  <h1>تسجيل الدخول</h1>
-  <p class="subtitle">مرحباً بك مجدداً في متصفح الإسلامية الذكي</p>
+  <h1>إنشاء حساب جديد</h1>
+  <p class="subtitle">انضم إلى متصفح الإسلامية الذكي</p>
+
+  <div class="input-group">
+    <label>الاسم</label>
+    <input type="text" id="name" placeholder="اسمك">
+  </div>
 
   <div class="input-group">
     <label>البريد الإلكتروني</label>
@@ -49,14 +53,19 @@ h1{font-size:24px;margin-bottom:6px}
 
   <div class="input-group">
     <label>كلمة المرور</label>
-    <input type="password" id="password" placeholder="••••••••">
+    <input type="password" id="password" placeholder="6 أحرف على الأقل">
   </div>
 
-  <button class="btn" onclick="login()">دخول</button>
+  <div class="input-group">
+    <label>تأكيد كلمة المرور</label>
+    <input type="password" id="password2" placeholder="أعد كتابة كلمة المرور">
+  </div>
+
+  <button class="btn" onclick="signup()">إنشاء الحساب</button>
   <div class="message" id="msg"></div>
 
   <div class="links">
-    ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a>
+    لديك حساب بالفعل؟ <a href="signin.html">تسجيل الدخول</a>
   </div>
 </div>
 
@@ -79,6 +88,10 @@ h1{font-size:24px;margin-bottom:6px}
     return JSON.parse(localStorage.getItem("alislamiah_users") || "[]");
   }
 
+  function saveUsers(users) {
+    localStorage.setItem("alislamiah_users", JSON.stringify(users));
+  }
+
   function getSavedPasswords() {
     return JSON.parse(localStorage.getItem("alislamiah_saved_passwords") || "[]");
   }
@@ -87,37 +100,51 @@ h1{font-size:24px;margin-bottom:6px}
     localStorage.setItem("alislamiah_current_user", JSON.stringify(user));
   }
 
-  // إذا كان مسجلاً مسبقاً → توجيه مباشر
-  if (localStorage.getItem("alislamiah_current_user")) {
-    window.location.href = "index.html";
-  }
-
-  function login() {
+  function signup() {
+    const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value;
+    const password2 = document.getElementById("password2").value;
     const msg = document.getElementById("msg");
 
     msg.textContent = "";
     msg.className = "message";
 
-    if (!email || !password) {
+    if (!name || !email || !password || !password2) {
       msg.className = "message error";
-      msg.textContent = "يرجى إدخال البريد وكلمة المرور";
+      msg.textContent = "يرجى ملء جميع الحقول";
+      return;
+    }
+    if (password.length < 6) {
+      msg.className = "message error";
+      msg.textContent = "كلمة المرور قصيرة جداً";
+      return;
+    }
+    if (password !== password2) {
+      msg.className = "message error";
+      msg.textContent = "كلمتا المرور غير متطابقتين";
       return;
     }
 
     const users = getUsers();
-    const found = users.find(u => u.email === email && u.password === password);
-
-    if (!found) {
+    if (users.find(u => u.email === email)) {
       msg.className = "message error";
-      msg.textContent = "البريد أو كلمة المرور غير صحيحة";
+      msg.textContent = "هذا البريد مستخدم بالفعل";
       return;
     }
 
-    // نجاح الدخول
-    tempData = { email: found.email, password: found.password, name: found.name };
-    setCurrentUser({ id: found.id, name: found.name, email: found.email });
+    const newUser = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      password: password
+    };
+
+    users.push(newUser);
+    saveUsers(users);
+
+    tempData = { name, email, password };
+    setCurrentUser({ id: newUser.id, name, email });
 
     // إظهار سؤال الحفظ
     document.getElementById("saveModal").classList.add("show");
@@ -147,11 +174,6 @@ h1{font-size:24px;margin-bottom:6px}
     document.getElementById("saveModal").classList.remove("show");
     window.location.href = "index.html";
   }
-
-  // زر Enter
-  document.getElementById("password").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") login();
-  });
 </script>
 </body>
 </html>
