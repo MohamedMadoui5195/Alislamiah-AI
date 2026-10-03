@@ -1146,6 +1146,34 @@ const container = document.getElementById('resultsList');
         }
     }
 });
+
+let deferredPrompt;
+const installBtn = document.getElementById('pwa-install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) {
+    installBtn.classList.remove('hidden');
+  }
+});
+
+function installShortcut() {
+  if (!deferredPrompt) return;
+  
+  deferredPrompt.prompt();
+  
+  deferredPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('User accepted the A2HS prompt');
+    }
+    deferredPrompt = null;
+    installBtn.classList.add('hidden');
+  });
+}
+
+
+
     </script>
 </body>
 </html>
