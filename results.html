@@ -163,6 +163,11 @@
                         <button onclick="history.back()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="العودة">⬅️</button>
                         <!-- زر الرئيسية -->
                         <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" title="الرئيسية">🏠</button>
+<!-- Add to home screen -->
+<button id="pwa-install-btn" onclick="installShortcut()" class="p-2 hidden" title="إضافة إلى الشاشة الرئيسية">
+    <i class="fas fa-arrow-down-to-square text-xl"></i>
+</button>
+
                         <!-- شريط البحث الواسع -->
                         <form action="results.html" method="GET" style="flex:1; display:flex; align-items:center; background:#3c4043; border-radius:28px; padding:6px 16px; margin:0; border: 1px solid #5f6368;">
                             <input type="text" name="q" value="${query}" style="flex:1; border:none; background:transparent; color:#fff; outline:none; font-size:16px; direction:rtl; padding:0 6px;" required>
